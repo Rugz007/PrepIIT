@@ -1,7 +1,7 @@
 import {  Col, Row } from 'antd';
 import Layout, { Content } from 'antd/lib/layout/layout';
 import React from 'react'
-import { InquiryForm } from '../../components/HomePage/InquiryForm';
+import { EnquiryForm } from '../../components/HomePage/EnquiryForm';
 
 
 export const HomePage: React.FC = () => {
@@ -16,7 +16,7 @@ export const HomePage: React.FC = () => {
                         <img src='study.svg' alt='study' style={{width:'50%'}}/>
                     </Col>
                     <Col span={7} style={{padding:'.4%',paddingTop:'4%'}}>
-                        <InquiryForm />
+                        <EnquiryForm />
                     </Col>
                     <Col span={4} />
                 </Row>

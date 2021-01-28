@@ -3,7 +3,7 @@ import { Button, Card, Divider, Form, Input, Select } from 'antd';
 import ReCAPTCHA from 'react-google-recaptcha';
 const { Option } = Select;
 
-export const InquiryForm: React.FC = () => {
+export const EnquiryForm: React.FC = () => {
     const onFinish = () => {
         console.log("Clicked Finished");
     };
