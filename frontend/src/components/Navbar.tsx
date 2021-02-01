@@ -15,8 +15,9 @@ export const Navbar: React.FC = () => {
                         <Col span={16} style={{ height: '100%' }} >
                             <Menu style={{ backgroundColor: 'white', color: 'black' }} mode="horizontal" theme='dark' defaultSelectedKeys={['2']}>
                                 <Menu.Item><Link to='/'>Home</Link></Menu.Item>
-                                <Menu.Item><Link to='/'>About Us</Link></Menu.Item>
-                                <Menu.Item><Link to='/'>Blog</Link></Menu.Item>
+                                <Menu.Item><Link to='/courses'>Courses</Link></Menu.Item>
+                                <Menu.Item><Link to='/faq'>FAQ</Link></Menu.Item>
+                                <Menu.Item><Link to='/about'>About Us</Link></Menu.Item>
                                 <Menu.Item><Link to='/contact'>Contact Us</Link></Menu.Item>
                             </Menu>
                         </Col>
