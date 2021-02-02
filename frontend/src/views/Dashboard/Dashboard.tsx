@@ -36,8 +36,7 @@ export const Dashboard: React.FC = () => {
                     {tab==='2' && <>Hello 2</>}
                     {tab==='3' && <>Hello 3</>}
                 </Content>
-            </Layout>
-
+            </Layout>   
         </Layout>
     );
 }
