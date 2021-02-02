@@ -11,7 +11,7 @@ export const EnquiryForm: React.FC = () => {
         console.log(value);
     };
     return (
-        <Card bordered={false} style={{ height: '100%', borderRadius: '17px' ,marginLeft:'3%'}}>
+        <Card bordered={false} style={{ height: '100%', borderRadius: '17px', marginLeft: '3%' }}>
             <h1 style={{ fontSize: '40px', marginBottom: '0' }}><b>Enquiry Form</b></h1>
             <h3>Put in your details and we will be in touch with you soon.</h3>
             <Divider />
@@ -33,8 +33,8 @@ export const EnquiryForm: React.FC = () => {
                 <Form.Item name="number">
                     <Input placeholder={'Enter your Phone Number.'} />
                 </Form.Item>
-                <h2><b>Which class are you enquiring for?</b></h2>
-                <Form.Item name="class">
+                <h2><b>What class are you enquiring for?</b></h2>
+                <Form.Item name="classRoom">
                     <Select placeholder={'Select your class.'}>
                         <Option value="VII">
                             VII
@@ -53,6 +53,26 @@ export const EnquiryForm: React.FC = () => {
                         </Option>
                         <Option value="XII">
                             XII
+                        </Option>
+                    </Select>
+                </Form.Item>
+                <h2><b>What are you looking for?</b></h2>
+                <Form.Item name="type">
+                    <Select placeholder={'Select one option.'}>
+                        <Option value='JEE'>
+                            Integrated Program: JEE Mains and Advanced + XI and XII ( CBSE | ICSE | HSC )
+                        </Option>
+                        <Option value='KVPY'>
+                            KVPY and Olympiad Program
+                        </Option>
+                        <Option value='NDA'>
+                            NDA and NA
+                        </Option>
+                        <Option value='STEM'>
+                            Summer Foundation Program (STEM)
+                        </Option>
+                        <Option value='Test'>
+                            PrepiiT Test series
                         </Option>
                     </Select>
                 </Form.Item>
