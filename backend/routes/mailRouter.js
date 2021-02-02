@@ -1,7 +1,8 @@
 var express = require("express");
 var router = express.Router();
-
 const nodemailer = require("nodemailer");
+
+const db = require("../db");
 
 var transporter = nodemailer.createTransport({
   service: "gmail",
@@ -21,9 +22,9 @@ router
       to: req.body.email,
       subject: "Thank you for reaching out to PrepIIT",
       text: `Hello ${req.body.name}!
-                   Thank You for reaching out to PrepIIT, we are excited that you've shown an interest in us and hope yo have a long and fruitful relationship with you. A member of our team will be in touch with you shortly.
-                   Yours,
-                   PrepIIT Team`,
+          Thank You for reaching out to PrepIIT, we are excited that you've shown an interest in us and hope yo have a long and fruitful relationship with you. A member of our team will be in touch with you shortly.
+       Yours,
+       PrepIIT Team`,
     };
     transporter
       .sendMail(mailOptions)
@@ -35,6 +36,16 @@ router
         console.log(err);
         res.json(err);
       });
+    db.query(`INSERT INTO enquiry VALUES ( $1 , $2, $3 , $4 , DEFAULT )`, [
+      req.body.name,
+      req.body.email,
+      req.body.phnumber,
+      req.body.classenq,
+    ])
+      .then((resp) => {
+        console.log("Inserted Successfully");
+      })
+      .catch((err) => console.log("DB Error"));
   });
 
 module.exports = router;

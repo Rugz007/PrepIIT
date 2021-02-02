@@ -9,10 +9,12 @@ router
     var name = req.body.name;
     var password = req.body.password;
     var email = req.body.email;
-    db.query(`INSERT INTO users VALUES ( DEFAULT , $1 , $2 , $3)`, [
+    var admin = req.body.admin;
+    db.query(`INSERT INTO users VALUES ( DEFAULT , $1 , $2 , $3, $4)`, [
       name,
       password,
       email,
+      admin,
     ])
       .then((resp) => {
         res.status(201).json({ success: true, res: resp });
@@ -38,12 +40,10 @@ router
           });
           res.status(200).json({ success: true, token: token });
         } else {
-          res
-            .status(403)
-            .json({
-              success: false,
-              errmess: "Email and Password don't match",
-            });
+          res.status(403).json({
+            success: false,
+            errmess: "Email and Password don't match",
+          });
         }
       } else {
         res
