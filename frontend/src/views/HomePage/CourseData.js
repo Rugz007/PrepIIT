@@ -24,7 +24,6 @@ const CourseData = [
         description: '',
         icon: <img alt='test' src="https://img.icons8.com/officel/100/000000/math.png"/>
     },
-
 ]
 //NDA and NA:
 //iv. Summer Foundation Program (STEM)
