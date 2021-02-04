@@ -1,5 +1,5 @@
 import Layout, { Content } from 'antd/lib/layout/layout';
-import React, { useState } from 'react';
+import React from 'react';
 import { Row, Col, Form, Input, Card, Divider, Button } from 'antd';
 import { UserOutlined, KeyOutlined, MailOutlined, PhoneOutlined, HomeOutlined, AccountBookOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
@@ -11,7 +11,7 @@ export const Register: React.FC = () => {
 
     return (
         <Layout>
-            <Content style={{ backgroundColor: '#2a323c' }}>
+            <Content style={{ backgroundColor: '#2a323c',paddingBottom:'4%' }}>
                 <Row >
                     <Col span={4} />
                     <Col span={16} style={{ padding: '.4%', paddingTop: '1%' }}>

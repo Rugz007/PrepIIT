@@ -1,4 +1,4 @@
-import { Collapse, Card, Row, Col, Divider } from 'antd';
+import { Collapse, Row, Col, Divider } from 'antd';
 import Layout, { Content } from 'antd/lib/layout/layout';
 import React from 'react'
 const { Panel } = Collapse;

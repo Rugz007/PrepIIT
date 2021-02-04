@@ -1,7 +1,6 @@
 import React from 'react'   
 
 export const About: React.FC = () => {
-    //TODO: Make about us page
     return (
         <>
             “PrepiiT Center for Excellence in STEM Education” took its present form with the vision to inculcate the excitement for STEM subjects in young minds of India, so as to help them to make informed decisions in the field of their choice and aptitude.

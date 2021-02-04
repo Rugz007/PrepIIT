@@ -1,16 +1,17 @@
 import Layout, { Content } from 'antd/lib/layout/layout';
 import Sider from 'antd/lib/layout/Sider';
 import React ,{useState} from 'react'
-import { Menu, Row } from 'antd'
+import { Menu } from 'antd'
 import { UserOutlined } from '@ant-design/icons';
-import { EForms } from '../../components/Dashboard/EForms';
+import { EForms } from '../../components/Dashboard/EForms/EForms';
+import { EFormSettings } from '../../components/Dashboard/EForms/EFormSettings';
+import { EFormsAnalysis } from '../../components/Dashboard/EForms/EFormsAnalysis';
 
 
 const { SubMenu } = Menu;
 export const Dashboard: React.FC = () => {
     const [tab, setTab] = useState("1")
     const onChange = (e : any)  =>{
-        console.log(e);
         setTab(e.key);
     }
     return (
@@ -33,8 +34,8 @@ export const Dashboard: React.FC = () => {
             <Layout>
                 <Content style={{backgroundColor:'#2a323c',padding:'3%'}}>
                     {tab==='1' && <EForms />}
-                    {tab==='2' && <>Hello 2</>}
-                    {tab==='3' && <>Hello 3</>}
+                    {tab==='2' && <EFormsAnalysis/>}
+                    {tab==='3' && <EFormSettings/>}
                 </Content>
             </Layout>   
         </Layout>
