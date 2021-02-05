@@ -84,9 +84,9 @@ export const About: React.FC = () => {
       <Content style={{ backgroundColor: "#2a323c" }}>
         <Row style={{ height: "100vh" }}>
           <Col
-            span={15}
+            span={12}
             style={{
-              fontSize: "7rem",
+              fontSize: "6rem",
               margin: "1.8% auto",
             }}
           >
