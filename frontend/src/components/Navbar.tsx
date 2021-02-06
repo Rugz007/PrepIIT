@@ -1,3 +1,4 @@
+//Bug Report: Navbar doesn't reflect changes when home logo is pressed
 import { Button, Col, Menu, Row } from "antd";
 import Layout, { Header } from "antd/lib/layout/layout";
 import React from "react";
