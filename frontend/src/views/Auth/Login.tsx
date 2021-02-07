@@ -8,10 +8,7 @@ export const Login: React.FC = () => {
     const onFinish = () => {
         
     };
-    const [state, setstate] = useState({
-        email: '',
-        password: '',
-    });
+    
     return (
         <Layout>
             <Content style={{ backgroundColor: '#2a323c',paddingBottom:'13.2%' }}>
