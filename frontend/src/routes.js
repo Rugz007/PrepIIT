@@ -8,6 +8,7 @@ import { Contact } from './views/HomePage/Contact';
 import { Courses } from './views/HomePage/Courses';
 import { FAQ } from './views/HomePage/FAQ';
 import { HomePage } from './views/HomePage/HomePage';
+import { Test } from './views/Test/Test';
 
 class Routes extends React.Component {
     render() {
@@ -21,6 +22,7 @@ class Routes extends React.Component {
                 <Route path='/contact' component={Contact} />
                 <Route path='/courses' component={Courses} />
                 <Route path='/faq' component={FAQ} />
+                <Route path='/test' component={Test}/>
             </Switch>
         );
 
