@@ -3,10 +3,23 @@ import React, { useState } from 'react';
 import { Row, Col, Form, Input, Card, Divider, Button } from 'antd';
 import { UserOutlined, KeyOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 
+interface LoginInterface{
+    email:string;
+    password:string;
+}
 export const Login: React.FC = () => {
-    const onFinish = () => {
-
+    const onFinish = (values : LoginInterface) => {
+        axios.post('http://localhost:3000/user/login', {
+            values
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     };
 
     return (
@@ -42,7 +55,7 @@ export const Login: React.FC = () => {
                                     <Input.Password size='large' prefix={<KeyOutlined />} placeholder={'Enter your Password.'} />
                                 </Form.Item>
                                 <Form.Item>
-                                    <Button type='primary' size='large' style={{ width: '100%', margin: 'auto' }}>Submit</Button>
+                                    <Button type='primary' htmlType='submit' size='large' style={{ width: '100%', margin: 'auto' }}>Submit</Button>
                                 </Form.Item>
                             </Form>
                             <a>Forgot Password?</a>
