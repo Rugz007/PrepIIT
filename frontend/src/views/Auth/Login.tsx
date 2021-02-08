@@ -10,9 +10,16 @@ interface LoginInterface{
     password:string;
 }
 export const Login: React.FC = () => {
-    const onFinish = (values : LoginInterface) => {
-        axios.post('http://localhost:3000/user/login', {
-            values
+    const onFinish = (values: LoginInterface) => {
+        console.log(values);
+        axios({
+            method: 'post',
+            url:'http://localhost:3000/user/login',
+            headers: {},
+            data: {
+                email:values.email,
+                password:values.password,
+            }
         })
         .then(function (response) {
           console.log(response);
