@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Login } from './views/Auth/Login';
 import { Register } from './views/Auth/Register';
+import { BlogList } from './views/Blog/BlogList';
 import { Dashboard } from './views/Dashboard/Dashboard';
 import { About } from './views/HomePage/About';
 import { Contact } from './views/HomePage/Contact';
@@ -23,6 +24,7 @@ class Routes extends React.Component {
                 <Route path='/courses' component={Courses} />
                 <Route path='/faq' component={FAQ} />
                 <Route path='/test' component={Test}/>
+                <Route path='/blogs' component={BlogList} />
             </Switch>
         );
 

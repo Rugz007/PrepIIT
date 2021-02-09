@@ -49,8 +49,6 @@ export const Footer: React.FC = () => {
                             <MailOutlined />: admissions@prepiit.com
                     </b>
                 </p>
-
-
             </Col>
             <Col span={3} />
         </Row>

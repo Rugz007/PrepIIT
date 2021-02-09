@@ -5,21 +5,31 @@ import { UserOutlined, KeyOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 
-interface LoginInterface{
-    email:string;
-    password:string;
+interface LoginInterface {
+    email: string;
+    password: string;
 }
 export const Login: React.FC = () => {
-    const onFinish = (values : LoginInterface) => {
-        axios.post('http://localhost:3000/user/login', {
-            values
-        })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
+    const onFinish = (values: LoginInterface) => {
+        console.log(values);
+        axios({
+            method: 'post',
+            url:'http://localhost:3000/user/login',
+            headers: {},
+            data: {
+                email:values.email,
+                password:values.password,
+            }
         });
+        // axios.post('http://localhost:3000/user/login', {
+        //     values
+        // })
+        //     .then(function (response) {
+        //         console.log(response);
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
     };
 
     return (
