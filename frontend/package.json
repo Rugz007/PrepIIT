@@ -11,6 +11,7 @@
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "antd": "^4.11.1",
+    "aos": "^3.0.0-beta.6",
     "axios": "^0.21.1",
     "craco": "0.0.3",
     "craco-antd": "^1.19.0",
@@ -50,6 +51,7 @@
     ]
   },
   "devDependencies": {
+    "@types/aos": "^3.0.3",
     "@types/react-google-recaptcha": "^2.1.0",
     "@types/react-router-dom": "^5.1.7"
   }

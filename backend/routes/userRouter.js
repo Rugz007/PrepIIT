@@ -40,14 +40,14 @@ router
           });
           res.status(200).json({ success: true, token: token });
         } else {
-          res.status(403).json({
+          res.status(200).json({
             success: false,
             errmess: "Email and Password don't match",
           });
         }
       } else {
         res
-          .status(404)
+          .status(200)
           .json({ success: false, errmess: "Email is not registered" });
       }
     });

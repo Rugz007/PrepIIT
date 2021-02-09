@@ -18,6 +18,7 @@ function LeftSide(props: {
           lineHeight: 2,
         }}
         span={9}
+        data-aos="fade-up" data-aos-delay="500"
       >
         <Row style={{ fontSize: "1.8rem" }}>
           <b>{props.title}</b>
@@ -25,7 +26,7 @@ function LeftSide(props: {
         {props.description}
       </Col>
       <Col span={3} />
-      <Col span={4} style={{ marginTop: "15vh" }}>
+      <Col span={4} style={{ marginTop: "15vh" }} data-aos="fade-up" data-aos-delay="500">
         <img
           style={{
             height: "50vh",
@@ -48,7 +49,7 @@ function RightSide(props: {
   return (
     <Row>
       <Col span={2} />
-      <Col span={9} style={{ marginTop: "15vh" }}>
+      <Col span={9} style={{ marginTop: "15vh" }} data-aos="fade-up" data-aos-delay="500">
         <img
           style={{
             height: "50vh",
@@ -68,6 +69,7 @@ function RightSide(props: {
           lineHeight: 2,
         }}
         span={9}
+        data-aos="fade-up" data-aos-delay="500"
       >
         <Row style={{ fontSize: "1.8rem" }}>
           <b>{props.title}</b>
