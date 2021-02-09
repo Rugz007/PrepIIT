@@ -20,10 +20,7 @@ export const Login: React.FC = () => {
                 email:values.email,
                 password:values.password,
             }
-        });
-        // axios.post('http://localhost:3000/user/login', {
-        //     values
-        // })
+        })
         //     .then(function (response) {
         //         console.log(response);
         //     })
