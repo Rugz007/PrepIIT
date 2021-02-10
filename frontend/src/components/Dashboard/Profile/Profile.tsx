@@ -1,11 +1,13 @@
 import { Card, Row, Col, Avatar, Descriptions } from 'antd';
-import React from 'react'
+import React, { useContext } from 'react'
+import UserContext from '../../../context/User/UserContext';
 
 interface ProfileProps {
 
 }
 
 export const Profile: React.FC<ProfileProps> = () => {
+    const userContext = useContext(UserContext);
     return (
         <>
             <Row>
@@ -17,7 +19,8 @@ export const Profile: React.FC<ProfileProps> = () => {
                         <Row>
                             <Col span={9}><Avatar size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }} /></Col>
                             <Col span={15}>
-                                <h1 style={{fontSize:'1.3rem'}}><b>Rugved Somwanshi</b></h1>
+
+                                {userContext.user && <h1 style={{fontSize:'1.3rem'}}>{userContext.user.name}</h1>}
                                 <h1 style={{fontSize:'1rem'}}>Class:XII</h1>
                                 <h1 style={{fontSize:'1rem'}}>Located at: Nashik,Maharashtra</h1>
                             </Col>

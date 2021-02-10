@@ -34,7 +34,7 @@ export const BlogsTable: React.FC = () => {
             title: 'Action',
             dataIndex: '',
             key: 'action',
-            render: (text: any, record: BlogsElementInterface) => <><Button type='primary'style={{marginRight:'1%'}}>View</Button><Button type='primary' danger>Delete</Button></>,
+            render: (text: any, record: BlogsElementInterface) => <><Button type='primary'style={{marginRight:'2%'}}>View</Button><Button type='primary' danger>Delete</Button></>,
         },
     ];
     return (

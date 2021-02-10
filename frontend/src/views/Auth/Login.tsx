@@ -1,32 +1,20 @@
 import Layout, { Content } from 'antd/lib/layout/layout';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Row, Col, Form, Input, Card, Divider, Button } from 'antd';
 import { UserOutlined, KeyOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
+import UserContext from '../../context/User/UserContext';
 
 interface LoginInterface {
     email: string;
     password: string;
 }
 export const Login: React.FC = () => {
+    const userContext = useContext(UserContext);
+
     const onFinish = (values: LoginInterface) => {
-        console.log(values);
-        axios({
-            method: 'post',
-            url:'http://localhost:3000/user/login',
-            headers: {},
-            data: {
-                email:values.email,
-                password:values.password,
-            }
-        })
-        //     .then(function (response) {
-        //         console.log(response);
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     });
+       userContext.login(values)
     };
 
     return (

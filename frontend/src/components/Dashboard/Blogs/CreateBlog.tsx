@@ -1,13 +1,11 @@
 import { Card, Row, Col, Button } from 'antd';
 import React from 'react'
 import TextArea from 'antd/lib/input/TextArea';
-
 // interface BlogsElementInterface {
 //     name: string,
 //     author: string,
 //     date: string,
 // }
-
 export const CreateBlog: React.FC = () => {
     return (
         <div style={{ textAlign: 'left' }}>
@@ -31,7 +29,7 @@ export const CreateBlog: React.FC = () => {
                     <h1 style={{ fontSize: '20px' }}>Content</h1>
                     <TextArea autoSize={{ minRows: 3, maxRows: 10 }} />
                 </Row>
-                <Button type='primary' danger style={{float:'right',marginTop:'3%'}}>Clear</Button>
+                <Button type='primary' danger style={{float:'right',marginTop:'3%'  }}>Clear</Button>
                 <Button type='primary' style={{float:'right',marginRight:"1%",marginTop:'3%'}}>Save</Button>
             </Card>
         </div>
