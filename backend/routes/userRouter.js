@@ -38,16 +38,18 @@ router
           var token = jwt.sign(resp.rows[0], process.env.SECRET_KEY, {
             expiresIn: "365d",
           });
-          res.status(200).json({ success: true, token: token });
+          res
+            .status(200)
+            .json({ success: true, token: token, user: resp.rows[0] });
         } else {
-          res.status(200).json({
+          res.status(403).json({
             success: false,
             errmess: "Email and Password don't match",
           });
         }
       } else {
         res
-          .status(200)
+          .status(400)
           .json({ success: false, errmess: "Email is not registered" });
       }
     });
