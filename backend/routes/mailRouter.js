@@ -26,6 +26,21 @@ router
        Yours,
        PrepIIT Team`,
     };
+    db.query(`INSERT INTO enquiry VALUES ($1,$2,$3,$4,DEFAULT,$5 )`, [
+      req.body.name,
+      req.body.email,
+      req.body.number,
+      req.body.standard,
+      req.body.type,
+    ])
+      .then((resp) => {
+        res.end();
+        console.log("Inserted Successfully");
+      })
+      .catch((err) => {
+        res.end();
+        console.log("DB Error");
+      });
     transporter
       .sendMail(mailOptions)
       .then((resp) => {
@@ -36,17 +51,6 @@ router
         console.log(err);
         res.json(err);
       });
-    db.query(`INSERT INTO enquiry VALUES ($1,$2,$3,$4,DEFAULT,$6 )`, [
-      req.body.name,
-      req.body.email,
-      req.body.number,
-      req.body.standard,
-      req.body.type,
-    ])
-      .then((resp) => {
-        console.log("Inserted Successfully");
-      })
-      .catch((err) => console.log("DB Error"));
   });
 
 module.exports = router;
