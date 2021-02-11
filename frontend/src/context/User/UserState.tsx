@@ -12,6 +12,15 @@ interface LoginInterface {
     email: string;
     password: string;
 }
+interface RegisterInterface
+{
+    name:string,
+    email:string,
+    phone_no:string,
+    address:string,
+    class:string,
+    password:string,
+}
 const UserState = (props: any) => {
     const initialState = {
         token: null,
@@ -19,8 +28,7 @@ const UserState = (props: any) => {
         isAuth: false,
     };
     const [state, dispatch] = useReducer(UserReducer, initialState);
-    const login = async (formData: LoginInterface) => {
-        console.log(formData);
+    const login = (formData: LoginInterface) => {
         try {
             axios({
                 method: 'post',
@@ -42,6 +50,13 @@ const UserState = (props: any) => {
                 type: LOGIN_FAIL
             });
         }
+    }
+    const register = () =>
+    {
+
+    }
+    const loadUser = () =>
+    {
 
     }
     return (
@@ -51,6 +66,8 @@ const UserState = (props: any) => {
                 user: state.user,
                 isAuth: state.isAuth,
                 login,
+                loadUser,
+                register
             }}
         >
             {props.children}

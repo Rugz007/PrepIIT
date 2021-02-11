@@ -1,14 +1,27 @@
 import Layout, { Content } from 'antd/lib/layout/layout';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Row, Col, Form, Input, Card, Divider, Button } from 'antd';
 import { UserOutlined, KeyOutlined, MailOutlined, PhoneOutlined, HomeOutlined, AccountBookOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import UserContext from '../../context/User/UserContext';
+
+interface RegisterInterface
+{
+    name:string,
+    email:string,
+    phone_no:string,
+    address:string,
+    class:string,
+    password:string,
+    confirmPassword?:string,
+}
 
 export const Register: React.FC = () => {
-    const onFinish = (values: any) => {
-        console.log('Received values of form: ', values);
+    const userContext = useContext(UserContext);
+    const onFinish = (values: RegisterInterface) => {
+        delete values.confirmPassword;
+        userContext.register(values);
     };
-
     return (
         <Layout>
             <Content style={{ backgroundColor: '#2a323c',paddingBottom:'4%' }}>
