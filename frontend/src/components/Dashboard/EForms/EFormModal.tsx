@@ -5,10 +5,10 @@ import React, { useState } from 'react';
 interface EFormModalProps {
     EForm: {
         name: string,
-        classBatch: string,
-        email?: string,
-        phoneNumber?: string,
-        city: string,
+        email: string,
+        number: string,
+        standard: string,
+        type: string,
     }
 }
 
@@ -22,14 +22,14 @@ export const EFormModal: React.FC<EFormModalProps> = ({ EForm }) => {
                     <br />
                     Name: {EForm.name}
                     <br />
-                    Class: {EForm.classBatch}
+                    Class: {EForm.standard}
                     <br />
                     Email: {EForm.email}
                     <br />
-                    
+
                 </Row>
                 <Row>
-                <Button type='primary' danger>Delete</Button>
+                    <Button type='primary' danger>Delete</Button>
                 </Row>
             </Modal>
         </>

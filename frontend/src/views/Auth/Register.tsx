@@ -1,19 +1,18 @@
 import Layout, { Content } from 'antd/lib/layout/layout';
 import React, { useContext } from 'react';
-import { Row, Col, Form, Input, Card, Divider, Button } from 'antd';
+import { Row, Col, Form, Input, Card, Divider, Button, Select } from 'antd';
 import { UserOutlined, KeyOutlined, MailOutlined, PhoneOutlined, HomeOutlined, AccountBookOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import UserContext from '../../context/User/UserContext';
-
-interface RegisterInterface
-{
-    name:string,
-    email:string,
-    phone_no:string,
-    address:string,
-    class:string,
-    password:string,
-    confirmPassword?:string,
+const { Option } = Select;
+interface RegisterInterface {
+    name: string,
+    email: string,
+    phone_no: string,
+    address: string,
+    standard: string,
+    password: string,
+    confirmPassword?: string,
 }
 
 export const Register: React.FC = () => {
@@ -24,7 +23,7 @@ export const Register: React.FC = () => {
     };
     return (
         <Layout>
-            <Content style={{ backgroundColor: '#2a323c',paddingBottom:'4%' }}>
+            <Content style={{ backgroundColor: '#2a323c', paddingBottom: '4%' }}>
                 <Row >
                     <Col span={4} />
                     <Col span={16} style={{ padding: '.4%', paddingTop: '1%' }}>
@@ -54,14 +53,33 @@ export const Register: React.FC = () => {
                                     ]}>
                                     <Input size='large' prefix={<MailOutlined />} placeholder={'Enter your Email ID.'} />
                                 </Form.Item>
-                                <Form.Item name="phone">
+                                <Form.Item name="phone_no">
                                     <Input size='large' prefix={<PhoneOutlined />} placeholder={'Enter your phone number.'} />
                                 </Form.Item>
                                 <Form.Item name="address">
                                     <Input size='large' prefix={<HomeOutlined />} placeholder={'Enter your Address.'} />
                                 </Form.Item>
                                 <Form.Item name="class">
-                                    <Input size='large' prefix={<AccountBookOutlined />} placeholder={'Enter your class.'} />
+                                    <Select placeholder={'Select your class.'}>
+                                        <Option value="VII">
+                                            VII
+                                        </Option>
+                                        <Option value="VIII">
+                                            VIII
+                                        </Option>
+                                        <Option value="IX">
+                                            IX
+                                        </Option>
+                                        <Option value="X">
+                                            X
+                                        </Option>
+                                        <Option value="XI">
+                                            XI
+                                        </Option>
+                                        <Option value="XII">
+                                            XII
+                                        </Option>
+                                    </Select>
                                 </Form.Item>
                                 <Form.Item name="password"
                                     rules={[

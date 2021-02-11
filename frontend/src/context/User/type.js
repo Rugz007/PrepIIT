@@ -9,3 +9,4 @@ export const EMAIL_SENT = "EMAIL_SENT";
 export const EMAIL_FAIL = "EMAIL_FAIL";
 export const PASSWORD_CHANGED = "PASSWORD_CHANGED";
 export const PASSWORD_CHANGED_FAIL = "PASSWORD_CHANGED_FAIL";
+export const USER_LOADED = "USER_LOADED";

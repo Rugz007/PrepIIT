@@ -1,23 +1,31 @@
 import { Card, Table, Button } from 'antd';
-import React from 'react'
+import axios from 'axios';
+import React,{useEffect,useState} from 'react'
 import { EFormModal } from './EFormModal';
 
 interface EFormInterface {
     name: string,
-    classBatch: string,
-    email?: string,
-    phoneNumber?: string,
-    city: string,
+    email: string,
+    number: string,
+    standard: string,
+    type: string,
 }
 
 export const EForms: React.FC = () => {
-
-    const data: EFormInterface[] = [
+    const [forms, setForms] = useState<EFormInterface[] |undefined>([])
+    useEffect(() => {
+        fetchForms();
+    }, [])
+    const fetchForms = async() => {
+        try{
+            const res = await axios.get('http://localhost:3000/admin/enquiry')
+            setForms(res.data)
+        }
+        catch(e)
         {
-            name: 'John Brown',
-            classBatch: 'XII',
-            city: 'New York',
-        },]
+            console.log("Forms not loaded!")
+        }
+    };
     const columns = [
         {
             title: 'Name',
@@ -30,9 +38,9 @@ export const EForms: React.FC = () => {
             key: 'class',
         },
         {
-            title: 'City',
-            dataIndex: 'city',
-            key: 'city',
+            title: 'Type',
+            dataIndex: 'type',
+            key: 'type',
         },
         {
             title: 'Action',
@@ -45,8 +53,8 @@ export const EForms: React.FC = () => {
         <div style={{ textAlign: 'left' }}>
             <h1 style={{ fontSize: '40px' }}>Enquiry Forms</h1>
             <Card style={{ textAlign: 'left', borderRadius: '10px' }}>
-            <h1 style={{ fontSize: '30px' }}>View Latest Enquiry Forms</h1>
-                <Table columns={columns} dataSource={data} style={{ width: "100%" }} />
+                <h1 style={{ fontSize: '30px' }}>View Latest Enquiry Forms</h1>
+                <Table columns={columns} dataSource={forms} style={{ width: "100%" }} />
             </Card>
         </div>
 
