@@ -9,19 +9,24 @@ import {
     PASSWORD_CHANGED,
     PASSWORD_CHANGED_FAIL,
     REGISTER_FAIL,
+    USER_LOADED
 } from "./type";
 
-export default (state:any, action:any) => {
+export default (state: any, action: any) => {
     switch (action.type) {
-
-        case LOGIN_SUCCESS:
-            localStorage.setItem("token", action.payload.token);
-            localStorage.setItem("user",action.payload.user);
+        case USER_LOADED:
             return {
                 ...state,
                 ...action.payload,
                 isAuth: true,
                 user: action.payload.user,
+            };
+        case LOGIN_SUCCESS:
+            localStorage.setItem("token", action.payload.token);
+            return {
+                ...state,
+                ...action.payload,
+                isAuth: true,
             };
         case LOGIN_FAIL:
         case AUTH_ERROR:
@@ -49,17 +54,17 @@ export default (state:any, action:any) => {
             return {
                 ...state,
             };
-        case EMAIL_FAIL :
+        case EMAIL_FAIL:
             return {
 
                 ...state
             };
-        case PASSWORD_CHANGED :
+        case PASSWORD_CHANGED:
             return {
 
                 ...state
             };
-        case PASSWORD_CHANGED_FAIL :
+        case PASSWORD_CHANGED_FAIL:
             return {
 
                 ...state

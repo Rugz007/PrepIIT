@@ -1,14 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Card, Divider, Form, Input, Select } from 'antd';
 import ReCAPTCHA from 'react-google-recaptcha';
+import axios from 'axios';
 const { Option } = Select;
 
+interface EnquiryFormInterface {
+    name: string,
+    email: string,
+    number: string,
+    standard: string,
+    type: string,
+}
+
 export const EnquiryForm: React.FC = () => {
-    const onFinish = () => {
-        console.log("Clicked Finished");
+    const [captchaBool, setCaptchaBool] = useState(false)
+    const onFinish = async (values: EnquiryFormInterface) => {
+        try {
+            const res = await axios.post('http://localhost:3000/sendmail', values)
+            console.log(res)
+        }
+        catch (e) {
+            console.log(e)
+            console.log("Could not send mail")
+        }
     };
     const onCaptchaChange = (value: string | null) => {
-        console.log(value);
+        setCaptchaBool(Boolean(value))
     };
     return (
         <Card bordered={false} style={{ height: '100%', borderRadius: '17px', marginLeft: '3%' }}>
@@ -34,7 +51,7 @@ export const EnquiryForm: React.FC = () => {
                     <Input placeholder={'Enter your Phone Number.'} />
                 </Form.Item>
                 <h2><b>What class are you enquiring for?</b></h2>
-                <Form.Item name="classRoom">
+                <Form.Item name="standard">
                     <Select placeholder={'Select your class.'}>
                         <Option value="VII">
                             VII
@@ -78,7 +95,7 @@ export const EnquiryForm: React.FC = () => {
                 </Form.Item>
                 <ReCAPTCHA sitekey="6LfhIz0aAAAAAORE5vd7fw2XQjYKfVsFjHyB5EGQ" theme='dark' onChange={onCaptchaChange}></ReCAPTCHA>
                 <Form.Item name='button'>
-                    <Button type='primary' size='large' style={{ width: '100%', margin: 'auto' }}>Submit</Button>
+                    <Button type='primary' disabled={!captchaBool} size='large' style={{ width: '100%', margin: 'auto' }}>Submit</Button>
                 </Form.Item>
             </Form>
         </Card>

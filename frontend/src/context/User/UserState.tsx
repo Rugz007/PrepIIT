@@ -2,6 +2,9 @@ import React, { useReducer } from "react";
 import {
     LOGIN_FAIL,
     AUTH_ERROR,
+    USER_LOADED,
+    REGISTER_FAIL,
+    REGISTER_SUCCESS,
     LOGIN_SUCCESS
 } from "./type";
 import UserContext from "./UserContext";
@@ -12,14 +15,13 @@ interface LoginInterface {
     email: string;
     password: string;
 }
-interface RegisterInterface
-{
-    name:string,
-    email:string,
-    phone_no:string,
-    address:string,
-    class:string,
-    password:string,
+interface RegisterInterface {
+    name: string,
+    email: string,
+    phone_no: string,
+    address: string,
+    standard: string,
+    password: string,
 }
 const UserState = (props: any) => {
     const initialState = {
@@ -28,9 +30,9 @@ const UserState = (props: any) => {
         isAuth: false,
     };
     const [state, dispatch] = useReducer(UserReducer, initialState);
-    const login = (formData: LoginInterface) => {
+    const login = async (formData: LoginInterface) => {
         try {
-            axios({
+            const response = await axios({
                 method: 'post',
                 url: 'http://localhost:3000/user/login',
                 headers: {},
@@ -38,11 +40,10 @@ const UserState = (props: any) => {
                     email: formData.email,
                     password: formData.password,
                 }
-            }).then((response) => {
-                dispatch({
-                    type: LOGIN_SUCCESS,
-                    payload: response,
-                })
+            })
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: response,
             })
         }
         catch (e) {
@@ -51,14 +52,32 @@ const UserState = (props: any) => {
             });
         }
     }
-    const register = () =>
-    {
-
+    const register = async (formData: RegisterInterface) => {
+        try {
+            const res = await axios.post("http://localhost:3000/auth/register", formData);
+            dispatch({
+                type: REGISTER_SUCCESS,
+            });
+        } catch (e) {
+            dispatch({
+                type: REGISTER_FAIL,
+                payload: e.response.data.msg,
+            });
+        }
     }
-    const loadUser = () =>
-    {
-
-    }
+    const loadUser = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/auth/getUser")
+            dispatch({
+                type: USER_LOADED,
+                payload: res.data,
+            });
+        } catch (e) {
+            dispatch({
+                type: AUTH_ERROR,
+            });
+        }
+    };
     return (
         <UserContext.Provider
             value={{
