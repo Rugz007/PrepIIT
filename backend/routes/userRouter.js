@@ -10,11 +10,17 @@ router
     var password = req.body.password;
     var email = req.body.email;
     var admin = req.body.admin;
-    db.query(`INSERT INTO users VALUES ( DEFAULT , $1 , $2 , $3, $4)`, [
+    var phone_no = req.body.phone_no;
+    var address = req.body.address;
+    var standard = req.body.standard;
+    db.query(`INSERT INTO users VALUES (DEFAULT,$1,$2,$3,$4,$5,$6)`, [
       name,
       password,
       email,
       admin,
+      phone_no,
+      address,
+      standard,
     ])
       .then((resp) => {
         res.status(201).json({ success: true, res: resp });
