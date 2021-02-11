@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
 
 function userAuth(req, res, next) {
+  console.log(req.d)
   var token = req.body.token;
+  console.log(token);
   if (token) {
     jwt.verify(token, process.env.SECRET_KEY, (err, resp) => {
       if (err) {

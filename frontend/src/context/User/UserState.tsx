@@ -43,7 +43,7 @@ const UserState = (props: any) => {
             })
             dispatch({
                 type: LOGIN_SUCCESS,
-                payload: response,
+                payload: response.data,
             })
         }
         catch (e) {
@@ -66,11 +66,22 @@ const UserState = (props: any) => {
         }
     }
     const loadUser = async () => {
+        const token = localStorage.getItem("token")
+        console.log(token)
+        console.log(typeof(token))
         try {
-            const res = await axios.get("http://localhost:3000/auth/getUser")
+            const res = await axios({
+                method: 'post',
+                url: 'http://localhost:3000/getUser/',
+                headers: {},
+                data: {
+                    "token":  token,
+                }
+            })
+            const data = {user:res.data}
             dispatch({
                 type: USER_LOADED,
-                payload: res.data,
+                payload: data,
             });
         } catch (e) {
             dispatch({

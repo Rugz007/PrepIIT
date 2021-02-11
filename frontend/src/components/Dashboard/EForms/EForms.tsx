@@ -17,8 +17,16 @@ export const EForms: React.FC = () => {
         fetchForms();
     }, [])
     const fetchForms = async() => {
+        const token = localStorage.getItem("token")
         try{
-            const res = await axios.get('http://localhost:3000/admin/enquiry')
+            const res = await axios({
+                method: 'post',
+                url: 'http://localhost:3000/admin/enquiry/',
+                headers: {},
+                data: {
+                    "token":  token,
+                }
+            })
             setForms(res.data)
         }
         catch(e)

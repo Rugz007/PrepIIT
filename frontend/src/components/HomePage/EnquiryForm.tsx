@@ -39,7 +39,7 @@ export const EnquiryForm: React.FC = () => {
                 style={{ textAlign: 'left' }}
             >
                 <h2><b>Full Name:</b></h2>
-                <Form.Item name="fullname" >
+                <Form.Item name="name" >
                     <Input placeholder={'Enter your Full Name.'} />
                 </Form.Item>
                 <h2><b>Email ID:</b></h2>
@@ -95,7 +95,7 @@ export const EnquiryForm: React.FC = () => {
                 </Form.Item>
                 <ReCAPTCHA sitekey="6LfhIz0aAAAAAORE5vd7fw2XQjYKfVsFjHyB5EGQ" theme='dark' onChange={onCaptchaChange}></ReCAPTCHA>
                 <Form.Item name='button'>
-                    <Button type='primary' disabled={!captchaBool} size='large' style={{ width: '100%', margin: 'auto' }}>Submit</Button>
+                    <Button type='primary' disabled={!captchaBool} htmlType='submit'size='large' style={{ width: '100%', margin: 'auto' }}>Submit</Button>
                 </Form.Item>
             </Form>
         </Card>

@@ -6,7 +6,7 @@ const db = require("../db");
 const adminAuth = require("../adminAuth/adminAuth");
 
 router.use(adminAuth);
-router.get("/enquiry", (req, res, next) => {
+router.post("/enquiry", (req, res, next) => {
   db.query(`SELECT * FROM enquiry`).then((resp) => {
     res.json(resp.rows);
   });
