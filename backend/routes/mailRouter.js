@@ -36,11 +36,12 @@ router
         console.log(err);
         res.json(err);
       });
-    db.query(`INSERT INTO enquiry VALUES ( $1 , $2, $3 , $4 , DEFAULT )`, [
+    db.query(`INSERT INTO enquiry VALUES ($1,$2,$3,$4,DEFAULT,$6 )`, [
       req.body.name,
       req.body.email,
-      req.body.phnumber,
-      req.body.classenq,
+      req.body.number,
+      req.body.standard,
+      req.body.type,
     ])
       .then((resp) => {
         console.log("Inserted Successfully");
