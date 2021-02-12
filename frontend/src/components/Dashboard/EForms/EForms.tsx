@@ -9,6 +9,35 @@ interface EFormInterface {
   number: string;
   standard: string;
   type: string;
+  enqid: Number;
+}
+
+async function deleteEnquiry(
+  enqid: Number,
+  forms: any[] | undefined,
+  setForms: React.Dispatch<React.SetStateAction<EFormInterface[] | undefined>>
+) {
+  try {
+    const response = await axios({
+      method: "DELETE",
+      url: "http://localhost:3000/admin/enquiry",
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("token"),
+      },
+      data: {
+        enqid: enqid,
+      },
+    });
+    console.log(response);
+    if (forms) {
+      const newState = forms.filter(
+        (item: { enqid: Number }) => item.enqid !== enqid
+      );
+      setForms(newState);
+    }
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 export const EForms: React.FC = () => {
@@ -51,7 +80,11 @@ export const EForms: React.FC = () => {
       render: (text: any, record: EFormInterface) => (
         <>
           <EFormModal EForm={record} />
-          <Button type="primary" danger>
+          <Button
+            onClick={() => deleteEnquiry(record.enqid, forms, setForms)}
+            type="primary"
+            danger
+          >
             Delete
           </Button>
         </>
