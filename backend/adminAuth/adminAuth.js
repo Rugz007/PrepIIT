@@ -1,7 +1,7 @@
 var jwt = require("jsonwebtoken");
 
 function adminAuth(req, res, next) {
-  var token = req.body.token;
+  var token = req.headers.authorization.split(" ")[1];
   if (token) {
     jwt.verify(token, process.env.SECRET_KEY, (err, resp) => {
       if (err) {
