@@ -45,7 +45,7 @@ export const EnquiryForm: React.FC = () => {
         <h2>
           <b>Full Name:</b>
         </h2>
-        <Form.Item name="fullname">
+        <Form.Item name="name">
           <Input placeholder={"Enter your Full Name."} />
         </Form.Item>
         <h2>

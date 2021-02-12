@@ -18,7 +18,7 @@ router
   })
   .post("/", (req, res, next) => {
     db.query(`INSERT INTO enquiry VALUES ($1,$2,$3,$4,DEFAULT,$5 )`, [
-      req.body.fullname,
+      req.body.name,
       req.body.email,
       req.body.number,
       req.body.standard,
@@ -29,7 +29,7 @@ router
           from: process.env.EMAIL,
           to: req.body.email,
           subject: "Thank you for reaching out to PrepIIT",
-          text: `Hello ${req.body.fullname}!
+          text: `Hello ${req.body.name}!
           Thank You for reaching out to PrepIIT, we are excited that you've shown an interest in us and hope yo have a long and fruitful relationship with you. A member of our team will be in touch with you shortly.
        Yours,
        PrepIIT Team`,
@@ -46,6 +46,7 @@ router
           });
         res.end();
         console.log("Inserted Successfully");
+        res.end();
       })
       .catch((err) => {
         res.end();
