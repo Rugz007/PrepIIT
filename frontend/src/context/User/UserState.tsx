@@ -6,6 +6,7 @@ import {
   REGISTER_FAIL,
   REGISTER_SUCCESS,
   LOGIN_SUCCESS,
+  LOGOUT,
 } from "./type";
 import UserContext from "./UserContext";
 import UserReducer from "./UserReducer";
@@ -55,7 +56,7 @@ const UserState = (props: any) => {
   const register = async (formData: RegisterInterface) => {
     console.log(formData);
     try {
-      const res = await axios.post(
+      await axios.post(
         "http://localhost:3000/user/signup",
         formData
       );
@@ -69,6 +70,11 @@ const UserState = (props: any) => {
       });
     }
   };
+  const logout = async () => {
+    dispatch({
+      type:LOGOUT,
+    })
+  }
   const loadUser = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -99,6 +105,7 @@ const UserState = (props: any) => {
         user: state.user,
         isAuth: state.isAuth,
         login,
+        logout,
         loadUser,
         register,
       }}

@@ -1,10 +1,11 @@
 //Bug Report: Navbar doesn't reflect changes when home logo is pressed
-import { Button, Col, Menu, Row } from "antd";
+import { Button, Col, Menu, Row, Avatar, Dropdown } from "antd";
 import Layout, { Header } from "antd/lib/layout/layout";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-
+import UserContext from "../context/User/UserContext";
 export const Navbar: React.FC = () => {
+  const userContext = useContext(UserContext);
   const [current, setCurrent] = useState('Home');
   const onClick = (e: any) => {
     setCurrent(e.key);
@@ -12,7 +13,6 @@ export const Navbar: React.FC = () => {
   const onClickLogo = () => {
     setCurrent("Home");
   };
-
   return (
     <>
       <Layout>
@@ -49,9 +49,25 @@ export const Navbar: React.FC = () => {
               </Menu>
             </Col>
             <Col span={4} style={{ height: "100%" }}>
-              <Button type="primary" size="large">
-                TAKE A TEST
-              </Button>
+              {userContext.user != null ?
+                <Dropdown overlay={
+                  <Menu
+                    style={{ backgroundColor: "white", color: "black" }}
+                    theme="dark">
+                    <Menu.Item key='dashboard'><Link style={{ color: 'black' }} to='/dashboard'>Dashboard</Link></Menu.Item>
+                    <Menu.Item key="logout" onClick={()=>{userContext.logout()}}>
+                      <Link style={{ color: 'black' }} to="/" >
+                        Logout
+                    </Link>
+                    </Menu.Item>
+                  </Menu>}>
+                    <Button style={{backgroundColor:'white',border:'0',height:'100%'}}><Avatar size={50}/></Button>
+                </Dropdown>
+                :
+                <Button type="primary" size="large">
+                  TAKE A TEST
+                </Button>}
+
             </Col>
           </Row>
         </Header>
