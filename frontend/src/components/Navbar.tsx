@@ -55,17 +55,19 @@ export const Navbar: React.FC = () => {
                     style={{ backgroundColor: "white", color: "black" }}
                     theme="dark">
                     <Menu.Item key='dashboard'><Link style={{ color: 'black' }} to='/dashboard'>Dashboard</Link></Menu.Item>
-                    <Menu.Item key="logout" onClick={()=>{userContext.logout()}}>
+                    <Menu.Item key="logout" onClick={() => { userContext.logout() }}>
                       <Link style={{ color: 'black' }} to="/" >
                         Logout
                     </Link>
                     </Menu.Item>
                   </Menu>}>
-                    <Button style={{backgroundColor:'white',border:'0',height:'100%'}}><Avatar size={50}/></Button>
+                  <Button style={{ backgroundColor: 'white', border: '0', height: '100%' }}><Avatar size={50} /></Button>
                 </Dropdown>
                 :
                 <Button type="primary" size="large">
-                  TAKE A TEST
+                  <Link to='/login'>
+                    TAKE A TEST
+                  </Link>
                 </Button>}
 
             </Col>
