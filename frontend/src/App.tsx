@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, { useContext, useEffect } from "react";
 import './App.less';
 import "antd/dist/antd.dark.css";
 import { Navbar } from './components/Navbar';
@@ -11,12 +11,11 @@ import UserContext from "./context/User/UserContext";
 AOS.init();
 function App() {
   const userContext = useContext<any>(UserContext);
-
   useEffect(() => {
     if (localStorage.getItem("token")) {
       userContext.loadUser();
     }
-  }, []);
+  },[]);
   return (
     <div className="App">
       <Router>

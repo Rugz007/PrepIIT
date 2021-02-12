@@ -12,39 +12,15 @@ interface EFormInterface {
   enqid: Number;
 }
 
-async function deleteEnquiry(
-  enqid: Number,
-  forms: any[] | undefined,
-  setForms: React.Dispatch<React.SetStateAction<EFormInterface[] | undefined>>
-) {
-  try {
-    const response = await axios({
-      method: "DELETE",
-      url: "http://localhost:3000/admin/enquiry",
-      headers: {
-        authorization: "Bearer " + localStorage.getItem("token"),
-      },
-      data: {
-        enqid: enqid,
-      },
-    });
-    console.log(response);
-    if (forms) {
-      const newState = forms.filter(
-        (item: { enqid: Number }) => item.enqid !== enqid
-      );
-      setForms(newState);
-    }
-  } catch (e) {
-    console.log(e);
-  }
-}
+
 
 export const EForms: React.FC = () => {
   const [forms, setForms] = useState<EFormInterface[] | undefined>([]);
   useEffect(() => {
     fetchForms();
   }, []);
+
+  
   const fetchForms = async () => {
     try {
       const res = await axios.get("http://localhost:3000/admin/enquiry", {
@@ -57,6 +33,33 @@ export const EForms: React.FC = () => {
       console.log("Forms not loaded!");
     }
   };
+  const deleteEnquiry = async (
+    enqid: Number,
+    forms: any[] | undefined,
+    setForms: React.Dispatch<React.SetStateAction<EFormInterface[] | undefined>>
+  ) => {
+    try {
+      const response = await axios({
+        method: "DELETE",
+        url: "http://localhost:3000/admin/enquiry",
+        headers: {
+          authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        data: {
+          enqid: enqid,
+        },
+      });
+      console.log(response);
+      if (forms) {
+        const newState = forms.filter(
+          (item: { enqid: Number }) => item.enqid !== enqid
+        );
+        setForms(newState);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
   const columns = [
     {
       title: "Name",
