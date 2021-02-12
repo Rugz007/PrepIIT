@@ -53,9 +53,10 @@ const UserState = (props: any) => {
     }
   };
   const register = async (formData: RegisterInterface) => {
+    console.log(formData);
     try {
       const res = await axios.post(
-        "http://localhost:3000/auth/register",
+        "http://localhost:3000/user/signup",
         formData
       );
       dispatch({

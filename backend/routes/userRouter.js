@@ -12,7 +12,7 @@ router
     var admin = req.body.admin;
     var phone_no = req.body.phone_no;
     var address = req.body.address;
-    var standard = req.body.standard;
+    var standard = req.body.class;
     db.query(`INSERT INTO users VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7)`, [
       name,
       password,
