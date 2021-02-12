@@ -11,10 +11,10 @@ export const Footer: React.FC = () => {
                 <h1 style={{ color: 'black', marginBottom: '0' }}>Social Media</h1>
                 <hr />
                 <div >
-                    <img alt='facebook' src="https://img.icons8.com/fluent/48/000000/facebook-new.png" />
-                    <img alt='instagram' src="https://img.icons8.com/fluent/48/000000/instagram-new.png" />
-                    <img alt='linkedin' src="https://img.icons8.com/fluent/48/000000/linkedin.png" />
-                    <img alt='youtube' src="https://img.icons8.com/fluent/48/000000/youtube-play.png" />
+                    <a href='https://www.facebook.com/prepiit' rel="noopener noreferrer" target="_blank"><img alt='facebook' src="https://img.icons8.com/fluent/48/000000/facebook-new.png" /></a>
+                    <a href='https://www.instagram.com/prepiit/' rel="noopener noreferrer" target="_blank"><img alt='instagram' src="https://img.icons8.com/fluent/48/000000/instagram-new.png" /></a>
+                    <a href='https://in.linkedin.com/in/prepiit' rel="noopener noreferrer" target="_blank"><img alt='linkedin' src="https://img.icons8.com/fluent/48/000000/linkedin.png" /></a>
+                    <a href='https://www.youtube.com/channel/UCHZ1Uz5irKGZrEPXQYN92mA' rel="noopener noreferrer" target="_blank"><img alt='youtube' src="https://img.icons8.com/fluent/48/000000/youtube-play.png" /></a>
                 </div>
             </Col>
             <Col span={6} style={{ padding: '0 3%' }}>
