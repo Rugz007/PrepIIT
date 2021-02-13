@@ -1,0 +1,43 @@
+\c
+\l
+\c aafeeibd
+\d
+clear
+;
+CREATE TABLE users ( userid SERIAL PRIMARY KEY , name VARCHAR(50) NOT NULL , password VARCHAR(50) NOT NULL , email VARCHAR(255) NOT NULL , admin VARCHAR(20) );
+\d
+\d users
+\d users
+DROP TABLE users;
+\d
+CREATE TABLE users ( userid SERIAL PRIMARY KEY , name VARCHAR(50) NOT NULL , password VARCHAR(50) NOT NULL , email VARCHAR(255) NOT NULL UNIQUE , admin VARCHAR(20) );
+\d users
+CREATE TABLE enquiry ( fullname VARCHAR(50) NOT NULL , email VARCHAR(255) NOT NULL , phnumber VARCHAR(20) NOT NULL , classenq VARCHAR(5) NOT NULL , enqid SERIAL PRIMARY KEY);
+\d enquiry
+\d
+SELECT * FROM users;
+SELECT * FROM users;
+SELECT * FROM users;
+\d
+\d users
+\d users
+ALTER TABLE users
+ADD COLUMN phone_no VARCHAR(20) NOT NULL;
+\d users
+SELECT * FROM users
+;
+DELETE FROM users WHERE userid=1;
+DELETE FROM users WHERE userid=2;
+ALTER TABLE users
+ADD COLUMN phone_no VARCHAR(20) NOT NULL;
+ALTER TABLE users
+ADD COLUMN address VARCHAR(255) NOT NULL;
+ALTER TABLE users
+ADD COLUMN class VARCHAR(5) NOT NULL;
+\d users
+ALTER TABLE users
+RENAME COLUMN class to standard;
+\d enquiry
+ALTER TABLE enquiry
+ADD COLUMN type VARCHAR(255) NOT NULL;
+\s en 
