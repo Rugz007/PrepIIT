@@ -89,6 +89,12 @@ router
         errmess: "No Question ID Found",
       });
     }
+  })
+  .get("/reported", (req, res, next) => {
+    db.query("SELECT * FROM questions WHERE is_reported=TRUE").then((resp) => {
+      console.log(resp.rows);
+      res.json(resp.rows);
+    });
   });
 
 module.exports = router;
