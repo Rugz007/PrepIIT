@@ -1,4 +1,7 @@
 var express = require("express");
+var upload = require("../multer/index");
+const uploadQuestions = require("../uploadQuestions/index");
+
 var router = express.Router();
 
 const db = require("../db");
@@ -90,11 +93,25 @@ router
       });
     }
   })
+  .post("/excelupload", upload.single("QuestionBank"), (req, res, next) => {
+    try {
+      uploadQuestions(req.file.originalname, req, res);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ success: false });
+      next(err);
+    }
+  })
   .get("/reported", (req, res, next) => {
-    db.query("SELECT * FROM questions WHERE is_reported=TRUE").then((resp) => {
-      console.log(resp.rows);
-      res.json(resp.rows);
-    });
+    db.query(`SELECT * FROM questions WHERE is_reported='yes'`)
+      .then((resp) => {
+        console.log(resp.rows);
+        res.json(resp.rows);
+      })
+      .catch((err) => {
+        console.log("DB Error");
+        res.status(500).json({ success: false });
+      });
   });
 
 module.exports = router;
