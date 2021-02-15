@@ -68,8 +68,8 @@ export const EForms: React.FC = () => {
     },
     {
       title: "Class",
-      dataIndex: "class",
-      key: "class",
+      dataIndex: "standard",
+      key: "standard",
     },
     {
       title: "Type",
