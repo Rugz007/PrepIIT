@@ -55,7 +55,7 @@ router
         }
       } else {
         res
-          .status(400)
+          .status(403)
           .json({ success: false, errmess: "Email is not registered" });
       }
     });
