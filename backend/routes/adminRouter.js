@@ -95,7 +95,9 @@ router
   })
   .post("/excelupload", upload.single("QuestionBank"), (req, res, next) => {
     try {
-      uploadQuestions(req.file.originalname, req, res);
+      uploadQuestions(req.file.originalname).then((resp) =>
+        res.status(200).json({ success: resp })
+      );
     } catch (err) {
       console.log(err);
       res.status(500).json({ success: false });
