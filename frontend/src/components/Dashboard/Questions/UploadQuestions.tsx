@@ -6,7 +6,7 @@ const { Dragger } = Upload;
 
 interface UploadQuestionsProps {}
 
-export const UploadQuestions: React.FC<UploadQuestionsProps> = ({}) => {
+export const UploadQuestions: React.FC<UploadQuestionsProps> = () => {
   const props = {
     name: "QuestionBank",
     multiple: true,

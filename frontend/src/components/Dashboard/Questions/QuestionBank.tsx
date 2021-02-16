@@ -2,6 +2,7 @@ import { Card, Table, Button } from "antd";
 import Item from "antd/lib/list/Item";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { QuestionModal } from "./QuestionModal";
 
 interface QuestionInterface {
   qid: number;
@@ -96,6 +97,7 @@ export const QuestionBank: React.FC = () => {
       key: "action",
       render: (text: any, record: QuestionInterface) => (
         <>
+          <QuestionModal Question={record}/>
           <Button
             type="primary"
             onClick={() => deleteQuestion(record.qid, questions, setQuestions)}
