@@ -37,6 +37,7 @@ interface Level {
   name: string;
 }
 export const QuestionModal: React.FC<QuestionInterface> = ({ Question }) => {
+  const [form] = Form.useForm();
   const submit = async (Question: {
     qid: any;
     statement?: string | undefined;
@@ -109,12 +110,18 @@ export const QuestionModal: React.FC<QuestionInterface> = ({ Question }) => {
       <Modal
         width="60%"
         visible={visible}
-        onOk={() => submit(Question)}
+        onOk={() => {
+          var values = form.getFieldsValue();
+          form.resetFields();
+          values.qid = Question.qid;
+          submit(values);
+          setVisible(false);
+        }}
         onCancel={() => setVisible(false)}
       >
         <br />
         <h1>Question ID: {Question.qid}</h1>
-        <Form initialValues={Question} layout="vertical">
+        <Form form={form} initialValues={Question} layout="vertical">
           <Tabs>
             <Tabs.TabPane tab="Question Information" key="1">
               <Form.Item name="statement" label="Question Statement">
