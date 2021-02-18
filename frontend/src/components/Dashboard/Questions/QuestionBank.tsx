@@ -97,7 +97,7 @@ export const QuestionBank: React.FC = () => {
       key: "action",
       render: (text: any, record: QuestionInterface) => (
         <>
-          <QuestionModal Question={record}/>
+          <QuestionModal Question={record} ButtonName='View Question'/>
           <Button
             type="primary"
             onClick={() => deleteQuestion(record.qid, questions, setQuestions)}

@@ -1,6 +1,7 @@
 import { Card, Table, Button } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { QuestionModal } from "./QuestionModal";
 
 interface QuestionInterface {
   qid: number;
@@ -61,7 +62,7 @@ export const ReportedQuestions: React.FC = () => {
       key: "action",
       render: (text: any, record: QuestionInterface) => (
         <>
-          <Button type="primary">Resolve</Button>
+          <QuestionModal Question={record} ButtonName='Resolve' />
         </>
       ),
     },

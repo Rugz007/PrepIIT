@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, Input, Select, message, Space, Upload, Tabs } from 'antd';
+import { Button, Checkbox, Form, Input, Select, message, Space, Upload, Tabs, Divider } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import Modal from 'antd/lib/modal/Modal';
 import React, { useState } from 'react';
@@ -7,7 +7,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import './QuestionModal.css'
 //TODO: Make use Select
 interface QuestionInterface {
-    Question: {
+    Question? : {
         qid: number | undefined;
         statement: string | undefined;
         latex?: any | undefined;
@@ -19,13 +19,16 @@ interface QuestionInterface {
         level: string | undefined;
         archive?: string | undefined;
         is_reported: boolean | undefined;
-    }
+    } | undefined,
+    ButtonName: string,
+    AddQuestionFunction? : Function,
 
 }
 interface Level {
     name: string;
 }
-export const QuestionModal: React.FC<QuestionInterface> = ({ Question }) => {
+export const QuestionModal: React.FC<QuestionInterface> = ({ Question ,ButtonName,AddQuestionFunction}) => {
+    const [form] = Form.useForm();
     const levels: Array<Level> | undefined = Levels;
     const [visible, setVisible] = useState(false);
     const props = {
@@ -45,15 +48,25 @@ export const QuestionModal: React.FC<QuestionInterface> = ({ Question }) => {
             }
         },
     };
+    const onFinish = (e : any) =>
+    {
+        if(ButtonName === 'Add Question' && AddQuestionFunction !== undefined)
+        {
+            console.log("Added Questions")
+            form.resetFields();
+            AddQuestionFunction(e);
+        }
+    }
     return (
         <>
             <Button style={{ marginRight: '2%' }} type='primary' onClick={() => setVisible(true)}>
-                View
+                {ButtonName}
             </Button>
-            <Modal width='60%' visible={visible} onCancel={() => setVisible(false)} >
+            <Modal width='60%' visible={visible} footer={null} onCancel={() => setVisible(false)} >
+                
                 <br />
-                <h1>Question ID: {Question.qid}</h1>
-                <Form initialValues={Question} layout='vertical'>
+                {Question !== undefined && <h1>Question ID: {Question.qid}</h1>}
+                <Form initialValues={Question} form={form} layout='vertical' onFinish={onFinish}>
                     <Tabs>
                         <Tabs.TabPane tab='Question Information' key='1'>
                             <Form.Item name='statement' label='Question Statement'>
@@ -99,6 +112,9 @@ export const QuestionModal: React.FC<QuestionInterface> = ({ Question }) => {
                             Hello
                         </Tabs.TabPane>
                     </Tabs>
+                    <Divider />
+                    <Button type='primary' htmlType='submit' onClick={()=>setVisible(false)}>Save</Button>
+                    <Button style={{marginLeft:'1%'}} danger onClick={()=>setVisible(false)}>Cancel</Button>
                 </Form>
             </Modal>
         </>
