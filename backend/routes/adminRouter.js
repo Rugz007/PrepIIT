@@ -104,6 +104,46 @@ router
       next(err);
     }
   })
+  .post("/editquestion", (req, res, next) => {
+    console.log(req.body);
+    const {
+      archive,
+      img_path,
+      is_reported,
+      latex,
+      level,
+      qid,
+      statement,
+      subject,
+      subtopic,
+      topic,
+      type,
+    } = req.body;
+    db.query(
+      "UPDATE questions SET statement=$1, latex=$2, img_path=$3, type=$4, subject=$5, topic=$6, subtopic=$7, level=$8, archive=$9, is_reported=$10 WHERE qid=$11",
+      [
+        statement,
+        latex,
+        img_path,
+        type,
+        subject,
+        topic,
+        subtopic,
+        level,
+        archive,
+        is_reported,
+        qid,
+      ]
+    )
+      .then((resp) => {
+        console.log("Question Updated");
+        res.json({ success: true });
+      })
+      .catch((err) => {
+        console.log("DB Error");
+        res.json({ success: false });
+      });
+  })
   .get("/reported", (req, res, next) => {
     db.query(`SELECT * FROM questions WHERE is_reported='yes'`)
       .then((resp) => {

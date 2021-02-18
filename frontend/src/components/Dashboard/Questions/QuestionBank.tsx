@@ -15,7 +15,7 @@ interface QuestionInterface {
   subtopic?: string;
   level: string;
   archive?: string;
-  is_reported: boolean;
+  is_reported: string;
 }
 
 export const QuestionBank: React.FC = () => {
@@ -97,7 +97,7 @@ export const QuestionBank: React.FC = () => {
       key: "action",
       render: (text: any, record: QuestionInterface) => (
         <>
-          <QuestionModal Question={record}/>
+          <QuestionModal Question={record} />
           <Button
             type="primary"
             onClick={() => deleteQuestion(record.qid, questions, setQuestions)}
