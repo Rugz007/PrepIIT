@@ -1,4 +1,4 @@
-import { Card, Table, Button } from "antd";
+import { Card, Table, Button, Popconfirm } from "antd";
 import Item from "antd/lib/list/Item";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -97,14 +97,18 @@ export const QuestionBank: React.FC = () => {
       key: "action",
       render: (text: any, record: QuestionInterface) => (
         <>
-          <QuestionModal Question={record} ButtonName='View Question'/>
-          <Button
-            type="primary"
-            onClick={() => deleteQuestion(record.qid, questions, setQuestions)}
-            danger
-          >
-            Delete
+          <QuestionModal Question={record} ButtonName='View Question' />
+          <Popconfirm
+            title='Are you sure you want to delete this question?'
+            onConfirm={() => deleteQuestion(record.qid, questions, setQuestions)}>
+            <Button
+              type="primary"
+              danger
+            >
+              Delete
           </Button>
+          </Popconfirm>
+
         </>
       ),
     },
