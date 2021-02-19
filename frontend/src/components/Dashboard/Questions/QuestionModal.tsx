@@ -15,7 +15,6 @@ import React, { useState } from "react";
 import Levels from "./DifficultyLevel";
 import { UploadOutlined } from "@ant-design/icons";
 import "./QuestionModal.css";
-import axios from "axios";
 
 //TODO: Make use Select
 interface QuestionInterface {
@@ -32,53 +31,20 @@ interface QuestionInterface {
     archive?: string | undefined;
     is_reported: string | undefined;
   };
+  submitEdit: Function | undefined;
+  submitNew: Function | undefined;
+  Resolve: Function | undefined;
 }
 interface Level {
   name: string;
 }
-export const QuestionModal: React.FC<QuestionInterface> = ({ Question }) => {
+export const QuestionModal: React.FC<QuestionInterface> = ({
+  Question,
+  submitEdit,
+  submitNew,
+  Resolve,
+}) => {
   const [form] = Form.useForm();
-  const submit = async (Question: {
-    qid: any;
-    statement?: string | undefined;
-    latex?: any;
-    img_path?: string | undefined;
-    type?: string | undefined;
-    subject?: string | undefined;
-    topic?: string | undefined;
-    subtopic?: string | undefined;
-    level?: string | undefined;
-    archive?: string | undefined;
-    is_reported?: string | undefined;
-  }) => {
-    console.log(Question);
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/admin/editquestion",
-        {
-          qid: Question.qid,
-          statement: Question.statement,
-          latex: Question.latex,
-          img_path: Question.img_path,
-          type: Question.type,
-          subject: Question.subject,
-          topic: Question.topic,
-          subtopic: Question.subtopic,
-          level: Question.level,
-          archive: Question.archive,
-          is_reported: Question.is_reported,
-        },
-        {
-          headers: {
-            authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
-      console.log(response);
-    } catch (e) {
-      console.log("Couldn't Update");
-    }
-  };
   const levels: Array<Level> | undefined = Levels;
   const [visible, setVisible] = useState(false);
   const props = {
@@ -114,7 +80,8 @@ export const QuestionModal: React.FC<QuestionInterface> = ({ Question }) => {
           var values = form.getFieldsValue();
           form.resetFields();
           values.qid = Question.qid;
-          submit(values);
+          if (submitEdit) submitEdit(values);
+          else if (submitNew) submitNew(values);
           setVisible(false);
         }}
         onCancel={() => setVisible(false)}

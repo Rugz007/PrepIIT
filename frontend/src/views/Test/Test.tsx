@@ -1,7 +1,8 @@
-import { Button, Card, Col, Row } from 'antd';
+import { Button, Card, Col, Popconfirm, Row } from 'antd';
 import React, { useState } from 'react'
 import { QuestionComponent } from '../../components/Test/QuestionComponent';
-
+import { TestDetails } from '../../components/Test/TestDetails';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 interface QuestionInterface {
     questionID: number;
     statement: string | null;
@@ -16,7 +17,6 @@ interface AnswersInterface {
 };
 
 export const Test: React.FC = () => {
-
     const [current, setCurrent] = useState<number>(1);
     const [questions, setQuestions] = useState<QuestionInterface[]>([]);
     const [answers, setAnswers] = useState<AnswersInterface[]>([]);
@@ -31,44 +31,53 @@ export const Test: React.FC = () => {
         //TODO: Update Answers
     };
     const onNext = () => {
-        //TODO: onNext
+        
+        setCurrent(current+1)
     };
     const onPrevious = () => {
-        //TODO: onPrevious
+        if(current !== 1)
+        {
+            setCurrent(current-1)
+
+        }
     };
     const onSubmit = () => {
         ///TODO: onSubmitTest
     };
     return (
-        <>
-            <Row style={{ height: '40px' }}>
+        <div>
+            <Row style={{ height: '2vh' }}>
                 TestBar
             </Row>
-            <Row>
+            <Row style={{ padding: '2%' }}>
                 <Col span={18}>
                     <Row>
-                        <Card> Time Remaining</Card>
-                        <Button type='primary' danger>Previous</Button>
-                        <Button type='primary'>Next</Button>
+                        <Col span={2}><Button onClick={onPrevious} type='primary' danger style={{ float: 'left' }}>Previous</Button></Col>
+                        <Col span={20}><Card style={{ width: '100%' }}> Time Remaining</Card></Col>
+                        <Col span={2}> <Button onClick={onNext} type='primary' style={{ float: 'right' }}>Next</Button></Col>
                     </Row>
                     <Row>
-                        <Card style={{ width: '100%' }}>
+                        <Card style={{ width: '100%', height: '74vh' }}>
                             <QuestionComponent question={questions[current]} option={options[current]} />
                         </Card>
                     </Row>
                 </Col>
                 <Col span={6}>
-                    <Card>
-                        <Row>
-                            Remaining Questions
-                        </Row>
-                        <Row>
-                            Matrix of Questions
-                        </Row>
+                    <Card style={{ margin: '0 6%' }}>
+                        <TestDetails current={current} />
+                        <Popconfirm
+                            title="Are you sure you want to submit your test?"
+                            onConfirm={onSubmit}
+                            okText="Yes"
+                            cancelText="No"
+                            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                        >
+                            <Button style={{ width: '100%' }} type='primary'> Submit Test</Button>
+                        </Popconfirm>
                     </Card>
                 </Col>
             </Row>
-        </>
+        </div>
 
     );
 }
