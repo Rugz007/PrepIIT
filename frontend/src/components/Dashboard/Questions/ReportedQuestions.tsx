@@ -14,11 +14,52 @@ interface QuestionInterface {
   subtopic?: string;
   level: string;
   archive?: string;
-  is_reported: boolean;
+  is_reported: string | undefined;
 }
 
 export const ReportedQuestions: React.FC = () => {
   const [reported, setReported] = useState<QuestionInterface[] | undefined>([]);
+  const submitEdit = async (Question: {
+    qid: any;
+    statement?: string | undefined;
+    latex?: any;
+    img_path?: string | undefined;
+    type?: string | undefined;
+    subject?: string | undefined;
+    topic?: string | undefined;
+    subtopic?: string | undefined;
+    level?: string | undefined;
+    archive?: string | undefined;
+    is_reported?: string | undefined;
+  }) => {
+    console.log(Question);
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/admin/editquestion",
+        {
+          qid: Question.qid,
+          statement: Question.statement,
+          latex: Question.latex,
+          img_path: Question.img_path,
+          type: Question.type,
+          subject: Question.subject,
+          topic: Question.topic,
+          subtopic: Question.subtopic,
+          level: Question.level,
+          archive: Question.archive,
+          is_reported: Question.is_reported,
+        },
+        {
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      console.log(response);
+    } catch (e) {
+      console.log("Couldn't Update");
+    }
+  };
   useEffect(() => {
     fetchReportedDetails();
   }, []);
@@ -62,7 +103,12 @@ export const ReportedQuestions: React.FC = () => {
       key: "action",
       render: (text: any, record: QuestionInterface) => (
         <>
-          <QuestionModal Question={record} ButtonName='Resolve' />
+          <QuestionModal
+            Question={record}
+            Resolve={undefined}
+            submitNew={undefined}
+            submitEdit={submitEdit}
+          />
         </>
       ),
     },

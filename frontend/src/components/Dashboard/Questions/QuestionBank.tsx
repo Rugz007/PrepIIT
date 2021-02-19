@@ -1,5 +1,4 @@
 import { Card, Table, Button, Popconfirm } from "antd";
-import Item from "antd/lib/list/Item";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { QuestionModal } from "./QuestionModal";
@@ -15,7 +14,7 @@ interface QuestionInterface {
   subtopic?: string;
   level: string;
   archive?: string;
-  is_reported: boolean;
+  is_reported: string;
 }
 
 export const QuestionBank: React.FC = () => {
@@ -25,7 +24,47 @@ export const QuestionBank: React.FC = () => {
   useEffect(() => {
     fetchBankDetails();
   }, []);
-
+  const submitEdit = async (Question: {
+    qid: any;
+    statement?: string | undefined;
+    latex?: any;
+    img_path?: string | undefined;
+    type?: string | undefined;
+    subject?: string | undefined;
+    topic?: string | undefined;
+    subtopic?: string | undefined;
+    level?: string | undefined;
+    archive?: string | undefined;
+    is_reported?: string | undefined;
+  }) => {
+    console.log(Question);
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/admin/editquestion",
+        {
+          qid: Question.qid,
+          statement: Question.statement,
+          latex: Question.latex,
+          img_path: Question.img_path,
+          type: Question.type,
+          subject: Question.subject,
+          topic: Question.topic,
+          subtopic: Question.subtopic,
+          level: Question.level,
+          archive: Question.archive,
+          is_reported: Question.is_reported,
+        },
+        {
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      console.log(response);
+    } catch (e) {
+      console.log("Couldn't Update");
+    }
+  };
   const fetchBankDetails = async () => {
     try {
       const res = await axios.get("http://localhost:3000/admin/question", {
@@ -97,18 +136,22 @@ export const QuestionBank: React.FC = () => {
       key: "action",
       render: (text: any, record: QuestionInterface) => (
         <>
-          <QuestionModal Question={record} ButtonName='View Question' />
+          <QuestionModal
+            submitNew={undefined}
+            submitEdit={submitEdit}
+            Question={record}
+            Resolve={undefined}
+          />
           <Popconfirm
-            title='Are you sure you want to delete this question?'
-            onConfirm={() => deleteQuestion(record.qid, questions, setQuestions)}>
-            <Button
-              type="primary"
-              danger
-            >
+            title="Are you sure you want to delete this question?"
+            onConfirm={() =>
+              deleteQuestion(record.qid, questions, setQuestions)
+            }
+          >
+            <Button type="primary" danger>
               Delete
-          </Button>
+            </Button>
           </Popconfirm>
-
         </>
       ),
     },
