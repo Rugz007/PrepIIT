@@ -19,6 +19,7 @@ import { Error400 } from "../../components/Errors/Error400";
 import { QuestionBank } from "../../components/Dashboard/Questions/QuestionBank";
 import { ReportedQuestions } from "../../components/Dashboard/Questions/ReportedQuestions";
 import { AddQuestionPage } from "../../components/Dashboard/Questions/AddQuestionPage";
+import { TestTypes } from "../../components/Dashboard/Tests/TestTypes";
 
 const { SubMenu } = Menu;
 export const Dashboard: React.FC = () => {
@@ -66,6 +67,14 @@ export const Dashboard: React.FC = () => {
                     <Menu.Item key="12">Question Analysis</Menu.Item>
                   </SubMenu>
                   <SubMenu
+                    key="testsettings"
+                    icon={<QuestionCircleOutlined />}
+                    title="Test Settings"
+                  >
+                    <Menu.Item key="13">Create Static Test</Menu.Item>
+                    <Menu.Item key="14">Create Live Test</Menu.Item>
+                  </SubMenu>
+                  <SubMenu
                     key="blogs"
                     icon={<PaperClipOutlined />}
                     title="Blogs"
@@ -96,6 +105,8 @@ export const Dashboard: React.FC = () => {
               )}
               {tab === "10" && userContext.user.admin != null && <AddQuestionPage/>}
               {tab === "11" && userContext.user.admin != null && <ReportedQuestions/>}
+              {tab === "12" && userContext.user.admin != null && <></>}
+              {tab === "13" && userContext.user.admin != null && <TestTypes/>}
               {tab === "12" && userContext.user.admin != null && <></>}
             </Content>
           </Layout>

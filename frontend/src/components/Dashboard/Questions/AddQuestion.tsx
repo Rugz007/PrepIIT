@@ -6,7 +6,6 @@ import axios from "axios";
 interface QuestionInterface {
   qid: number;
   statement: string;
-  latex?: any;
   img_path?: string;
   type: string;
   subject: string;
@@ -14,31 +13,24 @@ interface QuestionInterface {
   subtopic?: string;
   level: string;
   archive?: string;
-  is_reported: string | undefined;
+  is_reported: boolean | undefined;
 }
 export const AddQuestion: React.FC = () => {
   const [questions, setQuestions] = useState<
     Array<QuestionInterface> | undefined
   >(undefined);
-  const uploadQuestions = async (values: {
-    statement?: string | undefined;
-    latex?: any;
-    img_path?: string | undefined;
-    type?: string | undefined;
-    subject?: string | undefined;
-    topic?: string | undefined;
-    subtopic?: string | undefined;
-    level?: string | undefined;
-    archive?: string | undefined;
-    is_reported?: string | undefined;
-  }) => {
+  const uploadQuestions = async (values: QuestionInterface) => {
     console.log(values);
     try {
+      if (questions === undefined) {
+        setQuestions([values]);
+      } else {
+        setQuestions([...questions, values]);
+      }
       const response = await axios.post(
-        "http://localhost:3000/admin/editquestion",
+        "http://localhost:3000/admin/question",
         {
           statement: values.statement,
-          latex: values.latex,
           img_path: values.img_path,
           type: values.type,
           subject: values.subject,
@@ -54,25 +46,19 @@ export const AddQuestion: React.FC = () => {
           },
         }
       );
+      
       console.log(response);
     } catch (e) {
       console.log("Couldn't Update");
     }
-    setQuestions([]);
     message.success("Uploaded Questions");
-  };
-  const addQuestion = (e: QuestionInterface) => {
-    if (questions === undefined) {
-      setQuestions([e]);
-    } else {
-      setQuestions([...questions, e]);
-    }
   };
   const columns = [
     {
-      title: "Question Number",
+      title: "No.",
       dataIndex: "number",
       key: "number",
+      width:80
     },
     {
       title: "Subject",
@@ -99,7 +85,6 @@ export const AddQuestion: React.FC = () => {
             submitEdit={undefined}
             submitNew={uploadQuestions}
             Question={record}
-            Resolve={undefined}
           />
         </>
       ),
@@ -113,13 +98,10 @@ export const AddQuestion: React.FC = () => {
         title={<h1 style={{ fontSize: "30px" }}>Questions to be added</h1>}
         extra={
           <Space>
-            {questions === undefined ? (
-              <Button disabled onClick={uploadQuestions}>
-                Upload Questions
-              </Button>
-            ) : (
-              <Button onClick={uploadQuestions}>Upload Questions</Button>
-            )}
+            <QuestionModal
+            submitNew={uploadQuestions}
+            submitEdit={undefined}
+          />
           </Space>
         }
       >
