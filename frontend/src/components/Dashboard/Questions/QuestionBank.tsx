@@ -6,7 +6,6 @@ import { QuestionModal } from "./QuestionModal";
 interface QuestionInterface {
   qid: number;
   statement: string;
-  latex?: any;
   img_path?: string;
   type: string;
   subject: string;
@@ -14,7 +13,7 @@ interface QuestionInterface {
   subtopic?: string;
   level: string;
   archive?: string;
-  is_reported: string;
+  is_reported: boolean;
 }
 
 export const QuestionBank: React.FC = () => {
@@ -24,19 +23,7 @@ export const QuestionBank: React.FC = () => {
   useEffect(() => {
     fetchBankDetails();
   }, []);
-  const submitEdit = async (Question: {
-    qid: any;
-    statement?: string | undefined;
-    latex?: any;
-    img_path?: string | undefined;
-    type?: string | undefined;
-    subject?: string | undefined;
-    topic?: string | undefined;
-    subtopic?: string | undefined;
-    level?: string | undefined;
-    archive?: string | undefined;
-    is_reported?: string | undefined;
-  }) => {
+  const submitEdit = async (Question: QuestionInterface) => {
     console.log(Question);
     try {
       const response = await axios.post(
@@ -44,7 +31,6 @@ export const QuestionBank: React.FC = () => {
         {
           qid: Question.qid,
           statement: Question.statement,
-          latex: Question.latex,
           img_path: Question.img_path,
           type: Question.type,
           subject: Question.subject,
@@ -140,7 +126,6 @@ export const QuestionBank: React.FC = () => {
             submitNew={undefined}
             submitEdit={submitEdit}
             Question={record}
-            Resolve={undefined}
           />
           <Popconfirm
             title="Are you sure you want to delete this question?"

@@ -18,7 +18,7 @@ import "./QuestionModal.css";
 
 //TODO: Make use Select
 interface QuestionInterface {
-  Question: {
+  Question?: {
     qid: number | undefined;
     statement: string | undefined;
     latex?: any | undefined;
@@ -29,11 +29,10 @@ interface QuestionInterface {
     subtopic?: string | undefined;
     level: string | undefined;
     archive?: string | undefined;
-    is_reported: string | undefined;
+    is_reported: boolean | undefined;
   };
   submitEdit: Function | undefined;
   submitNew: Function | undefined;
-  Resolve: Function | undefined;
 }
 interface Level {
   name: string;
@@ -42,7 +41,6 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
   Question,
   submitEdit,
   submitNew,
-  Resolve,
 }) => {
   const [form] = Form.useForm();
   const levels: Array<Level> | undefined = Levels;
@@ -79,7 +77,9 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
         onOk={() => {
           var values = form.getFieldsValue();
           form.resetFields();
-          values.qid = Question.qid;
+          if (Question !== undefined) {
+            values.qid = Question.qid;
+          }
           if (submitEdit) submitEdit(values);
           else if (submitNew) submitNew(values);
           setVisible(false);
@@ -87,10 +87,11 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
         onCancel={() => setVisible(false)}
       >
         <br />
-        <h1>Question ID: {Question.qid}</h1>
+        {Question !== undefined && <h1>Question ID: {Question.qid}</h1>}
         <Form form={form} initialValues={Question} layout="vertical">
           <Tabs>
             <Tabs.TabPane tab="Question Information" key="1">
+              {/* TODO: Implement React-Latex */}
               <Form.Item name="statement" label="Question Statement">
                 <TextArea
                   autoSize={{ minRows: 2, maxRows: 5 }}
@@ -109,12 +110,6 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
                   </Upload>
                 </Form.Item>
               </Space>
-              <Form.Item name="latex" label="Question Latex">
-                <TextArea
-                  autoSize={{ minRows: 2, maxRows: 5 }}
-                  placeholder="Enter Latex Here"
-                />
-              </Form.Item>
               <Space align="baseline">
                 <Form.Item name="subject" label="Subject">
                   <Input placeholder="Enter Subject Here" />
@@ -140,7 +135,7 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
                 </Form.Item>
               </Space>
               <Form.Item name="is_reported">
-                <Checkbox>Is the question reported?</Checkbox>
+                <Checkbox defaultChecked={Question?.is_reported}>Is the question reported?</Checkbox>
               </Form.Item>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Answer" key="2">
