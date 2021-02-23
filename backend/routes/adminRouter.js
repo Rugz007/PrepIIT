@@ -40,7 +40,6 @@ router
     console.log(req.body);
     const {
       statement,
-      latex,
       img_path,
       type,
       subject,
@@ -51,10 +50,9 @@ router
       is_reported,
     } = req.body;
     db.query(
-      "INSERT INTO questions VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10)",
+      "INSERT INTO questions VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9)",
       [
         statement,
-        latex,
         img_path,
         type,
         subject,
@@ -110,7 +108,6 @@ router
       archive,
       img_path,
       is_reported,
-      latex,
       level,
       qid,
       statement,
@@ -120,10 +117,9 @@ router
       type,
     } = req.body;
     db.query(
-      "UPDATE questions SET statement=$1, latex=$2, img_path=$3, type=$4, subject=$5, topic=$6, subtopic=$7, level=$8, archive=$9, is_reported=$10 WHERE qid=$11",
+      "UPDATE questions SET statement=$1, img_path=$2, type=$3, subject=$4, topic=$5, subtopic=$6, level=$7, archive=$8, is_reported=$9 WHERE qid=$10",
       [
         statement,
-        latex,
         img_path,
         type,
         subject,
@@ -145,7 +141,7 @@ router
       });
   })
   .get("/reported", (req, res, next) => {
-    db.query(`SELECT * FROM questions WHERE is_reported='yes'`)
+    db.query(`SELECT * FROM questions WHERE is_reported=TRUE`)
       .then((resp) => {
         console.log(resp.rows);
         res.json(resp.rows);
