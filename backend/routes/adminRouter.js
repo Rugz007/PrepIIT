@@ -150,6 +150,99 @@ router
         console.log("DB Error");
         res.status(500).json({ success: false });
       });
+  })
+  .get("/testtype", (req, res, next) => {
+    db.query("SELECT * FROM testtype")
+      .then((resp) => {
+        res.json(resp.rows);
+      })
+      .catch((err) => {
+        console.log("DB Error");
+        res.json({ success: false });
+      });
+  })
+  .post("/testtype", (req, res, next) => {
+    var body = req.body.values;
+    const testname = body.name;
+    const subjectsallowed = body.subjects;
+    var mcq = [],
+      fib = [],
+      anr = [],
+      tof = [],
+      nq = [],
+      mtf = [];
+    body.questions.map((question) => {
+      if (question.type == "MCQ") {
+        mcq.push(question.number);
+        mcq.push(question.correct);
+        mcq.push(question.wrong);
+        mcq.push(question.nullanswer);
+      } else if (question.type == "FIB") {
+        fib.push(question.number);
+        fib.push(question.correct);
+        fib.push(question.wrong);
+        fib.push(question.nullanswer);
+      } else if (question.type == "ANR") {
+        anr.push(question.number);
+        anr.push(question.correct);
+        anr.push(question.wrong);
+        anr.push(question.nullanswer);
+      } else if (question.type == "TOF") {
+        tof.push(question.number);
+        tof.push(question.correct);
+        tof.push(question.wrong);
+        tof.push(question.nullanswer);
+      } else if (question.type == "NQ") {
+        nq.push(question.number);
+        nq.push(question.correct);
+        nq.push(question.wrong);
+        nq.push(question.nullanswer);
+      } else if (question.type == "MTF") {
+        mtf.push(question.number);
+        mtf.push(question.correct);
+        mtf.push(question.wrong);
+        mtf.push(question.nullanswer);
+      }
+    });
+    if (mcq.length == 0) {
+      mcq = null;
+    }
+    if (fib.length == 0) {
+      fib = null;
+    }
+    if (anr.length == 0) {
+      anr = null;
+    }
+    if (tof.length == 0) {
+      tof = null;
+    }
+    if (nq.length == 0) {
+      nq = null;
+    }
+    if (mtf.length == 0) {
+      mtf = null;
+    }
+    console.log(mcq, fib, anr, tof, nq, mtf);
+    db.query("INSERT INTO testtype VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8)", [
+      testname,
+      subjectsallowed,
+      mcq,
+      anr,
+      fib,
+      tof,
+      nq,
+      mtf,
+    ])
+      .then((resp) => {
+        console.log(resp);
+        console.log("Inserted Successfully");
+        res.json({ success: true });
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("DB Error");
+        res.json({ success: false });
+      });
   });
 
 module.exports = router;
