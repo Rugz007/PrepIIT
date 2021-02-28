@@ -6,14 +6,15 @@ const { Option } = Select;
 interface TestTypeInterface {
   Test?: {
     testTypeID: number;
-    testName: string;
+    name: string;
     subjects: string[];
-    mcqData: number[];
-    fibData: number[];
-    tfData: number[];
-    numDat: number[];
-    matchData: number[];
-    assertionData: number[];
+    questions: Array<{
+      type: string;
+      correct: number;
+      wrong: number;
+      nullanswer: number;
+      number: number;
+    }>;
   };
 }
 export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test }) => {
