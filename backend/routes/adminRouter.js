@@ -40,7 +40,6 @@ router
     console.log(req.body);
     const {
       statement,
-      latex,
       img_path,
       type,
       subject,
@@ -51,10 +50,9 @@ router
       is_reported,
     } = req.body;
     db.query(
-      "INSERT INTO questions VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10)",
+      "INSERT INTO questions VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9)",
       [
         statement,
-        latex,
         img_path,
         type,
         subject,
@@ -110,7 +108,6 @@ router
       archive,
       img_path,
       is_reported,
-      latex,
       level,
       qid,
       statement,
@@ -120,10 +117,9 @@ router
       type,
     } = req.body;
     db.query(
-      "UPDATE questions SET statement=$1, latex=$2, img_path=$3, type=$4, subject=$5, topic=$6, subtopic=$7, level=$8, archive=$9, is_reported=$10 WHERE qid=$11",
+      "UPDATE questions SET statement=$1, img_path=$2, type=$3, subject=$4, topic=$5, subtopic=$6, level=$7, archive=$8, is_reported=$9 WHERE qid=$10",
       [
         statement,
-        latex,
         img_path,
         type,
         subject,
@@ -145,7 +141,7 @@ router
       });
   })
   .get("/reported", (req, res, next) => {
-    db.query(`SELECT * FROM questions WHERE is_reported='yes'`)
+    db.query(`SELECT * FROM questions WHERE is_reported=TRUE`)
       .then((resp) => {
         console.log(resp.rows);
         res.json(resp.rows);
@@ -153,6 +149,99 @@ router
       .catch((err) => {
         console.log("DB Error");
         res.status(500).json({ success: false });
+      });
+  })
+  .get("/testtype", (req, res, next) => {
+    db.query("SELECT * FROM testtype")
+      .then((resp) => {
+        res.json(resp.rows);
+      })
+      .catch((err) => {
+        console.log("DB Error");
+        res.json({ success: false });
+      });
+  })
+  .post("/testtype", (req, res, next) => {
+    var body = req.body.values;
+    const testname = body.name;
+    const subjectsallowed = body.subjects;
+    var mcq = [],
+      fib = [],
+      anr = [],
+      tof = [],
+      nq = [],
+      mtf = [];
+    body.questions.map((question) => {
+      if (question.type == "MCQ") {
+        mcq.push(question.number);
+        mcq.push(question.correct);
+        mcq.push(question.wrong);
+        mcq.push(question.nullanswer);
+      } else if (question.type == "FIB") {
+        fib.push(question.number);
+        fib.push(question.correct);
+        fib.push(question.wrong);
+        fib.push(question.nullanswer);
+      } else if (question.type == "ANR") {
+        anr.push(question.number);
+        anr.push(question.correct);
+        anr.push(question.wrong);
+        anr.push(question.nullanswer);
+      } else if (question.type == "TOF") {
+        tof.push(question.number);
+        tof.push(question.correct);
+        tof.push(question.wrong);
+        tof.push(question.nullanswer);
+      } else if (question.type == "NQ") {
+        nq.push(question.number);
+        nq.push(question.correct);
+        nq.push(question.wrong);
+        nq.push(question.nullanswer);
+      } else if (question.type == "MTF") {
+        mtf.push(question.number);
+        mtf.push(question.correct);
+        mtf.push(question.wrong);
+        mtf.push(question.nullanswer);
+      }
+    });
+    if (mcq.length == 0) {
+      mcq = null;
+    }
+    if (fib.length == 0) {
+      fib = null;
+    }
+    if (anr.length == 0) {
+      anr = null;
+    }
+    if (tof.length == 0) {
+      tof = null;
+    }
+    if (nq.length == 0) {
+      nq = null;
+    }
+    if (mtf.length == 0) {
+      mtf = null;
+    }
+    console.log(mcq, fib, anr, tof, nq, mtf);
+    db.query("INSERT INTO testtype VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8)", [
+      testname,
+      subjectsallowed,
+      mcq,
+      anr,
+      fib,
+      tof,
+      nq,
+      mtf,
+    ])
+      .then((resp) => {
+        console.log(resp);
+        console.log("Inserted Successfully");
+        res.json({ success: true });
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("DB Error");
+        res.json({ success: false });
       });
   });
 

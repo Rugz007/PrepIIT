@@ -12,12 +12,13 @@ const uploadQuestions = async (fileName) => {
     var csvStream = fastcsv
       .parse()
       .on("data", (data) => {
+        //console.log(data);
         questionData.push(data);
       })
       .on("end", () => {
         questionData.shift();
         const query =
-          "INSERT INTO questions VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10)";
+          "INSERT INTO questions VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9)";
         questionData.forEach((row) => {
           db.query(query, row)
             .then((resp) => {
