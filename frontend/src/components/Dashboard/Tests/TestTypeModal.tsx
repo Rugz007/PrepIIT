@@ -5,16 +5,16 @@ const { Option } = Select;
 interface TestTypeInterface {
     Test?: {
         testTypeID: number,
-        testName: string,
+        name: string,
         subjects: string[],
-        mcqData: number[],
-        fibData: number[],
-        tfData: number[],
-        numDat: number[],
-        matchData: number[],
-        assertionData: number[],
+        types: Array<{
+            type:string,
+            correct:number,
+            wrong:number,
+            nullanswer:number,
+            number:number,
+        }>,
     }
-
 }
 export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test }) => {
     const [visible, setVisible] = useState(false)
@@ -65,7 +65,8 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test }) => {
 
                         </Select>
                     </Form.Item>
-                    <Form.List name='questions'>
+                    <Form.Item><Button htmlType='submit'>Press</Button></Form.Item>
+                    <Form.List name='types'>
                         {(fields, { add, remove }) => (
                             <>
                                 {fields.map(field => (
@@ -73,28 +74,28 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test }) => {
                                         <Form.Item shouldUpdate={(prevValues, curValues) =>
                                             prevValues.area !== curValues.area || prevValues.sights !== curValues.sights
                                         }>
-                                            {() =>(<Form.Item  {...field} name={[field.name, 'type']} label='Question Type'>
-                                            <Select>
-                                                <Option value='MCQ'>MCQ</Option>
-                                                <Option value='FIB'>Fill in the blanks</Option>
-                                                <Option value='ANR'>Assertion and Reason</Option>
-                                                <Option value='TOF'>True or False</Option>
-                                                <Option value='NQ'>Numerical Question</Option>
-                                                <Option value='MTF'>Match the Following Questions</Option>
-                                            </Select>
-                                        </Form.Item>)}
+                                            {() => (<Form.Item  {...field} name={[field.name, 'type']} label='Question Type'>
+                                                <Select>
+                                                    <Option value='MCQ'>MCQ</Option>
+                                                    <Option value='FIB'>Fill in the blanks</Option>
+                                                    <Option value='ANR'>Assertion and Reason</Option>
+                                                    <Option value='TOF'>True or False</Option>
+                                                    <Option value='NQ'>Numerical Question</Option>
+                                                    <Option value='MTF'>Match the Following Questions</Option>
+                                                </Select>
+                                            </Form.Item>)}
                                         </Form.Item>
-                                        
-                                        <Form.Item  {...field} fieldKey={[field.fieldKey, 'number']}name={[field.name, 'number']} label='Number of Questions'>
+
+                                        <Form.Item  {...field} fieldKey={[field.fieldKey, 'number']} name={[field.name, 'number']} label='Number of Questions'>
                                             <Input />
                                         </Form.Item>
-                                        <Form.Item  {...field} fieldKey={[field.fieldKey, 'correct']}name={[field.name, 'correct']} label='Correct Answer Marks'>
+                                        <Form.Item  {...field} fieldKey={[field.fieldKey, 'correct']} name={[field.name, 'correct']} label='Correct Answer Marks'>
                                             <Input />
                                         </Form.Item>
-                                        <Form.Item {...field}  name={[field.name, 'wrong']} label='Wrong Answer Marks'>
+                                        <Form.Item {...field} name={[field.name, 'wrong']} label='Wrong Answer Marks'>
                                             <Input />
                                         </Form.Item>
-                                        <Form.Item   {...field}name={[field.name, 'nullanswer']} label='No Answer Marks'>
+                                        <Form.Item   {...field} name={[field.name, 'nullanswer']} label='No Answer Marks'>
                                             <Input />
                                         </Form.Item>
                                         <MinusCircleOutlined onClick={() => remove(field.name)} />
@@ -108,6 +109,8 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test }) => {
                             </>
                         )}
                     </Form.List>
+
+
                 </Form>
             </Modal>
         </>);
