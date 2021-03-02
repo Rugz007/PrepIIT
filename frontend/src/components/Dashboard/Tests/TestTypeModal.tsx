@@ -4,18 +4,18 @@ import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 const { Option } = Select;
 interface TestTypeInterface {
-    Test?: {
-        testTypeID: number,
-        name: string,
-        subjects: string[],
-        types: Array<{
-            type:string,
-            correct:number,
-            wrong:number,
-            nullanswer:number,
-            number:number,
-        }>,
-    }
+  Test?: {
+    testTypeID: number;
+    name: string;
+    subjects: string[];
+    questions: Array<{
+      type: string;
+      correct: number;
+      wrong: number;
+      nullanswer: number;
+      number: number;
+    }>;
+  };
 }
 export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test }) => {
   const [visible, setVisible] = useState(false);
@@ -144,58 +144,6 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test }) => {
                     >
                       <Input />
                     </Form.Item>
-<<<<<<< HEAD
-                    <Form.Item><Button htmlType='submit'>Press</Button></Form.Item>
-                    <Form.List name='types'>
-                        {(fields, { add, remove }) => (
-                            <>
-                                {fields.map(field => (
-                                    <Space key={field.key} style={{ display: 'flex', marginBottom: 8, width: '100%' }} align="baseline">
-                                        <Form.Item shouldUpdate={(prevValues, curValues) =>
-                                            prevValues.area !== curValues.area || prevValues.sights !== curValues.sights
-                                        }>
-                                            {() => (<Form.Item  {...field} name={[field.name, 'type']} label='Question Type'>
-                                                <Select>
-                                                    <Option value='MCQ'>MCQ</Option>
-                                                    <Option value='FIB'>Fill in the blanks</Option>
-                                                    <Option value='ANR'>Assertion and Reason</Option>
-                                                    <Option value='TOF'>True or False</Option>
-                                                    <Option value='NQ'>Numerical Question</Option>
-                                                    <Option value='MTF'>Match the Following Questions</Option>
-                                                </Select>
-                                            </Form.Item>)}
-                                        </Form.Item>
-
-                                        <Form.Item  {...field} fieldKey={[field.fieldKey, 'number']} name={[field.name, 'number']} label='Number of Questions'>
-                                            <Input />
-                                        </Form.Item>
-                                        <Form.Item  {...field} fieldKey={[field.fieldKey, 'correct']} name={[field.name, 'correct']} label='Correct Answer Marks'>
-                                            <Input />
-                                        </Form.Item>
-                                        <Form.Item {...field} name={[field.name, 'wrong']} label='Wrong Answer Marks'>
-                                            <Input />
-                                        </Form.Item>
-                                        <Form.Item   {...field} name={[field.name, 'nullanswer']} label='No Answer Marks'>
-                                            <Input />
-                                        </Form.Item>
-                                        <MinusCircleOutlined onClick={() => remove(field.name)} />
-                                    </Space>
-                                ))}
-                                <Form.Item>
-                                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                        Add field
-                                    </Button>
-                                </Form.Item>
-                            </>
-                        )}
-                    </Form.List>
-
-
-                </Form>
-            </Modal>
-        </>);
-}
-=======
                     <MinusCircleOutlined onClick={() => remove(field.name)} />
                   </Space>
                 ))}
@@ -217,4 +165,3 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test }) => {
     </>
   );
 };
->>>>>>> 4b40081f550ee2fa9270e0aead446d16d131d1fd
