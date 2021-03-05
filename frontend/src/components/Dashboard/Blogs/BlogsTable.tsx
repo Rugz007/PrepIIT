@@ -31,7 +31,7 @@ export const BlogsTable: React.FC = () => {
             key: 'date',
         },
         {
-            title: 'Action',
+            title: 'Action [Work in Progress]',
             dataIndex: '',
             key: 'action',
             render: (text: any, record: BlogsElementInterface) => <><Button type='primary'style={{marginRight:'2%'}}>View</Button><Button type='primary' danger>Delete</Button></>,

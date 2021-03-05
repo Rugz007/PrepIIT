@@ -2,6 +2,7 @@ import { Card, Table, Button } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { EFormModal } from "./EFormModal";
+import env from "react-dotenv";
 
 interface EFormInterface {
   name: string;
@@ -23,7 +24,7 @@ export const EForms: React.FC = () => {
   
   const fetchForms = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/admin/enquiry", {
+      const res = await axios.get(`http://${env.NODEJS_URL}/admin/enquiry`, {
         headers: {
           authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -41,7 +42,7 @@ export const EForms: React.FC = () => {
     try {
       const response = await axios({
         method: "DELETE",
-        url: "http://localhost:3000/admin/enquiry",
+        url: `http://${env.NODEJS_URL}/admin/enquiry`,
         headers: {
           authorization: "Bearer " + localStorage.getItem("token"),
         },

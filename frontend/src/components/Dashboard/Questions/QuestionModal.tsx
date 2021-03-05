@@ -139,7 +139,7 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
               </Form.Item>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Answer" key="2">
-              Hello
+              Work in Progress
             </Tabs.TabPane>
           </Tabs>
         </Form>

@@ -2,7 +2,7 @@ import { Card, Table, Button, Space, message } from "antd";
 import React, { useState } from "react";
 import { QuestionModal } from "./QuestionModal";
 import axios from "axios";
-
+import env from "react-dotenv";
 interface QuestionInterface {
   qid: number;
   statement: string;
@@ -28,7 +28,7 @@ export const AddQuestion: React.FC = () => {
         setQuestions([...questions, values]);
       }
       const response = await axios.post(
-        "http://localhost:3000/admin/question",
+        `http://${env.NODEJS_URL}/admin/question`,
         {
           statement: values.statement,
           img_path: values.img_path,
@@ -55,10 +55,9 @@ export const AddQuestion: React.FC = () => {
   };
   const columns = [
     {
-      title: "No.",
-      dataIndex: "number",
-      key: "number",
-      width:80
+      title: "Statement",
+      dataIndex: "statement",
+      key: "statement",
     },
     {
       title: "Subject",

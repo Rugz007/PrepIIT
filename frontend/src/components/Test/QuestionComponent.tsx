@@ -10,6 +10,7 @@ interface QuestionComponentProps {
 }
 
 export const QuestionComponent: React.FC<QuestionComponentProps> = ({ question, option }) => {
+    var Latex = require('react-latex');
     const radioStyle = {
         display: 'block',
         height: '30px',
@@ -18,9 +19,12 @@ export const QuestionComponent: React.FC<QuestionComponentProps> = ({ question, 
     return (
         <div style={{ padding: '1%' }}>
             <Row>
+                <Latex>
                 <h1>
                     14) A direct current is sent through a helical spring. The spring tends
                 </h1>
+                </Latex>
+                
             </Row>
             <Row>
                 <Radio.Group style={{textAlign:'left'}}>

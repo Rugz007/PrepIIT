@@ -6,8 +6,8 @@ const { Option } = Select;
 interface TestTypeInterface {
   Test?: {
     testTypeID: number;
-    name: string;
-    subjects: string[];
+    testname: string;
+    subjectsallowed: string[];
     questions: Array<{
       type: string;
       correct: number;
@@ -32,9 +32,9 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test }) => {
           values,
         },
         {
-          headers: {
-            authorization: "Bearer " + localStorage.getItem("token"),
-          },
+            headers: {
+                authorization: "Bearer " + localStorage.getItem("token"),
+              },
         }
       );
       console.log(response);
@@ -62,11 +62,11 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test }) => {
         }}
       >
         <br />
-        <Form name="TestType" layout="vertical" form={form} onFinish={toSubmit}>
-          <Form.Item label="Test Name" name="name">
+        <Form name="TestType" layout="vertical" form={form} onFinish={toSubmit} initialValues={Test}>
+          <Form.Item label="Test Name" name="testname">
             <Input />
           </Form.Item>
-          <Form.Item label="Subjects" name="subjects">
+          <Form.Item label="Subjects" name="subjectsallowed">
             <Select mode="multiple">
               <Option value="physics" label="Physics">
                 Physics

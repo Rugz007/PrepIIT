@@ -2,26 +2,12 @@ import { Card, Table, Button, Space, message } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { TestTypeModal } from "./TestTypeModal";
-interface TestTypeInterface {
-  Test?: {
-    testTypeID: number;
-    name: string;
-    subjects: string[];
-    questions: Array<{
-      type: string;
-      correct: number;
-      wrong: number;
-      nullanswer: number;
-      number: number;
-    }>;
-  };
-}
 
 interface TestTypeInterface {
   Test?: {
       testTypeID: number,
-      name: string,
-      subjects: string[],
+      testname: string,
+      subjectsallowed: string[],
       types: Array<{
           type:string,
           correct:number,
@@ -39,8 +25,8 @@ export const TestTypes: React.FC = () => {
   const columns = [
     {
       title: "Name",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "testname",
+      key: "testname",
     },
     {
       title: "Class",
@@ -69,10 +55,13 @@ export const TestTypes: React.FC = () => {
       ),
     },
   ];
+  useEffect(() => {
+    fetchTestDetails();
+  }, [])
   const fetchTestDetails = async () => {
     try {
       const response = await axios.get("http://localhost:3000/admin/testtype", {
-        headers: "Bearer " + localStorage.getItem("token"),
+        headers: {'Authorization':"Bearer " + localStorage.getItem("token")},
       });
       setTestDetails(response.data);
       console.log(testDetails);
@@ -95,7 +84,7 @@ export const TestTypes: React.FC = () => {
       >
         <Table
           columns={columns}
-          dataSource={testTypes}
+          dataSource={testDetails}
           style={{ width: "100%" }}
         />
       </Card>

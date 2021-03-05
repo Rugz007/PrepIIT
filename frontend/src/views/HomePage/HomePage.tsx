@@ -28,9 +28,9 @@ export const HomePage: React.FC = () => {
                                 fontSize: '50vh',
                                 padding: '4%'
                             }}
-                        ><h1 style={{ fontSize: '28px' }}><b>Want to perform exceptionally in the upcoming competitive exams?</b></h1>
-                            <h1 style={{ fontSize: '22px' }} ><b><b>Join us today!</b></b></h1>
-                            <img src='terms.svg' alt='study' style={{ width: '50%' }} />
+                        ><h1 style={{ fontSize: '20px' }}><b>Want to perform exceptionally in the upcoming competitive exams?</b></h1>
+                            <h1 style={{ fontSize: '30px' }} ><b><b>Join us today!</b></b></h1>
+                            <img src='terms.svg' alt='study' style={{ width: '100%' }} />
                         </Blob>
 
                     </Col>

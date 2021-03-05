@@ -1,6 +1,7 @@
 import React from "react";
 import { Upload, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
+import env from "react-dotenv";
 
 const { Dragger } = Upload;
 
@@ -10,7 +11,7 @@ export const UploadQuestions: React.FC<UploadQuestionsProps> = () => {
   const props = {
     name: "QuestionBank",
     multiple: true,
-    action: "http://localhost:3000/admin/excelupload",
+    action: `http://${env.NODEJS_URL}/admin/excelupload`,
     headers: {
       authorization: "Bearer " + localStorage.getItem("token"),
     },

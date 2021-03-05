@@ -11,6 +11,7 @@ import {
 import UserContext from "./UserContext";
 import UserReducer from "./UserReducer";
 import axios from "axios";
+import env from "react-dotenv";
 
 interface LoginInterface {
   email: string;
@@ -32,10 +33,11 @@ const UserState = (props: any) => {
   };
   const [state, dispatch] = useReducer(UserReducer, initialState);
   const login = async (formData: LoginInterface) => {
+    console.log(env.NODEJS_URL)
     try {
       const response = await axios({
         method: "post",
-        url: "http://localhost:3000/user/login",
+        url: `http://${env.NODEJS_URL}/user/login`,
         headers: {},
         data: {
           email: formData.email,
@@ -57,7 +59,7 @@ const UserState = (props: any) => {
     console.log(formData);
     try {
       await axios.post(
-        "http://localhost:3000/user/signup",
+        `http://${env.NODEJS_URL}/user/signup`,
         formData
       );
       dispatch({
@@ -80,7 +82,7 @@ const UserState = (props: any) => {
       const token = localStorage.getItem("token");
       const res = await axios({
         method: "get",
-        url: "http://localhost:3000/getUser",
+        url: `http://${env.NODEJS_URL}/getUser`,
         headers: {
           authorization: "Bearer " + token,
         },
