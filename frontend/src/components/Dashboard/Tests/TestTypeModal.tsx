@@ -27,7 +27,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test }) => {
     console.log(values);
     try {
       const response = await axios.post(
-        "http://localhost:3000/admin/testtype",
+        "https://localhost:3000/admin/testtype",
         {
           values,
         },

@@ -23,7 +23,7 @@ export const ReportedQuestions: React.FC = () => {
     console.log(Question);
     try {
       const response = await axios.post(
-        `http://${env.NODEJS_URL}/admin/editquestion`,
+        `https://${env.NODEJS_URL}/admin/editquestion`,
         {
           qid: Question.qid,
           statement: Question.statement,
@@ -53,7 +53,7 @@ export const ReportedQuestions: React.FC = () => {
 
   const fetchReportedDetails = async () => {
     try {
-      const res = await axios.get(`http://${env.NODEJS_URL}/admin/reported`, {
+      const res = await axios.get(`https://${env.NODEJS_URL}/admin/reported`, {
         headers: {
           authorization: "Bearer " + localStorage.getItem("token"),
         },

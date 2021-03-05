@@ -11,7 +11,7 @@ export const UploadQuestions: React.FC<UploadQuestionsProps> = () => {
   const props = {
     name: "QuestionBank",
     multiple: true,
-    action: `http://${env.NODEJS_URL}/admin/excelupload`,
+    action: `https://${env.NODEJS_URL}/admin/excelupload`,
     headers: {
       authorization: "Bearer " + localStorage.getItem("token"),
     },

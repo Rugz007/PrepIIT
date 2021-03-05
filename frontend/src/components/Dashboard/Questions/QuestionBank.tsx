@@ -28,7 +28,7 @@ export const QuestionBank: React.FC = () => {
     console.log(Question);
     try {
       const response = await axios.post(
-        `http://${env.NODEJS_URL}//admin/editquestion`,
+        `https://${env.NODEJS_URL}//admin/editquestion`,
         {
           qid: Question.qid,
           statement: Question.statement,
@@ -54,7 +54,7 @@ export const QuestionBank: React.FC = () => {
   };
   const fetchBankDetails = async () => {
     try {
-      const res = await axios.get(`http://${env.NODEJS_URL}/admin/question`, {
+      const res = await axios.get(`https://${env.NODEJS_URL}/admin/question`, {
         headers: {
           authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -75,7 +75,7 @@ export const QuestionBank: React.FC = () => {
   ) => {
     try {
       const response = await axios.delete(
-        `http:///${env.NODEJS_URL}//admin/question`,
+        `https:///${env.NODEJS_URL}//admin/question`,
         {
           headers: {
             authorization: "Bearer " + localStorage.getItem("token"),

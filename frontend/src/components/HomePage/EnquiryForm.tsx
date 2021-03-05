@@ -16,7 +16,7 @@ export const EnquiryForm: React.FC = () => {
   const [captchaBool, setCaptchaBool] = useState(false);
   const onFinish = async (values: EnquiryFormInterface) => {
     try {
-      const res = await axios.post("http://localhost:3000/sendmail", values);
+      const res = await axios.post("https://localhost:3000/sendmail", values);
       console.log(res);
     } catch (e) {
       console.log(e);

@@ -24,7 +24,7 @@ export const EForms: React.FC = () => {
   
   const fetchForms = async () => {
     try {
-      const res = await axios.get(`http://${env.NODEJS_URL}/admin/enquiry`, {
+      const res = await axios.get(`https://${env.NODEJS_URL}/admin/enquiry`, {
         headers: {
           authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -42,7 +42,7 @@ export const EForms: React.FC = () => {
     try {
       const response = await axios({
         method: "DELETE",
-        url: `http://${env.NODEJS_URL}/admin/enquiry`,
+        url: `https://${env.NODEJS_URL}/admin/enquiry`,
         headers: {
           authorization: "Bearer " + localStorage.getItem("token"),
         },

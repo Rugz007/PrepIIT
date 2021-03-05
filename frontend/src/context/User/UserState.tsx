@@ -37,7 +37,7 @@ const UserState = (props: any) => {
     try {
       const response = await axios({
         method: "post",
-        url: `http://${env.NODEJS_URL}/user/login`,
+        url: `https://${env.NODEJS_URL}/user/login`,
         headers: {},
         data: {
           email: formData.email,
@@ -59,7 +59,7 @@ const UserState = (props: any) => {
     console.log(formData);
     try {
       await axios.post(
-        `http://${env.NODEJS_URL}/user/signup`,
+        `https://${env.NODEJS_URL}/user/signup`,
         formData
       );
       dispatch({
@@ -82,7 +82,7 @@ const UserState = (props: any) => {
       const token = localStorage.getItem("token");
       const res = await axios({
         method: "get",
-        url: `http://${env.NODEJS_URL}/getUser`,
+        url: `https://${env.NODEJS_URL}/getUser`,
         headers: {
           authorization: "Bearer " + token,
         },

@@ -28,7 +28,7 @@ export const AddQuestion: React.FC = () => {
         setQuestions([...questions, values]);
       }
       const response = await axios.post(
-        `http://${env.NODEJS_URL}/admin/question`,
+        `https://${env.NODEJS_URL}/admin/question`,
         {
           statement: values.statement,
           img_path: values.img_path,
