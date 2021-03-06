@@ -84,6 +84,7 @@ export const AddQuestion: React.FC = () => {
             submitEdit={undefined}
             submitNew={uploadQuestions}
             Question={record}
+            buttonText="View Question"
           />
         </>
       ),
@@ -100,6 +101,7 @@ export const AddQuestion: React.FC = () => {
             <QuestionModal
             submitNew={uploadQuestions}
             submitEdit={undefined}
+            buttonText="Add Question"
           />
           </Space>
         }

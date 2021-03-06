@@ -1,4 +1,4 @@
-import { Card, Table, Button } from "antd";
+import { Card, Table, Button, Popover, Popconfirm } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { EFormModal } from "./EFormModal";
@@ -21,7 +21,7 @@ export const EForms: React.FC = () => {
     fetchForms();
   }, []);
 
-  
+
   const fetchForms = async () => {
     try {
       const res = await axios.get(`https://${env.NODEJS_URL}/admin/enquiry`, {
@@ -84,13 +84,18 @@ export const EForms: React.FC = () => {
       render: (text: any, record: EFormInterface) => (
         <>
           <EFormModal EForm={record} />
-          <Button
-            onClick={() => deleteEnquiry(record.enqid, forms, setForms)}
-            type="primary"
-            danger
-          >
-            Delete
+          <Popconfirm
+            title="Are you sure you want to delete this question?"
+            onConfirm={() => deleteEnquiry(record.enqid, forms, setForms)}>
+            <Button
+
+              type="primary"
+              danger
+            >
+              Delete
           </Button>
+          </Popconfirm>
+
         </>
       ),
     },

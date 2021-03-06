@@ -28,7 +28,7 @@ export const QuestionBank: React.FC = () => {
     console.log(Question);
     try {
       const response = await axios.post(
-        `https://${env.NODEJS_URL}//admin/editquestion`,
+        `https://${env.NODEJS_URL}/admin/editquestion`,
         {
           qid: Question.qid,
           statement: Question.statement,
@@ -75,7 +75,7 @@ export const QuestionBank: React.FC = () => {
   ) => {
     try {
       const response = await axios.delete(
-        `https:///${env.NODEJS_URL}//admin/question`,
+        `https://${env.NODEJS_URL}/admin/question`,
         {
           headers: {
             authorization: "Bearer " + localStorage.getItem("token"),
@@ -127,6 +127,7 @@ export const QuestionBank: React.FC = () => {
             submitNew={undefined}
             submitEdit={submitEdit}
             Question={record}
+            buttonText="Edit Question"
           />
           <Popconfirm
             title="Are you sure you want to delete this question?"

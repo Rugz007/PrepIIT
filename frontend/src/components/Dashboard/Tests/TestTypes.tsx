@@ -44,7 +44,7 @@ export const TestTypes: React.FC = () => {
       key: "action",
       render: (text: any, record :any) => (
         <>
-          <TestTypeModal Test={record} />
+          <TestTypeModal Test={record} buttonText="View Test Type"/>
           <Button
             type="primary"
             danger
@@ -78,7 +78,7 @@ export const TestTypes: React.FC = () => {
         title={<h1 style={{ fontSize: "30px" }}>Test Types</h1>}
         extra={
           <Space>
-            <TestTypeModal />
+            <TestTypeModal buttonText="Add Test Type"/>
           </Space>
         }
       >

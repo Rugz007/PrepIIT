@@ -94,6 +94,7 @@ export const ReportedQuestions: React.FC = () => {
             Question={record}
             submitNew={undefined}
             submitEdit={submitEdit}
+            buttonText="Edit Question"
           />
         </>
       ),

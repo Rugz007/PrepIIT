@@ -33,6 +33,7 @@ interface QuestionInterface {
   };
   submitEdit: Function | undefined;
   submitNew: Function | undefined;
+  buttonText: string;
 }
 interface Level {
   name: string;
@@ -41,6 +42,7 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
   Question,
   submitEdit,
   submitNew,
+  buttonText,
 }) => {
   const [form] = Form.useForm();
   const levels: Array<Level> | undefined = Levels;
@@ -69,7 +71,7 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
         type="primary"
         onClick={() => setVisible(true)}
       >
-        View
+        {buttonText}
       </Button>
       <Modal
         width="60%"

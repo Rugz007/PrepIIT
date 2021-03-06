@@ -2,6 +2,8 @@ import { Button, Modal, Form, Select, Space, Input } from "antd";
 import React, { useState } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
+import env from "react-dotenv";
+
 const { Option } = Select;
 interface TestTypeInterface {
   Test?: {
@@ -16,8 +18,9 @@ interface TestTypeInterface {
       number: number;
     }>;
   };
+  buttonText:string;
 }
-export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test }) => {
+export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test,buttonText }) => {
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
   const toSubmit = (e: any) => {
@@ -27,7 +30,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test }) => {
     console.log(values);
     try {
       const response = await axios.post(
-        "https://localhost:3000/admin/testtype",
+        `https://${env.NODEJS_URL}admin/testtype`,
         {
           values,
         },
@@ -44,7 +47,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test }) => {
   };
   return (
     <>
-      <Button onClick={() => setVisible(true)}>View</Button>
+      <Button onClick={() => setVisible(true)}>{buttonText}</Button>
       <Modal
         width="60%"
         visible={visible}
