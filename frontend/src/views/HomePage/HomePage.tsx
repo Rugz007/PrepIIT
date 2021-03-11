@@ -17,7 +17,7 @@ export const HomePage: React.FC = () => {
     let courseData: Array<CourseInterface> = CourseData;
     return (
         <Layout>
-            <Content style={{ backgroundColor: '#2a323c' }}>
+            <Content style={{ backgroundColor: '#1c2229' }}>
                 <Row style={{paddingBottom:'2%'}}>
                     <Col span={4} />
                     <Col span={9} style={{ paddingTop: '5%' }}>

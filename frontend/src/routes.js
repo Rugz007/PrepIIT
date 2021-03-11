@@ -12,6 +12,7 @@ import { Courses } from './views/HomePage/Courses';
 import { FAQ } from './views/HomePage/FAQ';
 import { HomePage } from './views/HomePage/HomePage';
 import { Test } from './views/Test/Test';
+import { TestsPage } from './views/Test/TestsPage';
 
 class Routes extends React.Component {
     render() {
@@ -26,6 +27,7 @@ class Routes extends React.Component {
                 <Route path='/courses' component={Courses} />
                 <Route path='/faq' component={FAQ} />
                 <Route path='/test' component={Test}/>
+                <Route path='/mytests' component={TestsPage}/>
                 <Route path='/blogs' exact component={BlogList} />
                 <Route path='/blogs/:id' component={BlogPage} />
                 <Route component={Error404} />

@@ -7,7 +7,7 @@ import { Divider } from 'antd';
 export const Contact: React.FC = () => {
     return (
         <Layout>
-            <Content style={{ backgroundColor: '#2a323c' }}>
+            <Content style={{ backgroundColor: '#1c2229' }}>
                 <Row>
                     <Col
                         span={12}

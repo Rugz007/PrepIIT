@@ -21,7 +21,7 @@ export const Login: React.FC = () => {
 
   return (
     <Layout>
-      <Content style={{ backgroundColor: "#2a323c", paddingBottom: "13.2%" }}>
+      <Content style={{ backgroundColor: "#1c2229", paddingBottom: "13.2%" }}>
         <Row>
           <Col span={4} />
           <Col span={16} style={{ padding: ".4%", paddingTop: "4%" }}>

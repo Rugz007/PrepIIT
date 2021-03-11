@@ -42,7 +42,6 @@ export const Dashboard: React.FC = () => {
             >
               <SubMenu key="profile" icon={<UserOutlined />} title="My Profile">
                 <Menu.Item key="4">View Profile</Menu.Item>
-                <Menu.Item key="5">View Past Tests</Menu.Item>
                 <Menu.Item key="6">Settings</Menu.Item>
               </SubMenu>
               {userContext.user.admin != null ? (
@@ -89,7 +88,7 @@ export const Dashboard: React.FC = () => {
             </Menu>
           </Sider>
           <Layout>
-            <Content style={{ backgroundColor: "#2a323c", padding: "3%" }}>
+            <Content style={{ backgroundColor: "#1c2229", padding: "3%" }}>
               {tab === "1" && userContext.user.admin != null && <EForms />}
               {tab === "2" && userContext.user.admin != null && (
                 <EFormsAnalysis />

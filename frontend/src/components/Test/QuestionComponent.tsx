@@ -1,4 +1,4 @@
-import { Radio, Row } from 'antd'
+import { Radio, Row, Col } from 'antd'
 import React from 'react'
 
 interface QuestionInterface {
@@ -12,34 +12,57 @@ interface QuestionComponentProps {
 export const QuestionComponent: React.FC<QuestionComponentProps> = ({ question, option }) => {
     var Latex = require('react-latex');
     const radioStyle = {
-        display: 'block',
-        height: '30px',
-        lineHeight: '30px',
+        borderRadius: '0px',
+        width: '100%',
+        fontSize:'20px',
+        verticalAlign:'text-bottom'
     };
+    const radioContainerStyle = {
+        marginTop: "15px",fontSize:'20px'
+    }
+    var temp = `Solve the following equation:  $$\\big (3\\times 4) \\div (5-3)$$`;
     return (
         <div style={{ padding: '1%' }}>
-            <Row>
-                <Latex>
-                <h1>
-                    14) A direct current is sent through a helical spring. The spring tends
-                </h1>
+            <Row style={{ fontSize: '30px' }}>
+                <Latex displayMode={true}>
+                    {temp}
                 </Latex>
-                
+
             </Row>
             <Row>
-                <Radio.Group style={{textAlign:'left'}}>
-                    <Radio style={radioStyle} value={1}>
-                        to get shorter
-                    </Radio>
-                    <Radio style={radioStyle} value={2}>
-                        to rotate about the axis
-                    </Radio>
-                    <Radio style={radioStyle} value={3}>
-                        to get longer
-                     </Radio>
-                    <Radio style={radioStyle} value={3}>
-                        to move eastward
-                    </Radio>
+                <Radio.Group style={{ textAlign: 'left', width: '100%' }}>
+                    <Row style={radioContainerStyle}>
+                        <Col span={1}>
+                            <Radio.Button style={{ padding: "0 0.7rem",fontSize:'20px' }} name="A" value="A">A</Radio.Button>
+                        </Col>
+                        <Col span={23} style={radioStyle}>
+                            to rotate my fan
+                        </Col>
+                    </Row>
+                    <Row style={radioContainerStyle}>
+                        <Col span={1}>
+                            <Radio.Button style={{ padding: "0 0.7rem" ,fontSize:'20px'}} name="B" value="B">B</Radio.Button>
+                        </Col>
+                        <Col span={23} style={radioStyle}>
+                            to rotate my fan
+                        </Col>
+                    </Row>
+                    <Row style={radioContainerStyle}>
+                        <Col span={1}>
+                            <Radio.Button style={{ padding: "0 0.7rem" ,fontSize:'20px'}} name="C" value="C">C</Radio.Button>
+                        </Col>
+                        <Col span={23} style={radioStyle}>
+                            to rotate my fan
+                        </Col>
+                    </Row>
+                    <Row style={radioContainerStyle}>
+                        <Col span={1}>
+                            <Radio.Button style={{ padding: "0 0.7rem" ,fontSize:'20px'}} name="D" value="D">D</Radio.Button>
+                        </Col>
+                        <Col span={23} style={radioStyle}>
+                            to rotate my fan
+                        </Col>
+                    </Row>
                 </Radio.Group>
             </Row>
         </div>
