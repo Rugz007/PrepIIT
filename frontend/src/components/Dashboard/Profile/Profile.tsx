@@ -63,7 +63,6 @@ export const Profile: React.FC<ProfileProps> = () => {
                                 }
                             }
                             }
-                            onClick={(value: any) => alert(`Clicked on value with count: ${value.count}`)}
                         />
                         <ReactTooltip/>
                     </Card>

@@ -136,7 +136,7 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
                   <Input placeholder="What year was the question asked in?" />
                 </Form.Item>
               </Space>
-              <Form.Item name="is_reported">
+              <Form.Item name="is_reported" valuePropName="checked">
                 <Checkbox defaultChecked={Question?.is_reported}>Is the question reported?</Checkbox>
               </Form.Item>
             </Tabs.TabPane>
