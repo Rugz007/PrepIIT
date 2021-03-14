@@ -13,7 +13,8 @@ const storage = multer.diskStorage({
 const fileFilter = (req, file, cb) => {
   if (
     file.mimetype == "text/csv" ||
-    file.mimetype == "application/vnd.ms-excel"
+    file.mimetype == "application/vnd.ms-excel" ||
+    file.mimetype == "application/octet-stream"
   ) {
     cb(null, true);
   } else {
