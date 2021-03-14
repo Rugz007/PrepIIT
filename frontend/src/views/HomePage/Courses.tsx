@@ -7,7 +7,7 @@ export const Courses: React.FC = () => {
   //Make the courses pages
   return (
     <Layout>
-      <Content style={{ backgroundColor: "#2a323c" }}>
+      <Content style={{ backgroundColor: "#1c2229" }}>
         <Row style={{ height: "30vh" }}>
           <Col
             span={11}

@@ -59,10 +59,16 @@ export const Navbar: React.FC = () => {
                       <Menu
                         style={{ backgroundColor: "white", color: "black" }}
                         theme="dark"
+                        onClick={onClick}
                       >
                         <Menu.Item key="dashboard">
                           <Link style={{ color: "black" }} to="/dashboard">
                             Dashboard
+                          </Link>
+                        </Menu.Item>
+                        <Menu.Item key="tests">
+                          <Link style={{ color: "black" }} to="/mytests">
+                            My Tests
                           </Link>
                         </Menu.Item>
                         <Menu.Item
@@ -85,7 +91,7 @@ export const Navbar: React.FC = () => {
                         height: "100%",
                       }}
                     >
-                      <Avatar size={50}>User</Avatar>
+                      <Avatar icon={<img alt='user' style={{margin:'10% 0 30% 0'}}src="https://img.icons8.com/fluent-systems-filled/96/000000/user.png"/>} size={50} />
                     </Button>
                   </Dropdown>
                 ) : (

@@ -20,7 +20,8 @@ interface QuestionInterface {
 export const ReportedQuestions: React.FC = () => {
   const [reported, setReported] = useState<QuestionInterface[] | undefined>([]);
   const submitEdit = async (Question: QuestionInterface) => {
-    console.log(Question);
+    console.log("Question")
+    console.log(Question.is_reported);
     try {
       const response = await axios.post(
         `https://${env.NODEJS_URL}/admin/editquestion`,
@@ -42,6 +43,8 @@ export const ReportedQuestions: React.FC = () => {
           },
         }
       );
+      console.log("Response")
+
       console.log(response);
     } catch (e) {
       console.log("Couldn't Update");
@@ -49,7 +52,7 @@ export const ReportedQuestions: React.FC = () => {
   };
   useEffect(() => {
     fetchReportedDetails();
-  }, []);
+  }, [reported]);
 
   const fetchReportedDetails = async () => {
     try {

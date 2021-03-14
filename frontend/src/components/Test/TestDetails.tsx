@@ -52,7 +52,6 @@ export const TestDetails: React.FC<TestDetailsProps> = ({current}) => {
                     renderItem={(item,index) => (
                         <List.Item>
                             {current === index + 1 ? <Avatar size='large' style={{backgroundColor:'green'}}>{index + 1}</Avatar>: <Avatar size='large' style={{backgroundColor:'red'}}>{index + 1}</Avatar>}
-                            
                         </List.Item>
                     )}
                 />

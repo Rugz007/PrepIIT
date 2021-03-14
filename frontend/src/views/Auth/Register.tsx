@@ -33,7 +33,7 @@ export const Register: React.FC = () => {
   };
   return (
     <Layout>
-      <Content style={{ backgroundColor: "#2a323c", paddingBottom: "4%" }}>
+      <Content style={{ backgroundColor: "#1c2229", paddingBottom: "4%" }}>
         <Row>
           <Col span={4} />
           <Col span={16} style={{ padding: ".4%", paddingTop: "1%" }}>

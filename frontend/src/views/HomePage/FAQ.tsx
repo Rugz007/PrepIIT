@@ -5,7 +5,7 @@ const { Panel } = Collapse;
 export const FAQ: React.FC = () => {
   return (
     <Layout>
-      <Content style={{ backgroundColor: "#2a323c" }}>
+      <Content style={{ backgroundColor: "#1c2229" }}>
         <Row style={{ height: "30vh" }}>
           <Col
             span={14}
