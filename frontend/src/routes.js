@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Error404 } from './components/Errors/Error404';
+import { TestIntruction } from './components/Test/TestIntruction';
 import { Login } from './views/Auth/Login';
 import { Register } from './views/Auth/Register';
 import { BlogList } from './views/Blog/BlogList';
@@ -28,6 +29,7 @@ class Routes extends React.Component {
                 <Route path='/faq' component={FAQ} />
                 <Route path='/test' component={Test}/>
                 <Route path='/mytests' component={TestsPage}/>
+                <Route path='/testintruction' component={TestIntruction}/>
                 <Route path='/blogs' exact component={BlogList} />
                 <Route path='/blogs/:id' component={BlogPage} />
                 <Route component={Error404} />
