@@ -20,7 +20,7 @@ export const Navbar: React.FC = () => {
         <></>
       ) : (
         <Layout>
-          <Header style={{ backgroundColor: "white" }}>
+          <Header style={{ backgroundColor: "white"}}>
             <Row style={{ height: "100%" }}>
               <Col span={4} style={{ height: "100%" }}>
                 <Link to="/" onClick={onClickLogo}>

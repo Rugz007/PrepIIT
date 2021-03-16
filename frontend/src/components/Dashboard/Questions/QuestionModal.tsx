@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import Levels from "./DifficultyLevel";
 import { UploadOutlined } from "@ant-design/icons";
 import "./QuestionModal.css";
+const { Option } = Select;
 
 //TODO: Make use Select
 interface QuestionInterface {
@@ -47,6 +48,7 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
   const [form] = Form.useForm();
   const levels: Array<Level> | undefined = Levels;
   const [visible, setVisible] = useState(false);
+  const [answerType, setAnswerType] = useState("MCQ")
   const props = {
     name: "file",
     action: "",
@@ -64,6 +66,9 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
       }
     },
   };
+  const handleSelect = (e: any) => {
+    setAnswerType(e)
+  }
   return (
     <>
       <Button
@@ -141,8 +146,39 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
               </Form.Item>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Answer" key="2">
-              Work in Progress
+              <Select style={{ width: '30%' }} onSelect={handleSelect} defaultValue="MCQ">
+                <Option value="MCQ">Multiple Choice</Option>
+                <Option value="FIB">Fill in the blank</Option>
+                <Option value="NUM">Numerical Question</Option>
+                <Option value="TOF">True or False</Option>
+                <Option value="AAR">Assertion and Reason</Option>
+              </Select>
+              {answerType === "NUM" &&
+              <>
+              <Form.Item name="range0">
+                  <Input placeholder="Enter the start range" />
+                </Form.Item>
+                <Form.Item name="range1">
+                  <Input placeholder="Enter the end range" />
+                </Form.Item>
+                <h3>NOTE: If you want exact answer, input same values in both the ranges.</h3>
+              </>
+                }
+              {answerType === "FIB" &&
+                <Form.Item name="fiBAnswer">
+                  <Input placeholder="Enter the correct answer" />
+                </Form.Item>}
+              {answerType === "MCQ" && <Form.Item name="answer"><Input placeholder="Enter the start range" /></Form.Item>}
+              {answerType === "TOF" &&
+                <Form.Item name="trueorfalseAnswer">
+                  <Select placeholder="Select True or False">
+                    <Option value="true">True</Option>
+                    <Option value="false">False</Option>
+                  </Select>
+                </Form.Item>}
+              {answerType === "AAR" && <Form.Item name="answer"><Input placeholder="Enter the start range" /></Form.Item>}
             </Tabs.TabPane>
+
           </Tabs>
         </Form>
       </Modal>

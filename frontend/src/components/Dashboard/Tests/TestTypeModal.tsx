@@ -26,6 +26,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test,buttonText }) 
   const toSubmit = (e: any) => {
     console.log(e);
   };
+  
   const SubmitTest = async (values: TestTypeInterface) => {
     console.log(values);
     try {
@@ -103,7 +104,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test,buttonText }) 
                           name={[field.name, "type"]}
                           label="Question Type"
                         >
-                          <Select>
+                          <Select defaultValue="MCQ">
                             <Option value="MCQ">MCQ</Option>
                             <Option value="FIB">Fill in the blanks</Option>
                             <Option value="ANR">Assertion and Reason</Option>
