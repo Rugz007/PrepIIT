@@ -48,9 +48,12 @@ router
       level,
       archive,
       is_reported,
+      latex,
+      answers,
+      options,
     } = req.body;
     db.query(
-      "INSERT INTO questions VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9)",
+      "INSERT INTO questions VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)",
       [
         statement,
         img_path,
@@ -61,6 +64,9 @@ router
         level,
         archive,
         is_reported,
+        latex,
+        answers,
+        options,
       ]
     )
       .then((resp) => {
@@ -92,15 +98,7 @@ router
     }
   })
   .post("/excelupload", upload.single("QuestionBank"), (req, res, next) => {
-    try {
-      uploadQuestions(req.file.originalname).then((resp) =>
-        res.status(200).json({ success: resp })
-      );
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ success: false });
-      next(err);
-    }
+    uploadQuestions(req.file.originalname, res);
   })
   .post("/editquestion", (req, res, next) => {
     console.log(req.body);
@@ -115,9 +113,12 @@ router
       subtopic,
       topic,
       type,
+      latex,
+      options,
+      answers,
     } = req.body;
     db.query(
-      "UPDATE questions SET statement=$1, img_path=$2, type=$3, subject=$4, topic=$5, subtopic=$6, level=$7, archive=$8, is_reported=$9 WHERE qid=$10",
+      "UPDATE questions SET statement=$1, img_path=$2, type=$3, subject=$4, topic=$5, subtopic=$6, level=$7, archive=$8, is_reported=$9, latex=$11, options=$12, answers=$13 WHERE qid=$10",
       [
         statement,
         img_path,
@@ -129,6 +130,9 @@ router
         archive,
         is_reported,
         qid,
+        latex,
+        options,
+        answers,
       ]
     )
       .then((resp) => {

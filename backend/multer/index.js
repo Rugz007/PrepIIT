@@ -6,7 +6,6 @@ const storage = multer.diskStorage({
     cb(null, "questionsBackup");
   },
   filename: (req, file, cb) => {
-    console.log(file);
     cb(null, file.originalname);
   },
 });
