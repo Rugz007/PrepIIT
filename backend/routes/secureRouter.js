@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const userAuth = require("../userAuth/userAuth");
 const allThree = require("../testGeneration/allThree");
+const updateLog = require("../updateLog/index");
 
 var db = require("../db/index");
 
@@ -43,6 +44,11 @@ router
         }*/
       }
     );
+  })
+  .post("/verifyanswers", (req, res, next) => {
+    const { donetestid, questions } = req.body;
+    //console.log(donetestid, questions);
+    updateLog(questions, donetestid, res);
   });
 
 module.exports = router;
