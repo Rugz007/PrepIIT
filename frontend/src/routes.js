@@ -13,7 +13,7 @@ import { Courses } from './views/HomePage/Courses';
 import { FAQ } from './views/HomePage/FAQ';
 import { HomePage } from './views/HomePage/HomePage';
 import { Test } from './views/Test/Test';
-import { TestAnalysis } from './views/Test/TestAnalysis';
+import { TestAnalysis } from './views/Analysis/TestAnalysis';
 import { TestsPage } from './views/Test/TestsPage';
 
 class Routes extends React.Component {
