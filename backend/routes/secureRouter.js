@@ -47,7 +47,6 @@ router
   })
   .post("/verifyanswers", (req, res, next) => {
     const { donetestid, questions } = req.body;
-    //console.log(donetestid, questions);
     updateLog(questions, donetestid, res);
   });
 
