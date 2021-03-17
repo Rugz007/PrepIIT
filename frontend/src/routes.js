@@ -13,6 +13,7 @@ import { Courses } from './views/HomePage/Courses';
 import { FAQ } from './views/HomePage/FAQ';
 import { HomePage } from './views/HomePage/HomePage';
 import { Test } from './views/Test/Test';
+import { TestAnalysis } from './views/Analysis/TestAnalysis';
 import { TestsPage } from './views/Test/TestsPage';
 
 class Routes extends React.Component {
@@ -30,6 +31,7 @@ class Routes extends React.Component {
                 <Route path='/test' component={Test}/>
                 <Route path='/mytests' component={TestsPage}/>
                 <Route path='/testintruction' component={TestIntruction}/>
+                <Route path='/testanalysis' component={TestAnalysis} />
                 <Route path='/blogs' exact component={BlogList} />
                 <Route path='/blogs/:id' component={BlogPage} />
                 <Route component={Error404} />
