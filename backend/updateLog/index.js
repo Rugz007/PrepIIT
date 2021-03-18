@@ -7,12 +7,12 @@ const updateLog = (questions, donetestid, res) => {
   });
   Promise.all(questionQueries)
     .then((resp) => {
-      var marksExcludingNumerical = 0;
+      var marksExcludingNumerical;
       db.query(
-        "SELECT COUNT(*) FROM testquestions INNER JOIN questions ON testquestions.qid=questions.qid AND testquestions.useranswer=questions.answers"
+        `SELECT * FROM testquestions INNER JOIN questions ON testquestions.qid=questions.qid AND testquestions.useranswer=questions.answers AND testquestions.donetestid='${donetestid}'`
       ).then((respo) => {
-        console.log(respo.rows[0].count);
-        marksExcludingNumerical = respo.rows[0].count;
+        console.log(respo.rows.length);
+        marksExcludingNumerical = respo.rows;
         res.status(201).json({ marks: marksExcludingNumerical, success: true });
       });
     })
