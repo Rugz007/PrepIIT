@@ -66,7 +66,6 @@ const updateLog = (questions, donetestid, res) => {
               }
             }
           } else if (answer.type != "numerical") {
-            console.log(answer.useranswer.length);
             if (!answer.useranswer.length) {
               totalNonAttempted++;
               if (answer.subject == "physics") {

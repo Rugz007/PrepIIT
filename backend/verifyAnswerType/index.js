@@ -3,8 +3,8 @@ const notNumerical = (answer) => {
 };
 const numerical = (answer) => {
   if (
-    parseInt(answer.answers[0], 10) <= parseInt(answer.useranswer, 10) &&
-    parseInt(answer.useranswer, 10) <= parseInt(answer.answers[1], 10)
+    parseFloat(answer.options[0], 10) <= parseFloat(answer.useranswer, 10) &&
+    parseFloat(answer.useranswer, 10) <= parseFloat(answer.options[1], 10)
   ) {
     return true;
   }
