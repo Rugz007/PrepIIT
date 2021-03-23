@@ -3,9 +3,9 @@ const db = require("../db");
 
 const allThree = (testObject, res) => {
   console.log("Here");
-  var phyQues = (phyQues = []);
-  var chemQues = (chemQues = []);
-  var mathQues = (mathQues = []);
+  var phyQues = [];
+  var chemQues = [];
+  var mathQues = [];
   const userTestId = randomstring.generate({
     length: 15,
     charset: "alphabetic",
