@@ -19,14 +19,12 @@ router
     const type = req.body.type;
     db.query("SELECT * FROM testtype WHERE testname=$1", [type]).then(
       (resp) => {
-        console.log(resp.rows);
         const testObject = resp.rows[0];
         var subjects = testObject.subjectsallowed;
         subjects.map((subject) => subject.toLowerCase());
         var physics = subjects.includes("physics");
         var chemistry = subjects.includes("chemistry");
         var math = subjects.includes("maths");
-        console.log(physics, chemistry, math);
         if (physics && chemistry && math) {
           allThree(testObject, res);
         } /*else if (physics && chemistry && !math) {

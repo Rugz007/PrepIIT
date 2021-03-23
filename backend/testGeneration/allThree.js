@@ -2,7 +2,6 @@ const randomstring = require("randomstring");
 const db = require("../db");
 
 const allThree = (testObject, res) => {
-  console.log("Here");
   var phyQues = [];
   var chemQues = [];
   var mathQues = [];
