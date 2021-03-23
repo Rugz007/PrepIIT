@@ -134,12 +134,13 @@ const allThree = (testObject, res) => {
                                       if (resp.rows) mathQues.push(resp.rows);
                                       res.json({
                                         userTestId: userTestId,
-                                        phyQues: phyQues,
-                                        chemQues: chemQues,
-                                        mathQues: mathQues,
+                                        subjects:['Physics','Chemistry','Maths'],
+                                        Physics: phyQues,
+                                        Chemistry: chemQues,
+                                        Maths: mathQues,
                                       });
                                     });
-                                  });
+                                  }); 
                                 });
                               });
                             });
