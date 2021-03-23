@@ -145,9 +145,9 @@ const allThree = (testObject, res) => {
                                           "Chemistry",
                                           "Maths",
                                         ],
-                                        Physics: (phyQues = phyQues),
-                                        Chemistry: (chemQues = chemQues),
-                                        Maths: (mathQues = mathQues),
+                                        Physics: phyQues,
+                                        Chemistry: chemQues,
+                                        Maths: mathQues,
                                       });
                                     });
                                   });
