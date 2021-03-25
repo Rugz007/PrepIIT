@@ -18,8 +18,8 @@ export const TestDetails: React.FC<TestDetailsProps> = ({ current, questions, se
         else {
             if (questions[index].marked_status !== undefined) {
                 switch (questions[index].marked_status) {
-                    case 'notMarked': return <Button shape='circle' type="primary" danger onClick={() => goToIndex(index)} size='large' >{index + 1}</Button>
-                    case 'Visited': return <Button shape='circle' type="primary" style={{ color: '#ff8000', borderColor: '#ff8000' }} onClick={() => goToIndex(index)} danger size='large' >{index + 1}</Button>
+                    case 'Marked': return <Button shape='circle' type="primary" style={{ borderColor: 'green' ,backgroundColor:'green'}} onClick={() => goToIndex(index)} size='large' >{index + 1}</Button>
+                    case 'Visited': return <Button shape='circle' style={{ color: '#ff8000', borderColor: '#ff8000' }} onClick={() => goToIndex(index)} size='large' >{index + 1}</Button>
                     case 'MarkedForReview': return <Button shape='circle' type="primary" style={{ backgroundColor: '#fce621', borderColor: '#fce621', color: 'black' }} onClick={() => goToIndex(index)} size='large' >{index + 1}</Button>
                 }
             }

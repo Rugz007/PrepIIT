@@ -29,7 +29,7 @@ export const Test: React.FC = () => {
     const [readInstructions, setReadInstructions] = useState(false)
     const [current, setCurrent] = useState<number>(1);
     const [tab, setTab] = useState("Physics")
-    const response: any = {
+    const [response,setReponse]: any = useState({
         "userTestId": "BsbbHMgbPeDnewW",
         "subjects": ['Physics', 'Chemistry', 'Maths'],
         "Physics": [
@@ -40,7 +40,7 @@ export const Test: React.FC = () => {
                 "type": "Maud",
                 "archive": "Jenilee",
                 "latex": "abc",
-                "marked_status":"MarkedForReview",
+                "marked_status":"Visited",
                 "options": [
                     "Hello is this working",
                     "b",
@@ -176,7 +176,7 @@ export const Test: React.FC = () => {
                 ]
             },
         ]
-    }
+    })
     const [questions, setQuestions] = useState<QuestionInterface[]>([]);
     const getQuestions = () => {
 
@@ -190,10 +190,21 @@ export const Test: React.FC = () => {
     };
     const onNext = () => {
         if (current !== response[tab].length)
+        {
+                var temp = {...response}
+            temp[tab][current-1]['marked_status'] = "Visited"
+            setReponse(temp)
             setCurrent(current + 1)
+        }
     };
     const onPrevious = () => {
         if (current !== 1) {
+            if(response[tab][current-1]['marked_status'] === undefined)
+            {
+                var temp = {...response}
+                temp[tab][current-1]['marked_status'] = "Visited"
+                setReponse(temp)
+            }
             setCurrent(current - 1)
         }
     };
