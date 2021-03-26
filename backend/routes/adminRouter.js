@@ -1,6 +1,7 @@
 var express = require("express");
 var upload = require("../multer/index");
 const uploadQuestions = require("../uploadQuestions/index");
+var uploadLiveTest = require("../uploadLiveTest/index");
 
 var router = express.Router();
 
@@ -246,6 +247,27 @@ router
         console.log(err);
         console.log("DB Error");
         res.json({ success: false });
+      });
+  })
+  .post("/", upload.single("QuestionBank"), (req, res, next) => {
+    const liveid = req.body.liveid;
+    const livename = req.body.livename;
+    const month = parseInt(req.body.date.getUTCMonth() + 1); //months from 1-12
+    const day = parseInt(req.body.date.getUTCDate());
+    const year = parseInt(req.body.date.getUTCFullYear());
+    const { hour, minute } = parseInt(req.body.date.split(":"));
+    db.query("INSERT INTO livetest VALUES($1,$2,$3,$4,$5,$6,$7)", [
+      liveid,
+      livename,
+      day,
+      month,
+      year,
+      hour,
+      minute,
+    ])
+      .then((resp) => {})
+      .catch((err) => {
+        res.status(500).json({ success: false });
       });
   });
 
