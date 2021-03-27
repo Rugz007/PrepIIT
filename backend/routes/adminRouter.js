@@ -249,23 +249,41 @@ router
         res.json({ success: false });
       });
   })
-  .post("/", upload.single("QuestionBank"), (req, res, next) => {
+  .post("/livetest", upload.single("QuestionBank"), (req, res, next) => {
     const liveid = req.body.liveid;
     const livename = req.body.livename;
-    const month = parseInt(req.body.date.getUTCMonth() + 1); //months from 1-12
-    const day = parseInt(req.body.date.getUTCDate());
-    const year = parseInt(req.body.date.getUTCFullYear());
-    const { hour, minute } = parseInt(req.body.date.split(":"));
-    db.query("INSERT INTO livetest VALUES($1,$2,$3,$4,$5,$6,$7)", [
-      liveid,
-      livename,
-      day,
-      month,
-      year,
-      hour,
-      minute,
-    ])
-      .then((resp) => {})
+    const startMonth = parseInt(req.body.startDate.getUTCMonth() + 1);
+    const startDay = parseInt(req.body.startDate.getUTCDate());
+    const startYear = parseInt(req.body.startDate.getUTCFullYear());
+    const startTime = req.body.startTime.split(":");
+    const startHour = parseInt(startTime[0]);
+    const startMinute = parseInt(startTime[1]);
+    const endMonth = parseInt(req.body.endDate.getUTCMonth() + 1);
+    const endDay = parseInt(req.body.endDate.getUTCDate());
+    const endYear = parseInt(req.body.endDate.getUTCFullYear());
+    const endTime = req.body.startTime.split(":");
+    const endHour = parseInt(endTime[0]);
+    const endMinute = parseInt(endTime[1]);
+    db.query(
+      "INSERT INTO livetest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)",
+      [
+        liveid,
+        livename,
+        startDay,
+        startMonth,
+        startYear,
+        startHour,
+        startMinute,
+        endDay,
+        endMonth,
+        endYear,
+        endHour,
+        endMinute,
+      ]
+    )
+      .then((resp) => {
+        uploadLiveTest(req.file.originalname, res, liveid);
+      })
       .catch((err) => {
         res.status(500).json({ success: false });
       });

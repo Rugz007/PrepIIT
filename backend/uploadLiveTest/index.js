@@ -2,12 +2,14 @@ const fastcsv = require("fast-csv");
 const fs = require("fs");
 var db = require("../db/index");
 
-const uploadLiveTest = (fileName, res) => {
+const uploadLiveTest = (fileName, res, liveid) => {
   if (!fileName) {
     res.status(403).json({ success: false });
   }
   var questions = [];
-  var stream = fs.createReadStream(`/workspace/backend/liveBackup/${fileName}`);
+  var stream = fs.createReadStream(
+    `/workspace/backend/questionsBackup/${fileName}`
+  );
   var questionData = [];
   var csvStream = fastcsv
     .parse()
@@ -16,8 +18,7 @@ const uploadLiveTest = (fileName, res) => {
     })
     .on("end", () => {
       questionData.shift();
-      const query =
-        "INSERT INTO livetestquestions VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)";
+      const query = `INSERT INTO livetestquestions VALUES (DEFAULT,${liveid},$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`;
       questionData.forEach((row) => {
         questions.push(
           db.query(query, row).catch((err) => {
