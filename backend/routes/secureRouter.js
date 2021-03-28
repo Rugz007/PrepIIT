@@ -44,8 +44,9 @@ router
     );
   })
   .post("/verifyanswers", (req, res, next) => {
-    const { donetestid, questions } = req.body;
-    updateLog(questions, donetestid, res);
+    const { donetestid, questions, testid, userid } = req.body;
+    console.log(donetestid, testid, userid);
+    updateLog(questions, donetestid, testid, userid, res);
   });
 
 module.exports = router;

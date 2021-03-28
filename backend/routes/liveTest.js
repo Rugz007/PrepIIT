@@ -24,7 +24,8 @@ router
       liveEndMonth,
       liveEndYear,
       liveEndDay;
-    db.query("SELECT * FROM livetest")
+    var liveid = req.body.liveid;
+    db.query("SELECT * FROM livetest WHERE liveid=$1", [liveid])
       .then((resp) => {
         liveStartMin = resp.rows[0].startminute;
         liveStartHour = resp.rows[0].starthour;

@@ -1,7 +1,7 @@
 const db = require("../db/index");
 const { notNumerical, numerical } = require("../verifyAnswerType/index");
 
-const updateLog = (questions, donetestid, res) => {
+const updateLog = (questions, donetestid, testid, userid, res) => {
   const query = `INSERT INTO testquestions VALUES ('${donetestid}',$1,$2,'wrong',$3)`;
   var questionQueries = [];
   questions.forEach((question) => {
@@ -112,11 +112,40 @@ const updateLog = (questions, donetestid, res) => {
         });
         Promise.all(correctPromise).then((corEnd) => {
           Promise.all(notAttemptedPromise).then((naEnd) => {
-            res.json({
-              totalCorrect: totalCorrect,
-              totalWrong: totalWrong,
-              totalNonAttempted: totalNonAttempted,
-            });
+            db.query(
+              "INSERT INTO usertest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)",
+              [
+                donetestid,
+                testid,
+                userid,
+                phy[0],
+                chem[0],
+                math[0],
+                0,
+                phy[1],
+                chem[1],
+                math[1],
+                0,
+                phy[2],
+                chem[2],
+                math[2],
+                0,
+              ]
+            )
+              .then((resp) => {
+                console.log(phy, chem, math);
+                res.json({
+                  totalCorrect: totalCorrect,
+                  totalWrong: totalWrong,
+                  totalNonAttempted: totalNonAttempted,
+                });
+              })
+              .catch((err) => {
+                console.log(err);
+                res.json({
+                  errmess: "DB Error",
+                });
+              });
           });
         });
       });
