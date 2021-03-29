@@ -18,7 +18,7 @@ const uploadLiveTest = (fileName, res, liveid) => {
     })
     .on("end", () => {
       questionData.shift();
-      const query = `INSERT INTO livetestquestions VALUES (DEFAULT,${liveid},$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`;
+      const query = `INSERT INTO livetestquestions VALUES (DEFAULT,'${liveid}',$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`;
       questionData.forEach((row) => {
         questions.push(
           db.query(query, row).catch((err) => {
@@ -26,14 +26,14 @@ const uploadLiveTest = (fileName, res, liveid) => {
           })
         );
       });
+      Promise.all(questions)
+        .then((resp) => {
+          res.status(200).json({ success: true });
+        })
+        .catch((err) => {
+          res.status(500).json({ success: false });
+        });
     });
   stream.pipe(csvStream);
-  Promise.all(questions)
-    .then((resp) => {
-      res.status(200).json({ success: true });
-    })
-    .catch((err) => {
-      res.status(500).json({ success: false });
-    });
 };
 module.exports = uploadLiveTest;

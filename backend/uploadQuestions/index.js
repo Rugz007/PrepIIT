@@ -27,14 +27,14 @@ const uploadQuestions = (fileName, res) => {
           })
         );
       });
+      Promise.all(questions)
+        .then((resp) => {
+          res.status(200).json({ success: true });
+        })
+        .catch((err) => {
+          res.status(500).json({ success: false });
+        });
     });
   stream.pipe(csvStream);
-  Promise.all(questions)
-    .then((resp) => {
-      res.status(200).json({ success: true });
-    })
-    .catch((err) => {
-      res.status(500).json({ success: false });
-    });
 };
 module.exports = uploadQuestions;
