@@ -2,6 +2,9 @@ var express = require("express");
 var router = express.Router();
 
 const userAuth = require("../userAuth/userAuth");
+const updateLiveLog = require("../updateLiveLog/index");
+
+const randomstring = require("randomstring");
 
 const db = require("../db");
 
@@ -69,11 +72,17 @@ router
             [req.body.liveid]
           )
             .then((resp) => {
+              const donetestid = randomstring.generate({
+                length: 15,
+                charset: "alphabetic",
+              });
               const timeLeft =
                 (liveEndDate.getTime() - currentDate.getTime()) / 1000;
-              res
-                .status(200)
-                .json({ questions: resp.rows, timeLeft: timeLeft });
+              res.status(200).json({
+                donetestid: donetestid,
+                questions: resp.rows,
+                timeLeft: timeLeft,
+              });
             })
             .catch((err) => {
               res.status(500).json({ errmess: "Some Error Occured" });
@@ -84,6 +93,11 @@ router
         console.log(err);
         res.status(500).json({ errmess: "Some Error Occured" });
       });
+  })
+  .post("/verifyanswers", (req, res, next) => {
+    const { donetestid, questions, liveid, userid } = req.body;
+    console.log(donetestid, liveid, userid);
+    updateLiveLog(questions, donetestid, liveid, userid, res);
   });
 
 module.exports = router;
