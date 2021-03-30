@@ -1,8 +1,8 @@
 const db = require("../db/index");
 const { notNumerical, numerical } = require("../verifyAnswerType/index");
 
-const updateLog = (questions, donetestid, testid, userid, res) => {
-  const query = `INSERT INTO testquestions VALUES ('${donetestid}',$1,$2,'wrong',$3)`;
+const updateLiveLog = (questions, donetestid, testid, userid, res) => {
+  const query = `INSERT INTO livetestlog VALUES ('${donetestid}',$1,$2,'wrong',$3)`;
   var questionQueries = [];
   questions.forEach((question) => {
     questionQueries.push(db.query(query, question).catch((err) => err));
@@ -18,7 +18,7 @@ const updateLog = (questions, donetestid, testid, userid, res) => {
         totalWrong = 0,
         totalNonAttempted = 0;
       db.query(
-        `SELECT * FROM testquestions INNER JOIN questions ON testquestions.qid=questions.qid AND testquestions.donetestid='${donetestid}'`
+        `SELECT * FROM livetestlog INNER JOIN livetestquestions ON livetestlog.qid=livetestquestions.qid AND livetestlog.donetestid='${donetestid}'`
       ).then((respo) => {
         const answers = respo.rows;
         answers.forEach((answer) => {
@@ -35,7 +35,7 @@ const updateLog = (questions, donetestid, testid, userid, res) => {
               notAttemptedPromise.push(
                 db
                   .query(
-                    `UPDATE testquestions SET status='not attempted' WHERE qid=${answer.qid} AND donetestid='${donetestid}'`
+                    `UPDATE livetestlog SET status='not attempted' WHERE qid=${answer.qid} AND donetestid='${donetestid}'`
                   )
                   .catch((err) => err)
               );
@@ -51,7 +51,7 @@ const updateLog = (questions, donetestid, testid, userid, res) => {
               correctPromise.push(
                 db
                   .query(
-                    `UPDATE testquestions SET status='correct' WHERE qid=${answer.qid} AND donetestid='${donetestid}'`
+                    `UPDATE livetestlog SET status='correct' WHERE qid=${answer.qid} AND donetestid='${donetestid}'`
                   )
                   .catch((err) => err)
               );
@@ -78,7 +78,7 @@ const updateLog = (questions, donetestid, testid, userid, res) => {
               notAttemptedPromise.push(
                 db
                   .query(
-                    `UPDATE testquestions SET status='not attempted' WHERE qid=${answer.qid}`
+                    `UPDATE livetestlog SET status='not attempted' WHERE qid=${answer.qid}`
                   )
                   .catch((err) => err)
               );
@@ -94,7 +94,7 @@ const updateLog = (questions, donetestid, testid, userid, res) => {
               correctPromise.push(
                 db
                   .query(
-                    `UPDATE testquestions SET status='correct' WHERE qid=${answer.qid}`
+                    `UPDATE livetestlog SET status='correct' WHERE qid=${answer.qid}`
                   )
                   .catch((err) => err)
               );
@@ -113,7 +113,7 @@ const updateLog = (questions, donetestid, testid, userid, res) => {
         Promise.all(correctPromise).then((corEnd) => {
           Promise.all(notAttemptedPromise).then((naEnd) => {
             db.query(
-              "INSERT INTO usertest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)",
+              "INSERT INTO liveusertest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)",
               [
                 donetestid,
                 testid,
@@ -155,4 +155,4 @@ const updateLog = (questions, donetestid, testid, userid, res) => {
     });
 };
 
-module.exports = updateLog;
+module.exports = updateLiveLog;

@@ -2,6 +2,9 @@ var express = require("express");
 var router = express.Router();
 
 const userAuth = require("../userAuth/userAuth");
+const updateLiveLog = require("../updateLiveLog/index");
+
+const randomstring = require("randomstring");
 
 const db = require("../db");
 
@@ -24,7 +27,8 @@ router
       liveEndMonth,
       liveEndYear,
       liveEndDay;
-    db.query("SELECT * FROM livetest")
+    var liveid = req.body.liveid;
+    db.query("SELECT * FROM livetest WHERE liveid=$1", [liveid])
       .then((resp) => {
         liveStartMin = resp.rows[0].startminute;
         liveStartHour = resp.rows[0].starthour;
@@ -68,11 +72,17 @@ router
             [req.body.liveid]
           )
             .then((resp) => {
+              const donetestid = randomstring.generate({
+                length: 15,
+                charset: "alphabetic",
+              });
               const timeLeft =
                 (liveEndDate.getTime() - currentDate.getTime()) / 1000;
-              res
-                .status(200)
-                .json({ questions: resp.rows, timeLeft: timeLeft });
+              res.status(200).json({
+                donetestid: donetestid,
+                questions: resp.rows,
+                timeLeft: timeLeft,
+              });
             })
             .catch((err) => {
               res.status(500).json({ errmess: "Some Error Occured" });
@@ -83,6 +93,11 @@ router
         console.log(err);
         res.status(500).json({ errmess: "Some Error Occured" });
       });
+  })
+  .post("/verifyanswers", (req, res, next) => {
+    const { donetestid, questions, liveid, userid } = req.body;
+    console.log(donetestid, liveid, userid);
+    updateLiveLog(questions, donetestid, liveid, userid, res);
   });
 
 module.exports = router;
