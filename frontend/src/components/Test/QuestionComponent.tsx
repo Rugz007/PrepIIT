@@ -1,4 +1,4 @@
-import { Radio, Row, Col } from 'antd'
+import { Radio, Row, Col, RadioChangeEvent } from 'antd'
 import React from 'react'
 
 interface QuestionInterface {
@@ -11,10 +11,10 @@ interface QuestionInterface {
         latex: string,
         options: string[],
     } | undefined
-
+    onSelect  : ((e: RadioChangeEvent) => void),
 }
 
-export const QuestionComponent: React.FC<QuestionInterface> = ({ question }) => {
+export const QuestionComponent: React.FC<QuestionInterface> = ({ question ,onSelect}) => {
     var Latex = require('react-latex');
     const radioStyle = {
         borderRadius: '0px',
@@ -40,39 +40,17 @@ export const QuestionComponent: React.FC<QuestionInterface> = ({ question }) => 
 
             </Row>
             <Row>
-                <Radio.Group style={{ textAlign: 'left', width: '100%' }}>
-                    <Row style={radioContainerStyle}>
-                        <Col span={1}>
-                            <Radio.Button style={{ padding: "0 0.7rem", fontSize: '20px' }} name="A" value="A">A</Radio.Button>
+                <Radio.Group style={{ textAlign: 'left', width: '100%' }} onChange={e => onSelect(e)}>
+                    {question?.options.map((option, index) => (
+                        <Row style={radioContainerStyle}>
+                            <Col span={1}>
+                                <Radio.Button style={{ padding: "0 0.7rem", fontSize: '20px' }} name={option} value={option}>{(index + 10).toString(36).toUpperCase()}</Radio.Button>
+                            </Col>
+                            <Col span={23} style={radioStyle}>
+                                {option}
                         </Col>
-                        <Col span={23} style={radioStyle}>
-                            to rotate my fan
-                        </Col>
-                    </Row>
-                    <Row style={radioContainerStyle}>
-                        <Col span={1}>
-                            <Radio.Button style={{ padding: "0 0.7rem", fontSize: '20px' }} name="B" value="B">B</Radio.Button>
-                        </Col>
-                        <Col span={23} style={radioStyle}>
-                            to rotate my fan
-                        </Col>
-                    </Row>
-                    <Row style={radioContainerStyle}>
-                        <Col span={1}>
-                            <Radio.Button style={{ padding: "0 0.7rem", fontSize: '20px' }} name="C" value="C">C</Radio.Button>
-                        </Col>
-                        <Col span={23} style={radioStyle}>
-                            to rotate my fan
-                        </Col>
-                    </Row>
-                    <Row style={radioContainerStyle}>
-                        <Col span={1}>
-                            <Radio.Button style={{ padding: "0 0.7rem", fontSize: '20px' }} name="D" value="D">D</Radio.Button>
-                        </Col>
-                        <Col span={23} style={radioStyle}>
-                            to rotate my fan
-                        </Col>
-                    </Row>
+                        </Row>
+                    ))}
                 </Radio.Group>
             </Row>
         </div>
