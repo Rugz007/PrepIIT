@@ -30,142 +30,8 @@ export const Test: React.FC = () => {
     const [readInstructions, setReadInstructions] = useState(false)
     const [current, setCurrent] = useState<number>(1);
     const [tab, setTab] = useState("Physics")
-    var response: any = {
-        "userTestId": "BsbbHMgbPeDnewW",
-        "subjects": ['Physics', 'Chemistry', 'Maths'],
-        "Physics": [
-            {
-                "qid": 41825,
-                "statement": "Vanessa",
-                "img_path": "Trixi",
-                "type": "Maud",
-                "archive": "Jenilee",
-                "latex": "abc",
-                "marked_status": "Visited",
-                "options": [
-                    "Hello is this working",
-                    "b",
-                    "c"
-                ]
-            },
-            {
-                "qid": 40969,
-                "statement": "Lulita",
-                "img_path": "Joeann",
-                "type": "Renie",
-                "archive": "Raina",
-                "latex": "abc",
-                "options": [
-                    "a"
-                ]
-            },
-            {
-                "qid": 41332,
-                "statement": "Valeda",
-                "img_path": "Ardenia",
-                "type": "Collen",
-                "archive": "Liana",
-                "latex": "abc",
-                "options": [
-                    "Hello is this working",
-                    "b",
-                    "c"
-                ]
-            },
-            {
-                "qid": 42023,
-                "statement": "Rani",
-                "img_path": "Christy",
-                "type": "Christy",
-                "archive": "Alisha",
-                "latex": "abc",
-                "options": [
-                    "Hello is this working",
-                    "b",
-                    "c"
-                ]
-            },
-        ],
-        "Chemistry": [
-            {
-                "qid": 42059,
-                "statement": "Madelle",
-                "img_path": "Cassondra",
-                "type": "Letizia",
-                "archive": "Hannis",
-                "latex": "abc",
-                "options": [
-                    "Hello is this working",
-                    "b",
-                    "c"
-                ]
-            },
-            {
-                "qid": 41088,
-                "statement": "Peri",
-                "img_path": "Livvyy",
-                "type": "Addia",
-                "archive": "Annaliese",
-                "latex": "abc",
-                "options": [
-                    "a"
-                ]
-            },
-            {
-                "qid": 42123,
-                "statement": "Andeee",
-                "img_path": "Justinn",
-                "type": "Kimmy",
-                "archive": "Barbara",
-                "latex": "abc",
-                "options": [
-                    "Hello is this working",
-                    "b",
-                    "c"
-                ]
-            },
-        ],
-        "Maths": [
-            {
-                "qid": 42073,
-                "statement": "Damaris",
-                "img_path": "Jordan",
-                "type": "Gwyneth",
-                "archive": "Tani",
-                "latex": "abc",
-                "options": [
-                    "Hello is this working",
-                    "b",
-                    "c"
-                ]
-            },
-            {
-                "qid": 40920,
-                "statement": "Sibella",
-                "img_path": "Ida",
-                "type": "Vere",
-                "archive": "Kylynn",
-                "latex": "abc",
-                "options": [
-                    "a"
-                ]
-            },
-            {
-                "qid": 41998,
-                "statement": "Konstance",
-                "img_path": "Kenna",
-                "type": "Grier",
-                "archive": "Judy",
-                "latex": "abc",
-                "options": [
-                    "Hello is this working",
-                    "b",
-                    "c"
-                ]
-            },
-        ]
-    }
-    const [answers, setAnswers]: any = useState({});
+    const [response, setResponse] : any = useState(undefined)
+    const [answers, setAnswers]: any = useState(undefined);
     useEffect(() => {
         console.log("Hello world")
         localStorage.setItem("answers", JSON.stringify(answers))
@@ -181,11 +47,11 @@ export const Test: React.FC = () => {
                 "typeid":17
             },
         }).then(res => {
-            response = res.data
+            setResponse(res.data)
             let questionsMap: any = {}
-            response['subjects'].map((subject: any) =>
+            res.data['subjects'].map((subject: any) =>
             (
-                response[subject].map((item: any, index: number) => (
+                res.data[subject].map((item: any, index: number) => (
                     questionsMap[item['qid']] = [item['qid'], [], "", undefined]
                 ))
             ))
@@ -271,7 +137,7 @@ export const Test: React.FC = () => {
                         <Row>
                             <Card style={{ width: '100%', height: '74vh' }}>
                                 <Tabs onChange={onChangeTab}>
-                                    {response["subjects"].map((e: string, index: any) => (
+                                    {response && response["subjects"].map((e: string, index: any) => (
                                         <Tabs.TabPane tab={e} key={e} >
                                             <QuestionComponent onSelect={onSelectAnswer} question={response[e][current - 1]} />
                                         </Tabs.TabPane>
@@ -282,7 +148,7 @@ export const Test: React.FC = () => {
                     </Col>
                     <Col span={6}>
                         <Card style={{ margin: '0 6%' }}>
-                            <TestDetails questions={response[tab]} setCurrentFunction={changeCurrent} current={current} answers={answers} />
+                            {response!== undefined && <TestDetails questions={response[tab]} setCurrentFunction={changeCurrent} current={current} answers={answers} />}
                             <Button onClick={markForReview}>Mark For Review</Button>
                             <Popconfirm
                                 title="Are you sure you want to submit your test?"
