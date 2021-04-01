@@ -34,7 +34,7 @@ export const Courses: React.FC = () => {
                       />
                     </Col>
                     <Col lg={20} style={{ textAlign: "left" }}>
-                      <h1 style={{ fontSize: "3em", marginBottom: "0" }}>
+                      <h1 style={{ fontSize: "2em", marginBottom: "0" }}>
                         JEE Mains and Advanced
                       </h1>
                     </Col>
@@ -82,7 +82,7 @@ export const Courses: React.FC = () => {
                       />
                     </Col>
                     <Col lg={20} style={{ textAlign: "left" }}>
-                      <h1 style={{ fontSize: "3em", marginBottom: "0" }}>
+                      <h1 style={{ fontSize: "2em", marginBottom: "0" }}>
                         KVPY and Olympiad Program
                       </h1>
                     </Col>
@@ -145,7 +145,7 @@ export const Courses: React.FC = () => {
                       />
                     </Col>
                     <Col lg={20} style={{ textAlign: "left" }}>
-                      <h1 style={{ fontSize: "3em", marginBottom: "0" }}>
+                      <h1 style={{ fontSize: "2em", marginBottom: "0" }}>
                         Summer Foundation Program (STEM)
                       </h1>
                     </Col>
@@ -180,7 +180,7 @@ export const Courses: React.FC = () => {
                       />
                     </Col>
                     <Col lg={20} style={{ textAlign: "left" }}>
-                      <h1 style={{ fontSize: "3em", marginBottom: "0" }}>
+                      <h1 style={{ fontSize: "2em", marginBottom: "0" }}>
                         PrepiiT Test series
                       </h1>
                     </Col>

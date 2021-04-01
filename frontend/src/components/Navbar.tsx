@@ -3,6 +3,7 @@ import Layout, { Header } from "antd/lib/layout/layout";
 import React, { useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import UserContext from "../context/User/UserContext";
+import './Navbar.css'
 export const Navbar: React.FC = () => {
   const userContext = useContext(UserContext);
   const [current, setCurrent] = useState("Home");
@@ -28,11 +29,11 @@ export const Navbar: React.FC = () => {
                   <img alt="logo" src="logo.jpg" style={{ width: "55%" }} />
                 </Link>
               </Col>
-              <Col lg={16} xs={14} style={{ width: "100%" }}>
+              <Col lg={16} xs={14} style={{ width: "100%",backgroundColor: "white", color: "black" }}>
                 <Menu
-                  style={{ backgroundColor: "white", color: "black" }}
+                  style={{ backgroundColor: "white", color: "black" ,borderBottom:'0'}}
                   mode="horizontal"
-                  theme="dark"
+                  theme='dark'
                   selectedKeys={[current]}
                   onClick={onClick}
                 >
