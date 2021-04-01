@@ -21,19 +21,19 @@ class Routes extends React.Component {
         return (
             <Switch>
                 <Route path="/" exact component={HomePage} />
-                <Route path='/login' component={Login} />
-                <Route path='/register' component={Register} />
+                {/* <Route path='/login' component={Login} />
+                <Route path='/register' component={Register} /> */}
                 <Route path='/dashboard' component={Dashboard} />
                 <Route path='/about' component={About} />
                 <Route path='/contact' component={Contact} />
                 <Route path='/courses' component={Courses} />
                 <Route path='/faq' component={FAQ} />
-                <Route path='/test' component={Test}/>
+                {/* <Route path='/test' component={Test}/>
                 <Route path='/mytests' component={TestsPage}/>
                 <Route path='/testintruction' component={TestIntruction}/>
                 <Route path='/testanalysis' component={TestAnalysis} />
                 <Route path='/blogs' exact component={BlogList} />
-                <Route path='/blogs/:id' component={BlogPage} />
+                <Route path='/blogs/:id' component={BlogPage} /> */}
                 <Route component={Error404} />
             </Switch>
         );

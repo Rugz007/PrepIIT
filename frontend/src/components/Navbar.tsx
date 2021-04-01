@@ -22,12 +22,13 @@ export const Navbar: React.FC = () => {
         <Layout>
           <Header style={{ backgroundColor: "white"}}>
             <Row style={{ height: "100%" }}>
-              <Col span={4} style={{ height: "100%" }}>
+              <Col lg={2}/>
+              <Col lg={2} md ={4} sm={4} xs={8}style={{ height: "100%" }}>
                 <Link to="/" onClick={onClickLogo}>
-                  <img alt="logo" src="logo.jpg" style={{ height: "98%" }} />
+                  <img alt="logo" src="logo.jpg" style={{ width: "55%" }} />
                 </Link>
               </Col>
-              <Col span={16} style={{ height: "100%" }}>
+              <Col lg={16} xs={14} style={{ width: "100%" }}>
                 <Menu
                   style={{ backgroundColor: "white", color: "black" }}
                   mode="horizontal"
@@ -52,7 +53,7 @@ export const Navbar: React.FC = () => {
                   </Menu.Item>
                 </Menu>
               </Col>
-              <Col span={4} style={{ height: "100%" }}>
+              {/* <Col lg={4} xs={0} style={{ height: "100%" }}>
                 {userContext.user != null ? (
                   <Dropdown
                     overlay={
@@ -99,7 +100,7 @@ export const Navbar: React.FC = () => {
                     <Link to="/login">TAKE A TEST</Link>
                   </Button>
                 )}
-              </Col>
+              </Col> */}
             </Row>
           </Header>
         </Layout>
