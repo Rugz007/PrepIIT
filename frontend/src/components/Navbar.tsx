@@ -3,6 +3,7 @@ import Layout, { Header } from "antd/lib/layout/layout";
 import React, { useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import UserContext from "../context/User/UserContext";
+import './Navbar.css'
 export const Navbar: React.FC = () => {
   const userContext = useContext(UserContext);
   const [current, setCurrent] = useState("Home");
@@ -22,16 +23,17 @@ export const Navbar: React.FC = () => {
         <Layout>
           <Header style={{ backgroundColor: "white"}}>
             <Row style={{ height: "100%" }}>
-              <Col span={4} style={{ height: "100%" }}>
+              <Col lg={2}/>
+              <Col lg={2} md ={4} sm={4} xs={8}style={{ height: "100%" }}>
                 <Link to="/" onClick={onClickLogo}>
-                  <img alt="logo" src="logo.jpg" style={{ height: "98%" }} />
+                  <img alt="logo" src="logo.jpg" style={{ width: "55%" }} />
                 </Link>
               </Col>
-              <Col span={16} style={{ height: "100%" }}>
+              <Col lg={16} xs={14} style={{ width: "100%",backgroundColor: "white", color: "black" }}>
                 <Menu
-                  style={{ backgroundColor: "white", color: "black" }}
+                  style={{ backgroundColor: "white", color: "black" ,borderBottom:'0'}}
                   mode="horizontal"
-                  theme="dark"
+                  theme='dark'
                   selectedKeys={[current]}
                   onClick={onClick}
                 >
@@ -52,7 +54,7 @@ export const Navbar: React.FC = () => {
                   </Menu.Item>
                 </Menu>
               </Col>
-              <Col span={4} style={{ height: "100%" }}>
+              {/* <Col lg={4} xs={0} style={{ height: "100%" }}>
                 {userContext.user != null ? (
                   <Dropdown
                     overlay={
@@ -99,7 +101,7 @@ export const Navbar: React.FC = () => {
                     <Link to="/login">TAKE A TEST</Link>
                   </Button>
                 )}
-              </Col>
+              </Col> */}
             </Row>
           </Header>
         </Layout>

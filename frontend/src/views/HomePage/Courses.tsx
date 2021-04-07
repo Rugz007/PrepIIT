@@ -8,11 +8,11 @@ export const Courses: React.FC = () => {
   return (
     <Layout>
       <Content style={{ backgroundColor: "#1c2229" }}>
-        <Row style={{ height: "30vh" }}>
+        <Row>
           <Col
-            span={11}
+            lg={24}
             style={{
-              fontSize: "5rem",
+              fontSize: "3rem",
               margin: "1.8% auto",
             }}
           >
@@ -21,20 +21,20 @@ export const Courses: React.FC = () => {
           </Col>
         </Row>
         <Row style={{ paddingBottom: "3%" }}>
-          <Col span={4} />
-          <Col span={16}>
+          <Col lg={4} />
+          <Col lg={16}>
             <Collapse>
               <Panel
                 header={
                   <Row>
-                    <Col span={4}>
+                    <Col lg={4}>
                       <img
                         alt="jee"
                         src="https://img.icons8.com/office/70/000000/engineering.png"
                       />
                     </Col>
-                    <Col span={20} style={{ textAlign: "left" }}>
-                      <h1 style={{ fontSize: "3em", marginBottom: "0" }}>
+                    <Col lg={20} style={{ textAlign: "left" }}>
+                      <h1 style={{ fontSize: "2em", marginBottom: "0" }}>
                         JEE Mains and Advanced
                       </h1>
                     </Col>
@@ -75,14 +75,14 @@ export const Courses: React.FC = () => {
               <Panel
                 header={
                   <Row>
-                    <Col span={4}>
+                    <Col lg={4}>
                       <img
                         alt="kvpy"
                         src="https://img.icons8.com/officel/70/000000/microscope.png"
                       />
                     </Col>
-                    <Col span={20} style={{ textAlign: "left" }}>
-                      <h1 style={{ fontSize: "3em", marginBottom: "0" }}>
+                    <Col lg={20} style={{ textAlign: "left" }}>
+                      <h1 style={{ fontSize: "2em", marginBottom: "0" }}>
                         KVPY and Olympiad Program
                       </h1>
                     </Col>
@@ -107,13 +107,13 @@ export const Courses: React.FC = () => {
               <Panel
                 header={
                   <Row>
-                    <Col span={4}>
+                    <Col lg={4}>
                       <img
                         alt="NDA"
                         src="https://img.icons8.com/officel/70/000000/staff-sergeant-ssg.png"
                       />
                     </Col>
-                    <Col span={20} style={{ textAlign: "left" }}>
+                    <Col lg={20} style={{ textAlign: "left" }}>
                       <h1 style={{ fontSize: "3em", marginBottom: "0" }}>
                         NDA and NA
                       </h1>
@@ -138,14 +138,14 @@ export const Courses: React.FC = () => {
               <Panel
                 header={
                   <Row>
-                    <Col span={4}>
+                    <Col lg={4}>
                       <img
                         alt="stem"
                         src="https://img.icons8.com/officel/70/000000/knowledge-sharing.png"
                       />
                     </Col>
-                    <Col span={20} style={{ textAlign: "left" }}>
-                      <h1 style={{ fontSize: "3em", marginBottom: "0" }}>
+                    <Col lg={20} style={{ textAlign: "left" }}>
+                      <h1 style={{ fontSize: "2em", marginBottom: "0" }}>
                         Summer Foundation Program (STEM)
                       </h1>
                     </Col>
@@ -173,14 +173,14 @@ export const Courses: React.FC = () => {
               <Panel
                 header={
                   <Row>
-                    <Col span={4}>
+                    <Col lg={4}>
                       <img
                         alt="test"
                         src="https://img.icons8.com/officel/70/000000/math.png"
                       />
                     </Col>
-                    <Col span={20} style={{ textAlign: "left" }}>
-                      <h1 style={{ fontSize: "3em", marginBottom: "0" }}>
+                    <Col lg={20} style={{ textAlign: "left" }}>
+                      <h1 style={{ fontSize: "2em", marginBottom: "0" }}>
                         PrepiiT Test series
                       </h1>
                     </Col>
@@ -207,7 +207,7 @@ export const Courses: React.FC = () => {
             </Collapse>
             <Divider style={{ marginTop: "0" }} />
           </Col>
-          <Col span={4} />
+          <Col lg={4} />
         </Row>
       </Content>
     </Layout>

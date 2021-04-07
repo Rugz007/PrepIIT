@@ -8,8 +8,8 @@ export const Footer: React.FC = () => {
     return (
         <>
             {location.pathname === '/test' ? <></> : <Row style={{ backgroundColor: '#FFFFFF', color: 'black', paddingTop: '1%', textAlign: 'left' }}>
-                <Col span={3} />
-                <Col span={6} style={{ padding: '0 3%' }}>
+                <Col lg={3} />
+                <Col lg={6} style={{ padding: '0 3%' }}>
                     <h1 style={{ color: 'black', marginBottom: '0' }}>Social Media</h1>
                     <hr />
                     <div >
@@ -17,9 +17,9 @@ export const Footer: React.FC = () => {
                         <a href='https://www.instagram.com/prepiit/' rel="noopener noreferrer" target="_blank"><img alt='instagram' src="https://img.icons8.com/fluent/48/000000/instagram-new.png" /></a>
                         <a href='https://in.linkedin.com/in/prepiit' rel="noopener noreferrer" target="_blank"><img alt='linkedin' src="https://img.icons8.com/fluent/48/000000/linkedin.png" /></a>
                         <a href='https://www.youtube.com/channel/UCHZ1Uz5irKGZrEPXQYN92mA' rel="noopener noreferrer" target="_blank"><img alt='youtube' src="https://img.icons8.com/fluent/48/000000/youtube-play.png" /></a>
-                    </div>
+                    </div>  
                 </Col>
-                <Col span={6} style={{ padding: '0 3%' }}>
+                <Col lg={6} style={{ padding: '0 3%' }}>
                     <h1 style={{ color: 'black', marginBottom: '0' }}>Quick Links</h1>
                     <hr />
                     <ul>
@@ -37,7 +37,7 @@ export const Footer: React.FC = () => {
                         </li>
                     </ul>
                 </Col>
-                <Col span={6} style={{ padding: '0 3%' }}>
+                <Col lg={6} style={{ padding: '0 3%' }}>
                     <h1 style={{ color: 'black', marginBottom: '0' }}>Contact</h1>
                     <hr />
                     <img src='logo.jpg' alt='logo' style={{ height: '60px' }} />
@@ -52,7 +52,7 @@ export const Footer: React.FC = () => {
                 </b>
                     </p>
                 </Col>
-                <Col span={3} />
+                <Col lg={3} />
             </Row>}
         </>
     );

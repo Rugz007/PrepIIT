@@ -9,7 +9,7 @@ function LeftSide(props: {
 }) {
   return (
     <Row>
-      <Col span={2} />
+      <Col lg={2} />
       <Col
         style={{
           fontSize: "1.5rem",
@@ -17,7 +17,7 @@ function LeftSide(props: {
           marginTop: "25vh",
           lineHeight: 2,
         }}
-        span={9}
+        lg={9}
         data-aos="fade-up" data-aos-delay="500"
       >
         <Row style={{ fontSize: "1.8rem" }}>
@@ -25,8 +25,8 @@ function LeftSide(props: {
         </Row>
         {props.description}
       </Col>
-      <Col span={3} />
-      <Col span={4} style={{ marginTop: "15vh" }} data-aos="fade-up" data-aos-delay="500">
+      <Col lg={3} />
+      <Col lg={4} style={{ marginTop: "15vh" }} data-aos="fade-up" data-aos-delay="500">
         <img
           style={{
             height: "50vh",
@@ -48,8 +48,8 @@ function RightSide(props: {
 }) {
   return (
     <Row>
-      <Col span={2} />
-      <Col span={9} style={{ marginTop: "15vh" }} data-aos="fade-up" data-aos-delay="500">
+      <Col lg={2} />
+      <Col lg={9} style={{ marginTop: "15vh" }} data-aos="fade-up" data-aos-delay="500">
         <img
           style={{
             height: "50vh",
@@ -60,15 +60,15 @@ function RightSide(props: {
           alt="insertimage"
         ></img>
       </Col>
-      <Col span={3} />
+      <Col lg={3} />
       <Col
         style={{
           fontSize: "1.5rem",
           textAlign: "left",
-          marginTop: "20vh",
+          marginTop: "20vh",  
           lineHeight: 2,
         }}
-        span={9}
+        lg={9}
         data-aos="fade-up" data-aos-delay="500"
       >
         <Row style={{ fontSize: "1.8rem" }}>
@@ -86,9 +86,9 @@ export const About: React.FC = () => {
       <Content style={{ backgroundColor: "#1c2229" }}>
         <Row style={{ height: "100vh" }}>
           <Col
-            span={12}
+            lg={12}
             style={{
-              fontSize: "6rem",
+              fontSize: "3rem",
               margin: "1.8% auto",
             }}
           >

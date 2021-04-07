@@ -6,11 +6,11 @@ export const FAQ: React.FC = () => {
   return (
     <Layout>
       <Content style={{ backgroundColor: "#1c2229" }}>
-        <Row style={{ height: "30vh" }}>
+        <Row>
           <Col
-            span={14}
+            lg={14}
             style={{
-              fontSize: "5rem",
+              fontSize: "3rem",
               margin: "1.8% auto",
             }}
           >
@@ -19,9 +19,9 @@ export const FAQ: React.FC = () => {
           </Col>
         </Row>
         <Row style={{ paddingBottom: "3%" }}>
-          <Col span={4} />
-          <Col span={16}>
-            <h1 style={{ fontSize: "3rem" }}>
+          <Col lg={4} />
+          <Col lg={16}>
+            <h1 style={{ fontSize: "2rem" }}>
               Common Questions asked by Students
             </h1>
             <Collapse style={{ textAlign: "left" }}>
@@ -81,12 +81,12 @@ export const FAQ: React.FC = () => {
             </Collapse>
             <Divider style={{ marginTop: "0" }} />
           </Col>
-          <Col span={4} />
+          <Col lg={4} />
         </Row>
         <Row style={{ paddingBottom: "3%" }}>
-          <Col span={4} />
-          <Col span={16}>
-            <h1 style={{ fontSize: "3rem" }}>
+          <Col lg={4} />
+          <Col lg={16}>
+            <h1 style={{ fontSize: "2rem" }}>
               Common Questions asked by Parents
             </h1>
             <Collapse style={{ textAlign: "left" }}>
@@ -170,7 +170,7 @@ export const FAQ: React.FC = () => {
             </Collapse>
             <Divider style={{ marginTop: "0" }} />
           </Col>
-          <Col span={4} />
+          <Col lg={4} />
         </Row>
       </Content>
     </Layout>

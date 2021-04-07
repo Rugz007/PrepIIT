@@ -29,7 +29,7 @@ export const EnquiryForm: React.FC = () => {
   return (
     <Card
       bordered={false}
-      style={{ height: "100%", borderRadius: "17px", marginLeft: "3%" }}
+      style={{ height: "100%", borderRadius: "17px",  }}
     >
       <h1 style={{ fontSize: "40px", marginBottom: "0" }}>
         <b>Enquiry Form</b>
