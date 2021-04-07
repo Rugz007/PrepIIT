@@ -13,7 +13,7 @@ router
     var phone_no = req.body.phone_no;
     var address = req.body.address;
     var standard = req.body.class;
-    db.query(`INSERT INTO users VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7)`, [
+    db.query(`INSERT INTO users VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,NULL)`, [
       name,
       password,
       email,
@@ -44,9 +44,15 @@ router
           var token = jwt.sign(resp.rows[0], process.env.SECRET_KEY, {
             expiresIn: "365d",
           });
+          var currenttestid = resp.rows[0].currenttestid;
           res
             .status(200)
-            .json({ success: true, token: token, user: resp.rows[0] });
+            .json({
+              success: true,
+              token: token,
+              user: resp.rows[0],
+              currenttestid: currenttestid,
+            });
         } else {
           res.status(403).json({
             success: false,

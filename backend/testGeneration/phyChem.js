@@ -1,13 +1,23 @@
 const randomstring = require("randomstring");
 const db = require("../db");
 
-const phyChem = (testObject, res) => {
+const phyChem = (testObject, userid, res) => {
   var phyQues = [];
   var chemQues = [];
   const userTestId = randomstring.generate({
     length: 15,
     charset: "alphabetic",
   });
+  db.query("UPDATE users SET currenttestid=$1 WHERE userid=$2", [
+    userTestId,
+    userid,
+  ])
+    .then((resp) => {
+      console.log("Success");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   const mcqQuestions = testObject.mcqdata ? testObject.mcqdata[0] : 0;
   db.query(
     `SELECT qid,statement,img_path,type,archive,latex,options FROM questions WHERE is_reported=FALSE OR subject='physics' ORDER BY RANDOM() LIMIT ${mcqQuestions}`

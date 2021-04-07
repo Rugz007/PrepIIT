@@ -19,15 +19,27 @@ router.use(userAuth);
 
 router
   .get("/test", (req, res, next) => {
+    var availableTest = [];
+    var givenTest = [];
+    const userid = req.headers.userid;
     db.query("SELECT testid,testname,subjectsallowed FROM testtype").then(
       (resp) => {
-        res.status(200).json(resp.rows);
-        res.end();
+        availableTest.push(resp.rows);
+        db.query("SELECT * FROM usertest WHERE userid=$1", [userid]).then(
+          (respo) => {
+            givenTest.push(respo);
+            res.status(200).json({
+              availableTest: availableTest,
+              givenTest: givenTest,
+            });
+          }
+        );
       }
     );
   })
   .post("/test", (req, res, next) => {
     const typeid = req.body.typeid;
+    const userid = req.body.userid;
     db.query("SELECT * FROM testtype WHERE testid=$1", [typeid])
       .then((resp) => {
         const testObject = resp.rows[0];
@@ -37,19 +49,19 @@ router
         var chemistryAllowed = subjects.includes("chemistry");
         var mathAllowed = subjects.includes("maths");
         if (physicsAllowed && chemistryAllowed && mathAllowed) {
-          allThree(testObject, res);
+          allThree(testObject, userid, res);
         } else if (physicsAllowed && chemistryAllowed && !mathAllowed) {
-          phyChem(testObject, res);
+          phyChem(testObject, userid, res);
         } else if (physicsAllowed && !chemistryAllowed && mathAllowed) {
-          phyMath(testObject, res);
+          phyMath(testObject, userid, res);
         } else if (!physicsAllowed && chemistryAllowed && mathAllowed) {
-          chemMath(testObject, res);
+          chemMath(testObject, userid, res);
         } else if (physicsAllowed && !chemistryAllowed && !mathAllowed) {
-          physics(testObject, res);
+          physics(testObject, userid, res);
         } else if (!physicsAllowed && chemistryAllowed && !mathAllowed) {
-          chemistry(testObject, res);
+          chemistry(testObject, userid, res);
         } else if (!physicsAllowed && !chemistryAllowed && mathAllowed) {
-          math(testObject, res);
+          math(testObject, userid, res);
         }
       })
       .catch((err) => {
