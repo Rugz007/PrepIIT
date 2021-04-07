@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { History } from "history";
-import env from "react-dotenv";
+const { REACT_APP_NODEJS_URL } = process.env;
 
 interface EFormModalProps {
   EForm: {
@@ -24,7 +24,7 @@ async function deleteEnquiry(
   try {
     const response = await axios({
       method: "DELETE",
-      url: `https://${env.NODEJS_URL}/admin/enquiry`,
+      url: `https://${REACT_APP_NODEJS_URL}/admin/enquiry`,
       headers: {
         authorization: "Bearer " + localStorage.getItem("token"),
       },

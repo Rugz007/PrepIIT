@@ -8,8 +8,7 @@ import UserState from './context/User/UserState';
 ReactDOM.render(
   <React.StrictMode>
     <UserState>
-    <App />
-
+        <App />
     </UserState>
   </React.StrictMode>,
   document.getElementById('root')

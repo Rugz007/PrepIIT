@@ -2,7 +2,7 @@ import { Card, Table } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { QuestionModal } from "./QuestionModal";
-import env from "react-dotenv";
+const { REACT_APP_NODEJS_URL } = process.env;
 
 interface QuestionInterface {
   qid: number;
@@ -24,7 +24,7 @@ export const ReportedQuestions: React.FC = () => {
     console.log(Question.is_reported);
     try {
       const response = await axios.post(
-        `https://${env.NODEJS_URL}/admin/editquestion`,
+        `https://${REACT_APP_NODEJS_URL}/admin/editquestion`,
         {
           qid: Question.qid,
           statement: Question.statement,
@@ -56,7 +56,7 @@ export const ReportedQuestions: React.FC = () => {
 
   const fetchReportedDetails = async () => {
     try {
-      const res = await axios.get(`https://${env.NODEJS_URL}/admin/reported`, {
+      const res = await axios.get(`https://${REACT_APP_NODEJS_URL}/admin/reported`, {
         headers: {
           authorization: "Bearer " + localStorage.getItem("token"),
         },

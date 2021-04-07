@@ -39,6 +39,7 @@ export const Dashboard: React.FC = () => {
               defaultOpenKeys={["profile"]}
               style={{ height: "100%", borderRight: 0 }}
               onSelect={onChange}
+              theme='light'
             >
               <SubMenu key="profile" icon={<UserOutlined />} title="My Profile">
                 <Menu.Item key="4">View Profile</Menu.Item>

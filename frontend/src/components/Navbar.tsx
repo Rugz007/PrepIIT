@@ -17,7 +17,7 @@ export const Navbar: React.FC = () => {
   };
   return (
     <>
-      {location.pathname === "/test" ? (
+      {location.pathname.split("/")[1] === "test" ? (
         <></>
       ) : (
         <Layout>
@@ -36,6 +36,7 @@ export const Navbar: React.FC = () => {
                   theme='dark'
                   selectedKeys={[current]}
                   onClick={onClick}
+                  className="sideMenu"
                 >
                   <Menu.Item key="home">
                     <Link to="/">Home</Link>
@@ -54,7 +55,7 @@ export const Navbar: React.FC = () => {
                   </Menu.Item>
                 </Menu>
               </Col>
-              {/* <Col lg={4} xs={0} style={{ height: "100%" }}>
+              <Col lg={4} xs={0} style={{ height: "100%" }}>
                 {userContext.user != null ? (
                   <Dropdown
                     overlay={
@@ -101,7 +102,7 @@ export const Navbar: React.FC = () => {
                     <Link to="/login">TAKE A TEST</Link>
                   </Button>
                 )}
-              </Col> */}
+              </Col>
             </Row>
           </Header>
         </Layout>

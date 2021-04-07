@@ -17,7 +17,6 @@ import { UploadOutlined } from "@ant-design/icons";
 import "./QuestionModal.css";
 const { Option } = Select;
 
-//TODO: Make use Select
 interface QuestionInterface {
   Question?: {
     qid: number | undefined;
