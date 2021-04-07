@@ -2,7 +2,7 @@ const db = require("../db/index");
 const { notNumerical, numerical } = require("../verifyAnswerType/index");
 
 const updateLog = (questions, donetestid, testid, userid, res) => {
-  const query = `INSERT INTO testquestions VALUES ('${donetestid}',$1,$2,'wrong',$3)`;
+  const query = `INSERT INTO testquestions VALUES ('${donetestid}',$1,$2,'wrong',$3,$4)`;
   var questionQueries = [];
   questions.forEach((question) => {
     questionQueries.push(db.query(query, question).catch((err) => err));
