@@ -17,7 +17,7 @@ export const TestDetails: React.FC<TestDetailsProps> = ({ current, questions, se
             return <Button shape='circle' type='primary' size='large'>{index + 1}</Button>
         }
         else {
-            if (answers[qID][3] !== undefined) {
+            if (answers[qID][3] !== "Not Visited") {
                 switch (answers[qID][3]) {
                     case 'Marked': return <Button shape='circle' type="primary" style={{ borderColor: 'green' ,backgroundColor:'green'}} onClick={() => goToIndex(index)} size='large' >{index + 1}</Button>
                     case 'Visited': return <Button shape='circle' style={{ color: '#ff8000', borderColor: '#ff8000' }} onClick={() => goToIndex(index)} size='large' >{index + 1}</Button>

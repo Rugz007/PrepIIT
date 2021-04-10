@@ -2,7 +2,7 @@ import { Card, Table, Button, Popover, Popconfirm } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { EFormModal } from "./EFormModal";
-import env from "react-dotenv";
+const { REACT_APP_NODEJS_URL } = process.env;
 
 interface EFormInterface {
   name: string;
@@ -24,7 +24,7 @@ export const EForms: React.FC = () => {
 
   const fetchForms = async () => {
     try {
-      const res = await axios.get(`https://${env.NODEJS_URL}/admin/enquiry`, {
+      const res = await axios.get(`https://${REACT_APP_NODEJS_URL}/admin/enquiry`, {
         headers: {
           authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -42,7 +42,7 @@ export const EForms: React.FC = () => {
     try {
       const response = await axios({
         method: "DELETE",
-        url: `https://${env.NODEJS_URL}/admin/enquiry`,
+        url: `https://${REACT_APP_NODEJS_URL}/admin/enquiry`,
         headers: {
           authorization: "Bearer " + localStorage.getItem("token"),
         },

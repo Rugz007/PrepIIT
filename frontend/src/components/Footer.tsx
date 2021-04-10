@@ -43,7 +43,7 @@ export const Footer: React.FC = () => {
                     <img src='logo.jpg' alt='logo' style={{ height: '60px' }} />
                     <p style={{ textAlign: 'left' }}>
                         <h3 style={{ color: 'black', marginBottom: '0' }}>Center for excellence in STEM education</h3>
-                304/305 Fortuna Business Center, opposite McDonald's, Near Shivar Garden, Pimple Saudagar, Pune 411027
+                        Fortuna Business centre 303, 304, Shivar Garden Road, Pune, Maharashtra 411027
                 <br />
                         <b>
                             <PhoneOutlined />: 9890401239 | 9518512567

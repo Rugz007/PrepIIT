@@ -2,7 +2,7 @@ import { Card, Table, Button, Space, message } from "antd";
 import React, { useState } from "react";
 import { QuestionModal } from "./QuestionModal";
 import axios from "axios";
-import env from "react-dotenv";
+const { REACT_APP_NODEJS_URL } = process.env;
 interface QuestionInterface {
   qid: number;
   statement: string;
@@ -28,7 +28,7 @@ export const AddQuestion: React.FC = () => {
         setQuestions([...questions, values]);
       }
       const response = await axios.post(
-        `https://${env.NODEJS_URL}/admin/question`,
+        `https://${REACT_APP_NODEJS_URL}/admin/question`,
         {
           statement: values.statement,
           img_path: values.img_path,

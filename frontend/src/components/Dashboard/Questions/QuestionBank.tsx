@@ -2,7 +2,7 @@ import { Card, Table, Button, Popconfirm } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { QuestionModal } from "./QuestionModal";
-import env from "react-dotenv";
+const { REACT_APP_NODEJS_URL } = process.env;
 
 interface QuestionInterface {
   qid: number;
@@ -28,7 +28,7 @@ export const QuestionBank: React.FC = () => {
     console.log(Question);
     try {
       const response = await axios.post(
-        `https://${env.NODEJS_URL}/admin/editquestion`,
+        `https://${REACT_APP_NODEJS_URL}/admin/editquestion`,
         {
           qid: Question.qid,
           statement: Question.statement,
@@ -54,7 +54,7 @@ export const QuestionBank: React.FC = () => {
   };
   const fetchBankDetails = async () => {
     try {
-      const res = await axios.get(`https://${env.NODEJS_URL}/admin/question`, {
+      const res = await axios.get(`https://${REACT_APP_NODEJS_URL}/admin/question`, {
         headers: {
           authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -75,7 +75,7 @@ export const QuestionBank: React.FC = () => {
   ) => {
     try {
       const response = await axios.delete(
-        `https://${env.NODEJS_URL}/admin/question`,
+        `https://${REACT_APP_NODEJS_URL}/admin/question`,
         {
           headers: {
             authorization: "Bearer " + localStorage.getItem("token"),

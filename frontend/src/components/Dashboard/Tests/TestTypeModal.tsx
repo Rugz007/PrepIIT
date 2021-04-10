@@ -2,7 +2,7 @@ import { Button, Modal, Form, Select, Space, Input } from "antd";
 import React, { useState } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
-import env from "react-dotenv";
+const { REACT_APP_NODEJS_URL } = process.env;
 
 const { Option } = Select;
 interface TestTypeInterface {
@@ -31,7 +31,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test,buttonText }) 
     console.log(values);
     try {
       const response = await axios.post(
-        `https://${env.NODEJS_URL}admin/testtype`,
+        `https://${REACT_APP_NODEJS_URL}admin/testtype`,
         {
           values,
         },
