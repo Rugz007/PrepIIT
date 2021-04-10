@@ -3,6 +3,7 @@ const db = require("../db");
 
 const chemistry = (testObject, userid, res) => {
   var chemQues = [];
+  var questionPromise = [];
   const userTestId = randomstring.generate({
     length: 15,
     charset: "alphabetic",
@@ -60,6 +61,33 @@ const chemistry = (testObject, userid, res) => {
                 subjects: ["Chemistry"],
                 Chemistry: chemQues,
               });
+              chemQues.forEach((question) => {
+                questionPromise.push(
+                  db
+                    .query(
+                      "INSERT INTO tempquestioncache VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+                      [
+                        userTestId,
+                        question.qid,
+                        question.statement,
+                        question.img_path,
+                        question.type,
+                        question.subject,
+                        question.archive,
+                        question.latex,
+                        question.options,
+                      ]
+                    )
+                    .catch((err) => err)
+                );
+              });
+              Promise.all(questionPromise)
+                .then((resp) => {
+                  console.log("Inserted Successfully");
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
             });
           });
         });
