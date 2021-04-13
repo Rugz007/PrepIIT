@@ -4,6 +4,7 @@ const db = require("../db");
 const phyChem = (testObject, userid, res) => {
   var phyQues = [];
   var chemQues = [];
+  var questionPromise = [];
   const userTestId = randomstring.generate({
     length: 15,
     charset: "alphabetic",
@@ -98,13 +99,59 @@ const phyChem = (testObject, userid, res) => {
                           `SELECT qid,statement,img_path,type,archive,latex,options FROM questions WHERE is_reported=FALSE OR subject='chemistry' ORDER BY RANDOM() LIMIT ${matchColumnQuestions}`
                         ).then((resp) => {
                           if (resp.rows) chemQues = chemQues.concat(resp.rows);
-
                           res.json({
                             userTestId: userTestId,
                             subjects: ["Physics", "Chemistry"],
                             Physics: phyQues,
                             Chemistry: chemQues,
                           });
+                          phyQues.forEach((question) => {
+                            questionPromise.push(
+                              db
+                                .query(
+                                  "INSERT INTO tempquestioncache VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+                                  [
+                                    userTestId,
+                                    question.qid,
+                                    question.statement,
+                                    question.img_path,
+                                    question.type,
+                                    question.subject,
+                                    question.archive,
+                                    question.latex,
+                                    question.options,
+                                  ]
+                                )
+                                .catch((err) => err)
+                            );
+                          });
+                          chemQues.forEach((question) => {
+                            questionPromise.push(
+                              db
+                                .query(
+                                  "INSERT INTO tempquestioncache VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+                                  [
+                                    userTestId,
+                                    question.qid,
+                                    question.statement,
+                                    question.img_path,
+                                    question.type,
+                                    question.subject,
+                                    question.archive,
+                                    question.latex,
+                                    question.options,
+                                  ]
+                                )
+                                .catch((err) => err)
+                            );
+                          });
+                          Promise.all(questionPromise)
+                            .then((resp) => {
+                              console.log("Inserted Successfully");
+                            })
+                            .catch((err) => {
+                              console.log(err);
+                            });
                         });
                       });
                     });
