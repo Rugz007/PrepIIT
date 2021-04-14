@@ -119,6 +119,7 @@ const updateLog = (questions, donetestid, testid, userid, res) => {
               const rightMarks = respo.rows.rightmarks;
               const wrongMarks = respo.rows.wrongmarks;
               const naMarks = respo.rows.namarks;
+              console.log(respo.rows);
               const phyCorrectMarks = rightMarks * phy[0];
               const phyWrongMarks = wrongMarks * phy[1];
               const phyNaMarks = naMarks * phy[2];
