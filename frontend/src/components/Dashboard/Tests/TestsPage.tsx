@@ -1,16 +1,28 @@
-import { Row, Col, List, Collapse, Tabs,Table, Button } from 'antd';
+import { Row, Col, List, Collapse, Tabs, Table, Button } from 'antd';
 import axios from 'axios';
-import React, { useState, useEffect,useContext } from 'react'
-import { TestCard } from '../../components/Test/TestCard';
-import UserContext from '../../context/User/UserContext';
+import React, { useState, useEffect, useContext } from 'react'
+import { TestCard } from '../../Test/TestCard';
+import UserContext from '../../../context/User/UserContext';
 const { REACT_APP_NODEJS_URL } = process.env;
 
 const { Panel } = Collapse;
 
-interface TestCardProps {
+interface Test {
   testid: number,
   testname: string,
   subjectsallowed: string[],
+}
+interface TestCardProps {
+  availableTest: Array<Array<Test>>,
+  givenTest: any
+  // givenTest: [[
+  //   {
+  //     testid: number,
+  //     testname: string,
+  //     subjectsallowed: string[],
+  //   }
+  // ]]
+
 }
 
 export const TestsPage: React.FC = () => {
@@ -22,7 +34,7 @@ export const TestsPage: React.FC = () => {
     {
       title: 'Test Name',
       dataIndex: 'name',
-      key: 'name',
+      key: 'donetestid',
     },
     {
       title: 'Test Subjects',
@@ -43,31 +55,31 @@ export const TestsPage: React.FC = () => {
     },
   ];
   const getTests = async () => {
-    if(userContext.user)
-    {
+    if (userContext.user) {
       try {
         const res = await axios.get(`https://${REACT_APP_NODEJS_URL}/secure/test`, {
           headers: {
             authorization: "Bearer " + localStorage.getItem("token"),
-            userid : userContext.user.userid
+            userid: userContext.user.userid
           },
         });
         console.log(res.data);
+        //TODO: Change is back to availableTest
         setTests(res.data);
       } catch (e) {
         console.log("Tests not Loaded");
       }
     }
-    
+
   }
-  const [tests, setTests] = useState<TestCardProps[] | undefined | null>(null)
+  const [tests, setTests] = useState<TestCardProps | undefined | null>(null)
   return (
     <Row style={{ minHeight: '95vh' }}>
-      <Col span={2} />
-      <Col span={20} style={{ marginTop: '2%' }}>
-        <Tabs>
+      <Col span={24}><h1 style={{ fontSize: "40px", textAlign: "left" ,width:'100%'}}>Tests</h1></Col>
+      <Col span={24}>
+      {tests && <Tabs style={{ textAlign: 'center' }}>
           <Tabs.TabPane tab="Available Tests" key="1">
-            {tests && <Row>
+            <Row>
               <List
                 grid={{
                   gutter: 16,
@@ -78,21 +90,25 @@ export const TestsPage: React.FC = () => {
                   xl: 3,
                   xxl: 3,
                 }}
-                dataSource={tests}
+                dataSource={tests.availableTest[0]}
                 renderItem={item => (
                   <List.Item  >
                     <TestCard test={item} />
                   </List.Item>
                 )}
               />
-            </Row>}
+            </Row>
           </Tabs.TabPane>
           <Tabs.TabPane tab="Attempted Tests" key="2">
-            <Table columns={columns}/>
+            <Table columns={columns} dataSource={tests?.givenTest[0].rows} />
           </Tabs.TabPane>
-        </Tabs>
+        </Tabs>}
       </Col>
-      <Col span={2} />
+      <Col span={1} />
+      <Col span={22}>
+
+      </Col>
+      <Col span={1} />
     </Row>
   );
 }

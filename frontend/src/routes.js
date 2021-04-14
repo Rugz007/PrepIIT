@@ -1,5 +1,5 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { Error404 } from './components/Errors/Error404';
 import { TestIntruction } from './components/Test/TestIntruction';
 import { Login } from './views/Auth/Login';
@@ -14,27 +14,41 @@ import { FAQ } from './views/HomePage/FAQ';
 import { HomePage } from './views/HomePage/HomePage';
 import { Test } from './views/Test/Test';
 import { TestAnalysis } from './views/Analysis/TestAnalysis';
-import { TestsPage } from './views/Test/TestsPage';
+import { TestSubmitted } from './views/Test/TestSubmitted';
 
+const ProtectedRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={(props) => {
+        if(!localStorage.getItem("testid"))
+        {
+            return <Component />
+        }
+        else{
+            const testID = localStorage.getItem("testid");
+            return <Redirect to={"/test/"+testID} />
+        }
+    }} />
+ );
+ 
+ 
 class Routes extends React.Component {
     render() {
         return (
             // TODO: Make Protected Routes
             <Switch>
-                <Route path="/" exact component={HomePage} />
-                <Route path='/login' component={Login} />
-                <Route path='/register' component={Register} />
-                <Route path='/dashboard' component={Dashboard} />
-                <Route path='/about' component={About} />
-                <Route path='/contact' component={Contact} />
-                <Route path='/courses' component={Courses} />
-                <Route path='/faq' component={FAQ} />
+                <ProtectedRoute path="/" exact component={HomePage} />
+                <ProtectedRoute path='/login' component={Login} />
+                <ProtectedRoute path='/register' component={Register} />
+                <ProtectedRoute path='/dashboard' component={Dashboard} />
+                <ProtectedRoute path='/about' component={About} />
+                <ProtectedRoute path='/contact' component={Contact} />
+                <ProtectedRoute path='/courses' component={Courses} />
+                <ProtectedRoute path='/faq' component={FAQ} />
                 <Route path='/test/:id' exact component={Test}/>
-                <Route path='/mytests' component={TestsPage}/>
                 <Route path='/testintruction' component={TestIntruction}/>
-                <Route path='/testanalysis' component={TestAnalysis} />
-                <Route path='/blogs' exact component={BlogList} />
-                <Route path='/blogs/:id' component={BlogPage} />
+                <ProtectedRoute path='/testanalysis' component={TestAnalysis} />
+                <Route path='/submitted' component={TestSubmitted} />
+                <ProtectedRoute path='/blogs' exact component={BlogList} />
+                <ProtectedRoute path='/blogs/:id' component={BlogPage} />
                 <Route component={Error404} />
             </Switch>
         );

@@ -7,6 +7,7 @@ import {
   PaperClipOutlined,
   FormOutlined,
   QuestionCircleOutlined,
+  SnippetsOutlined
 } from "@ant-design/icons";
 import { EForms } from "../../components/Dashboard/EForms/EForms";
 import { EFormSettings } from "../../components/Dashboard/EForms/EFormSettings";
@@ -20,6 +21,7 @@ import { QuestionBank } from "../../components/Dashboard/Questions/QuestionBank"
 import { ReportedQuestions } from "../../components/Dashboard/Questions/ReportedQuestions";
 import { AddQuestionPage } from "../../components/Dashboard/Questions/AddQuestionPage";
 import { TestTypes } from "../../components/Dashboard/Tests/TestTypes";
+import { TestsPage } from "../../components/Dashboard/Tests/TestsPage";
 
 const { SubMenu } = Menu;
 export const Dashboard: React.FC = () => {
@@ -45,6 +47,8 @@ export const Dashboard: React.FC = () => {
                 <Menu.Item key="4">View Profile</Menu.Item>
                 <Menu.Item key="6">Settings</Menu.Item>
               </SubMenu>
+              <Menu.Item icon={<SnippetsOutlined /> } key="15">Tests</Menu.Item>
+
               {userContext.user.admin != null ? (
                 <>
                   <SubMenu
@@ -84,8 +88,10 @@ export const Dashboard: React.FC = () => {
                   </SubMenu>
                 </>
               ) : (
-                  <></>
-                )}
+                <>
+
+                </>
+              )}
             </Menu>
           </Sider>
           <Layout>
@@ -103,17 +109,18 @@ export const Dashboard: React.FC = () => {
               {tab === "9" && userContext.user.admin != null && (
                 <QuestionBank />
               )}
-              {tab === "10" && userContext.user.admin != null && <AddQuestionPage/>}
-              {tab === "11" && userContext.user.admin != null && <ReportedQuestions/>}
+              {tab === "10" && userContext.user.admin != null && <AddQuestionPage />}
+              {tab === "11" && userContext.user.admin != null && <ReportedQuestions />}
               {tab === "12" && userContext.user.admin != null && <></>}
-              {tab === "13" && userContext.user.admin != null && <TestTypes/>}
+              {tab === "13" && userContext.user.admin != null && <TestTypes />}
               {tab === "12" && userContext.user.admin != null && <></>}
+              {tab === "15" && userContext.user.admin != null && <TestsPage />}
             </Content>
           </Layout>
         </>
       ) : (
-          <Error400/>
-        )}
+        <Error400 />
+      )}
     </Layout>
   );
 };

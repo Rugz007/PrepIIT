@@ -1,11 +1,12 @@
 import { Button, Card, Col, Popconfirm, Row, Tabs } from 'antd';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { QuestionComponent } from '../../components/Test/QuestionComponent';
 import { TestDetails } from '../../components/Test/TestDetails';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { TestIntruction } from '../../components/Test/TestIntruction';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import UserContext from '../../context/User/UserContext';
 const { REACT_APP_NODEJS_URL } = process.env;
 
 interface QuestionInterface {
@@ -36,6 +37,7 @@ export const Test: React.FC = () => {
   const [response, setResponse]: any = useState(undefined)
   const [answers, setAnswers]: any = useState(undefined);
   const history = useHistory();
+  const userContext = useContext(UserContext);
   useEffect(() => {
     console.log("Hello world")
     localStorage.setItem("answers", JSON.stringify(answers))
@@ -50,21 +52,23 @@ export const Test: React.FC = () => {
           authorization: "Bearer " + localStorage.getItem("token"),
         },
         data: {
-          "typeid": testID
+          "typeid": testID,
+          "userid": userContext.user.userid,
         },
       }).then(res => {
+        localStorage.setItem("usertestid", res.data.userTestId);
         setResponse(res.data)
         let questionsMap: any = {}
         res.data['subjects'].map((subject: any) =>
         (
           res.data[subject].map((item: any, index: number) => (
-            questionsMap[item['qid']] = [item['qid'], ["a"], "", "Not Visited"]
+            questionsMap[item['qid']] = [item['qid'], [], "", "Not Visited"]
           ))
         ))
         setAnswers(questionsMap)
       }).catch(err => console.log(err))
     }
-    else{
+    else {
       console.log("No TestID")
     }
 
@@ -147,16 +151,12 @@ export const Test: React.FC = () => {
       },
     }).then(res => {
       localStorage.removeItem("testid");
-      history.push("/");
-      console.log(res);
+      history.push("/submitted");
     }).catch(err => console.log(err))
 
   };
   return (
-    <div>
-      <Row style={{ height: '2vh' }}>
-        TestBar
-            </Row>
+    <div> 
       {readInstructions ?
         <Row style={{ padding: '2%' }}>
           <Col span={18}>
