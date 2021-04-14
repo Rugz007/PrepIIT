@@ -23,7 +23,7 @@ const updateLog = (questions, donetestid, testid, userid, res) => {
         const answers = respo.rows;
         answers.forEach((answer) => {
           if (answer.type == "numerical") {
-            if (!answer.useranswer.length) {
+            if (!answer.useranswer || !answer.useranswer.length) {
               totalNonAttempted++;
               if (answer.subject == "physics") {
                 phy[2]++;
@@ -66,7 +66,7 @@ const updateLog = (questions, donetestid, testid, userid, res) => {
               }
             }
           } else if (answer.type != "numerical") {
-            if (!answer.useranswer.length) {
+            if (!answer.useranswer || !answer.useranswer.length) {
               totalNonAttempted++;
               if (answer.subject == "physics") {
                 phy[2]++;
@@ -113,39 +113,70 @@ const updateLog = (questions, donetestid, testid, userid, res) => {
         Promise.all(correctPromise).then((corEnd) => {
           Promise.all(notAttemptedPromise).then((naEnd) => {
             db.query(
-              "INSERT INTO usertest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)",
-              [
-                donetestid,
-                testid,
-                userid,
-                phy[0],
-                chem[0],
-                math[0],
-                0,
-                phy[1],
-                chem[1],
-                math[1],
-                0,
-                phy[2],
-                chem[2],
-                math[2],
-                0,
-              ]
-            )
-              .then((resp) => {
-                console.log(phy, chem, math);
-                res.json({
-                  totalCorrect: totalCorrect,
-                  totalWrong: totalWrong,
-                  totalNonAttempted: totalNonAttempted,
+              "SELECT rightmarks,wrongmarks,namarks FROM testtype WHERE testid=$1",
+              [testid]
+            ).then((respo) => {
+              const rightMarks = respo.rows.rightmarks;
+              const wrongMarks = respo.rows.wrongmarks;
+              const naMarks = respo.rows.namarks;
+              const phyCorrectMarks = rightMarks * phy[0];
+              const phyWrongMarks = wrongMarks * phy[1];
+              const phyNaMarks = naMarks * phy[2];
+              const chemCorrectMarks = rightMarks * chem[0];
+              const chemWrongMarks = wrongMarks * chem[1];
+              const chemNaMarks = naMarks * chem[2];
+              const mathCorrectMarks = rightMarks * math[0];
+              const mathWrongMarks = wrongMarks * math[1];
+              const mathNaMarks = naMarks * math[2];
+              const totalCorrectMarks =
+                phyCorrectMarks + chemCorrectMarks + mathCorrectMarks;
+              const totalWrongMarks =
+                phyWrongMarks + chemWrongMarks + mathWrongMarks;
+              const totalNaMarks = phyNaMarks + chemNaMarks + mathNaMarks;
+              const totalMarks =
+                totalCorrectMarks + totalWrongMarks + totalNaMarks;
+              const phyMarks = phyCorrectMarks + phyWrongMarks + phyNaMarks;
+              const chemMarks = chemCorrectMarks + chemWrongMarks + chemNaMarks;
+              const mathMarks = mathCorrectMarks + mathWrongMarks + mathNaMarks;
+              db.query(
+                "INSERT INTO usertest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)",
+                [
+                  donetestid,
+                  testid,
+                  userid,
+                  phy[0],
+                  chem[0],
+                  math[0],
+                  0,
+                  phy[1],
+                  chem[1],
+                  math[1],
+                  0,
+                  phy[2],
+                  chem[2],
+                  math[2],
+                  0,
+                  phyMarks,
+                  chemMarks,
+                  mathMarks,
+                  totalMarks,
+                ]
+              )
+                .then((resp) => {
+                  console.log(phy, chem, math);
+                  res.json({
+                    totalCorrect: totalCorrect,
+                    totalWrong: totalWrong,
+                    totalNonAttempted: totalNonAttempted,
+                  });
+                })
+                .catch((err) => {
+                  console.log(err);
+                  res.json({
+                    errmess: "DB Error",
+                  });
                 });
-              })
-              .catch((err) => {
-                console.log(err);
-                res.json({
-                  errmess: "DB Error",
-                });
-              });
+            });
           });
         });
       });
