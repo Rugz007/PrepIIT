@@ -116,9 +116,9 @@ const updateLog = (questions, donetestid, testid, userid, res) => {
               "SELECT rightmarks,wrongmarks,namarks FROM testtype WHERE testid=$1",
               [testid]
             ).then((respo) => {
-              const rightMarks = respo.rows.rightmarks;
-              const wrongMarks = respo.rows.wrongmarks;
-              const naMarks = respo.rows.namarks;
+              const rightMarks = respo.rows[0].rightmarks;
+              const wrongMarks = respo.rows[0].wrongmarks;
+              const naMarks = respo.rows[0].namarks;
               console.log(respo.rows);
               const phyCorrectMarks = rightMarks * phy[0];
               const phyWrongMarks = wrongMarks * phy[1];
