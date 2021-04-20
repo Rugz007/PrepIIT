@@ -1,11 +1,11 @@
-import { Button, Card, Col, Popconfirm, Row, Tabs } from 'antd';
+import { Button, Card, Col, Popconfirm, Result, Row, Tabs } from 'antd';
 import React, { useState, useEffect, useContext } from 'react'
 import { QuestionComponent } from '../../components/Test/QuestionComponent';
 import { TestDetails } from '../../components/Test/TestDetails';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { TestIntruction } from '../../components/Test/TestIntruction';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import UserContext from '../../context/User/UserContext';
 const { REACT_APP_NODEJS_URL } = process.env;
 
@@ -44,7 +44,7 @@ export const Test: React.FC = () => {
   }, [answers])
   const getQuestions = () => {
     let testID = localStorage.getItem("testid")
-    if (testID) {
+    if (testID && userContext.user) {
       axios({
         method: "POST",
         url: `https://${REACT_APP_NODEJS_URL}/secure/test`,
@@ -156,43 +156,52 @@ export const Test: React.FC = () => {
 
   };
   return (
-    <div> 
-      {readInstructions ?
-        <Row style={{ padding: '2%' }}>
-          <Col span={18}>
-            <Row>
-              <Col span={2}><Button onClick={onPrevious} type='primary' danger style={{ float: 'left' }}>Previous</Button></Col>
-              <Col span={20}><Card style={{ width: '100%' }}> Time Remaining</Card></Col>
-              <Col span={2}> <Button onClick={onNext} type='primary' style={{ float: 'right' }}>Next</Button></Col>
-            </Row>
-            <Row>
-              <Card style={{ width: '100%', height: '74vh' }}>
-                <Tabs onChange={onChangeTab}>
-                  {response && response["subjects"].map((e: string, index: any) => (
-                    <Tabs.TabPane tab={e} key={e} >
-                      <QuestionComponent onSelect={onSelectAnswer} question={response[e][current - 1]} />
-                    </Tabs.TabPane>
-                  ))}
-                </Tabs>
-              </Card>
-            </Row>
-          </Col>
-          <Col span={6}>
-            <Card style={{ margin: '0 6%' }}>
-              {response !== undefined && answers && <TestDetails questions={response[tab]} setCurrentFunction={changeCurrent} current={current} answers={answers} />}
-              <Button onClick={markForReview}>Mark For Review</Button>
-              <Popconfirm
-                title="Are you sure you want to submit your test?"
-                onConfirm={onSubmit}
-                okText="Yes"
-                cancelText="No"
-                icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-              >
-                <Button style={{ width: '100%' }} type='primary'> Submit Test</Button>
-              </Popconfirm>
+    <>
+    {localStorage.getItem("testid") ? 
+    <div>
+    {readInstructions ?
+      <Row style={{ padding: '2%' }}>
+        <Col span={18}>
+          <Row>
+            <Col span={2}><Button onClick={onPrevious} type='primary' danger style={{ float: 'left' }}>Previous</Button></Col>
+            <Col span={20}><Card style={{ width: '100%' }}> Time Remaining</Card></Col>
+            <Col span={2}> <Button onClick={onNext} type='primary' style={{ float: 'right' }}>Next</Button></Col>
+          </Row>
+          <Row>
+            <Card style={{ width: '100%', height: '74vh' }}>
+              <Tabs onChange={onChangeTab}>
+                {response && response["subjects"].map((e: string, index: any) => (
+                  <Tabs.TabPane tab={e} key={e} >
+                    <QuestionComponent onSelect={onSelectAnswer} question={response[e][current - 1]} answers={answers}/>
+                  </Tabs.TabPane>
+                ))}
+              </Tabs>
             </Card>
-          </Col>
-        </Row> : <TestIntruction readInstruct={readInstruct} />}
-    </div>
+          </Row>
+        </Col>
+        <Col span={6}>
+          <Card style={{ margin: '0 6%' }}>
+            {response !== undefined && answers && <TestDetails questions={response[tab]} setCurrentFunction={changeCurrent} current={current} answers={answers} />}
+            <Button onClick={markForReview}>Mark For Review</Button>
+            <Popconfirm
+              title="Are you sure you want to submit your test?"
+              onConfirm={onSubmit}
+              okText="Yes"
+              cancelText="No"
+              icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+            >
+              <Button style={{ width: '100%' }} type='primary'> Submit Test</Button>
+            </Popconfirm>
+          </Card>
+        </Col>
+      </Row> : <TestIntruction readInstruct={readInstruct} />}
+  </div> :
+  <>
+    <Result status='403' title='You are not authorized to access this test' subTitle='Go to your dashboard to start a new test'/>
+    <Link to='/dashboard'><Button type='primary' size='large'>Go to Dashboard</Button></Link>
+  </>}
+      
+    </>
+
   );
 }
