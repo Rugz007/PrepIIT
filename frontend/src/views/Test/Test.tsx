@@ -10,14 +10,14 @@ import UserContext from '../../context/User/UserContext';
 const { REACT_APP_NODEJS_URL } = process.env;
 
 interface QuestionInterface {
-  qid: number,
-  statement: string,
-  img_path: string,
-  type: string,
-  archive: string,
-  latex: string,
-  options: string[],
-};
+  qid: number;
+  statement: string;
+  img_path: string;
+  type: string;
+  archive: string;
+  latex: string;
+  options: string[];
+}
 // interface ResponseInterface {
 //     userTestId: string,
 //     subjects: string[],
@@ -31,17 +31,17 @@ interface QuestionInterface {
 // };
 
 export const Test: React.FC = () => {
-  const [readInstructions, setReadInstructions] = useState(false)
+  const [readInstructions, setReadInstructions] = useState(false);
   const [current, setCurrent] = useState<number>(1);
-  const [tab, setTab] = useState("Physics")
-  const [response, setResponse]: any = useState(undefined)
+  const [tab, setTab] = useState("Physics");
+  const [response, setResponse]: any = useState(undefined);
   const [answers, setAnswers]: any = useState(undefined);
   const history = useHistory();
   const userContext = useContext(UserContext);
   useEffect(() => {
-    console.log("Hello world")
-    localStorage.setItem("answers", JSON.stringify(answers))
-  }, [answers])
+    console.log("Hello world");
+    localStorage.setItem("answers", JSON.stringify(answers));
+  }, [answers]);
   const getQuestions = () => {
     let testID = localStorage.getItem("testid")
     if (testID && userContext.user) {
@@ -52,86 +52,96 @@ export const Test: React.FC = () => {
           authorization: "Bearer " + localStorage.getItem("token"),
         },
         data: {
-          "typeid": testID,
-          "userid": userContext.user.userid,
+          typeid: testID,
+          userid: userContext.user.userid,
         },
-      }).then(res => {
-        localStorage.setItem("usertestid", res.data.userTestId);
-        setResponse(res.data)
-        let questionsMap: any = {}
-        res.data['subjects'].map((subject: any) =>
-        (
-          res.data[subject].map((item: any, index: number) => (
-            questionsMap[item['qid']] = [item['qid'], [], "", "Not Visited"]
-          ))
-        ))
-        setAnswers(questionsMap)
-      }).catch(err => console.log(err))
+      })
+        .then((res) => {
+          localStorage.setItem("usertestid", res.data.userTestId);
+          setResponse(res.data);
+          let questionsMap: any = {};
+          res.data["subjects"].map((subject: any) =>
+            res.data[subject].map(
+              (item: any, index: number) =>
+                (questionsMap[item["qid"]] = [
+                  item["qid"],
+                  [],
+                  "",
+                  "Not Visited",
+                ])
+            )
+          );
+          setAnswers(questionsMap);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      console.log("No TestID");
     }
-    else {
-      console.log("No TestID")
-    }
-
   };
   const onSelectAnswer = (e: any) => {
-    var questionID = response[tab][current - 1]['qid']
-    setAnswers({ ...answers, [questionID]: [response[tab][current - 1]['qid'], [e.target.value], "15", "Marked"] });
+    var questionID = response[tab][current - 1]["qid"];
+    setAnswers({
+      ...answers,
+      [questionID]: [
+        response[tab][current - 1]["qid"],
+        [e.target.value],
+        "15",
+        "Marked",
+      ],
+    });
   };
   const onNext = () => {
     if (current !== response[tab].length) {
-      var questionID = response[tab][current - 1]['qid']
-      var temp = { ...answers }
+      var questionID = response[tab][current - 1]["qid"];
+      var temp = { ...answers };
       if (temp[questionID][3] === "Not Visited") {
-        temp[questionID][3] = "Visited"
-        setAnswers(temp)
+        temp[questionID][3] = "Visited";
+        setAnswers(temp);
       }
-      setCurrent(current + 1)
+      setCurrent(current + 1);
     }
   };
   const onPrevious = () => {
     if (current !== 1) {
-      var questionID = response[tab][current - 1]['qid']
-      var temp = { ...answers }
+      var questionID = response[tab][current - 1]["qid"];
+      var temp = { ...answers };
       if (temp[questionID][3] === "Not Visited") {
-        temp[questionID][3] = "Visited"
-        setAnswers(temp)
+        temp[questionID][3] = "Visited";
+        setAnswers(temp);
       }
-      setCurrent(current - 1)
+      setCurrent(current - 1);
     }
   };
   const onChangeTab = (e: any) => {
-    setTab(e)
-    setCurrent(1)
-  }
+    setTab(e);
+    setCurrent(1);
+  };
   const readInstruct = () => {
     setReadInstructions(true);
     getQuestions();
-  }
+  };
   const changeCurrent = (e: number) => {
-    var questionID = response[tab][current - 1]['qid']
-    var temp = { ...answers }
-    temp[questionID][3] = "Visited"
-    setAnswers(temp)
-    setCurrent(e)
-
-  }
+    var questionID = response[tab][current - 1]["qid"];
+    var temp = { ...answers };
+    temp[questionID][3] = "Visited";
+    setAnswers(temp);
+    setCurrent(e);
+  };
   const markForReview = () => {
-    var questionID = response[tab][current - 1]['qid']
-    var temp = { ...answers }
+    var questionID = response[tab][current - 1]["qid"];
+    var temp = { ...answers };
     if (temp[questionID][3] === "MarkedForReview") {
       if (temp[questionID][1][0] === undefined) {
-        temp[questionID][3] = "Visited"
+        temp[questionID][3] = "Visited";
+      } else {
+        temp[questionID][3] = "Marked";
       }
-      else {
-        temp[questionID][3] = "Marked"
-      }
+    } else {
+      temp[questionID][3] = "MarkedForReview";
     }
-    else {
-      temp[questionID][3] = "MarkedForReview"
-    }
-    setAnswers(temp)
-    onNext()
-  }
+    setAnswers(temp);
+    onNext();
+  };
   const onSubmit = () => {
     let temp: any = [];
     for (const [key, value] of Object.entries(answers)) {
@@ -144,16 +154,17 @@ export const Test: React.FC = () => {
         authorization: "Bearer " + localStorage.getItem("token"),
       },
       data: {
-        testid: 17,
+        testid: 25,
         userid: 1,
         donetestid: response.userTestId,
-        questions: temp
+        questions: temp,
       },
-    }).then(res => {
-      localStorage.removeItem("testid");
-      history.push("/submitted");
-    }).catch(err => console.log(err))
-
+    })
+      .then((res) => {
+        localStorage.removeItem("testid");
+        history.push("/submitted");
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <>
@@ -204,4 +215,4 @@ export const Test: React.FC = () => {
     </>
 
   );
-}
+};

@@ -22,7 +22,10 @@ router
     var availableTest = [];
     var givenTest = [];
     const userid = req.headers.userid;
-    db.query("SELECT testid,testname,subjectsallowed FROM testtype")
+    db.query(
+      "SELECT testid,testname,subjectsallowed FROM testtype tt WHERE tt.testid NOT IN (SELECT ut.testid FROM usertest ut WHERE userid=$1 GROUP BY ut.testid)",
+      [userid]
+    )
       .then((resp) => {
         availableTest.push(resp.rows);
         db.query("SELECT * FROM usertest WHERE userid=$1", [userid])
