@@ -17,7 +17,7 @@ interface QuestionInterface {
   answers:any,
 }
 
-export const QuestionComponent: React.FC<QuestionInterface> = ({
+export const MCQComponent: React.FC<QuestionInterface> = ({
   question,
   onSelect,
   answers

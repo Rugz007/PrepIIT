@@ -1,6 +1,6 @@
 import { Button, Card, Col, Popconfirm, Result, Row, Tabs } from 'antd';
 import React, { useState, useEffect, useContext } from 'react'
-import { QuestionComponent } from '../../components/Test/QuestionComponent';
+import { MCQComponent } from '../../components/Test/QuestionComponents/MCQComponent';
 import { TestDetails } from '../../components/Test/TestDetails';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { TestIntruction } from '../../components/Test/TestIntruction';
@@ -39,15 +39,16 @@ export const Test: React.FC = () => {
   const history = useHistory();
   const userContext = useContext(UserContext);
   useEffect(() => {
-    if (localStorage.getItem("answers") && answers === undefined) {
+    if (localStorage.getItem("answers") !== undefined && answers === undefined) {
       //@ts-ignore
       setAnswers(JSON.parse(localStorage.getItem("answers")))
       //@ts-ignore
       console.log(JSON.parse(localStorage.getItem("answers")))
     }
-    localStorage.setItem("answers", JSON.stringify(answers));
-    console.log(localStorage.getItem("answers"))
-
+    if (response !== undefined && answers !== undefined) {
+      localStorage.setItem("answers", JSON.stringify(answers));
+      console.log(localStorage.getItem("answers"))
+    }
   }, [answers]);
   const getQuestions = () => {
     let testID = localStorage.getItem("testid")
@@ -60,7 +61,7 @@ export const Test: React.FC = () => {
             authorization: "Bearer " + localStorage.getItem("token"),
           },
           data: {
-            testid:localStorage.getItem("usertestid")
+            testid: localStorage.getItem("usertestid")
           },
         })
           .then((res) => {
@@ -105,7 +106,7 @@ export const Test: React.FC = () => {
           .then((res) => {
             localStorage.setItem("usertestid", res.data.userTestId);
             setResponse(res.data);
-            if (localStorage.getItem("answers") === null) {
+            if (localStorage.getItem("answers") === null || localStorage.getItem("answers") === undefined) {
               let questionsMap: any = {};
               res.data["subjects"].map((subject: any) =>
                 res.data[subject].map(
@@ -144,17 +145,20 @@ export const Test: React.FC = () => {
         "Marked",
       ],
     });
+    console.log("Select Answer")
   };
   const onNext = () => {
     if (current !== response[tab].length) {
       var questionID = response[tab][current - 1]["qid"];
       var temp = { ...answers };
-      if (temp[questionID][3] === "Not Visited") {
+      if (temp[questionID][3] === "Not Visited" && temp[questionID][3] !== "Marked") {
         temp[questionID][3] = "Visited";
         setAnswers(temp);
       }
       setCurrent(current + 1);
     }
+    console.log("On Next")
+
   };
   const onPrevious = () => {
     if (current !== 1) {
@@ -178,7 +182,9 @@ export const Test: React.FC = () => {
   const changeCurrent = (e: number) => {
     var questionID = response[tab][current - 1]["qid"];
     var temp = { ...answers };
-    temp[questionID][3] = "Visited";
+    if (temp[questionID][3] !== "Marked") {
+      temp[questionID][3] = "Visited";
+    }
     setAnswers(temp);
     setCurrent(e);
   };
@@ -197,6 +203,18 @@ export const Test: React.FC = () => {
     setAnswers(temp);
     onNext();
   };
+  const clearAnswer = () => {
+    var questionID = response[tab][current - 1]["qid"];
+    setAnswers({
+      ...answers,
+      [questionID]: [
+        response[tab][current - 1]["qid"],
+        [""],
+        "15",
+        "Visited",
+      ],
+    });
+  }
   const onSubmit = () => {
     let temp: any = [];
     for (const [key, value] of Object.entries(answers)) {
@@ -217,6 +235,8 @@ export const Test: React.FC = () => {
     })
       .then((res) => {
         localStorage.removeItem("testid");
+        localStorage.removeItem("answers");
+        localStorage.removeItem("usertestid");
         history.push("/submitted");
       })
       .catch((err) => console.log(err));
@@ -238,7 +258,8 @@ export const Test: React.FC = () => {
                     <Tabs onChange={onChangeTab}>
                       {response && response["subjects"].map((e: string, index: any) => (
                         <Tabs.TabPane tab={e} key={e} >
-                          <QuestionComponent onSelect={onSelectAnswer} question={response[e][current - 1]} answers={answers} />
+                          {response[e][current - 1].type === 'mcq' && <MCQComponent onSelect={onSelectAnswer} question={response[e][current - 1]} answers={answers} />}
+
                         </Tabs.TabPane>
                       ))}
                     </Tabs>
@@ -248,6 +269,7 @@ export const Test: React.FC = () => {
               <Col span={6}>
                 <Card style={{ margin: '0 6%' }}>
                   {response !== undefined && answers && <TestDetails questions={response[tab]} setCurrentFunction={changeCurrent} current={current} answers={answers} />}
+                  <Button onClick={clearAnswer}>Clear Answer</Button>
                   <Button onClick={markForReview}>Mark For Review</Button>
                   <Popconfirm
                     title="Are you sure you want to submit your test?"
