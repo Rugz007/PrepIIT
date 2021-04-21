@@ -39,43 +39,98 @@ export const Test: React.FC = () => {
   const history = useHistory();
   const userContext = useContext(UserContext);
   useEffect(() => {
-    console.log("Hello world");
+    if (localStorage.getItem("answers") && answers === undefined) {
+      //@ts-ignore
+      setAnswers(JSON.parse(localStorage.getItem("answers")))
+      //@ts-ignore
+      console.log(JSON.parse(localStorage.getItem("answers")))
+    }
     localStorage.setItem("answers", JSON.stringify(answers));
+    console.log(localStorage.getItem("answers"))
+
   }, [answers]);
   const getQuestions = () => {
     let testID = localStorage.getItem("testid")
-    if (testID && userContext.user) {
-      axios({
-        method: "POST",
-        url: `https://${REACT_APP_NODEJS_URL}/secure/test`,
-        headers: {
-          authorization: "Bearer " + localStorage.getItem("token"),
-        },
-        data: {
-          typeid: testID,
-          userid: userContext.user.userid,
-        },
-      })
-        .then((res) => {
-          localStorage.setItem("usertestid", res.data.userTestId);
-          setResponse(res.data);
-          let questionsMap: any = {};
-          res.data["subjects"].map((subject: any) =>
-            res.data[subject].map(
-              (item: any, index: number) =>
-                (questionsMap[item["qid"]] = [
-                  item["qid"],
-                  [],
-                  "",
-                  "Not Visited",
-                ])
-            )
-          );
-          setAnswers(questionsMap);
+    if (localStorage.getItem("usertestid")) {
+      if (testID && userContext.user) {
+        axios({
+          method: "POST",
+          url: `https://${REACT_APP_NODEJS_URL}/secure/cachequestions`,
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          data: {
+            testid:localStorage.getItem("usertestid")
+          },
         })
-        .catch((err) => console.log(err));
-    } else {
-      console.log("No TestID");
+          .then((res) => {
+            setResponse(res.data);
+            if (localStorage.getItem("answers") === null) {
+              let questionsMap: any = {};
+              res.data["subjects"].map((subject: any) =>
+                res.data[subject].map(
+                  (item: any, index: number) =>
+                  (questionsMap[item["qid"]] = [
+                    item["qid"],
+                    [],
+                    "",
+                    "Not Visited",
+                  ])
+                )
+              );
+              setAnswers(questionsMap);
+            }
+            else {
+              //@ts-ignore
+              setAnswers(JSON.parse(localStorage.getItem("answers")))
+              //@ts-ignore
+              console.log(JSON.parse(localStorage.getItem("answers")))
+            }
+          })
+      }
+    }
+    else {
+      if (testID && userContext.user) {
+        axios({
+          method: "POST",
+          url: `https://${REACT_APP_NODEJS_URL}/secure/test`,
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          data: {
+            typeid: testID,
+            userid: userContext.user.userid,
+          },
+        })
+          .then((res) => {
+            localStorage.setItem("usertestid", res.data.userTestId);
+            setResponse(res.data);
+            if (localStorage.getItem("answers") === null) {
+              let questionsMap: any = {};
+              res.data["subjects"].map((subject: any) =>
+                res.data[subject].map(
+                  (item: any, index: number) =>
+                  (questionsMap[item["qid"]] = [
+                    item["qid"],
+                    [],
+                    "",
+                    "Not Visited",
+                  ])
+                )
+              );
+              setAnswers(questionsMap);
+            }
+            else {
+              //@ts-ignore
+              setAnswers(JSON.parse(localStorage.getItem("answers")))
+              //@ts-ignore
+              console.log(JSON.parse(localStorage.getItem("answers")))
+            }
+          })
+          .catch((err) => console.log(err));
+      } else {
+        console.log("No TestID");
+      }
     }
   };
   const onSelectAnswer = (e: any) => {
@@ -168,50 +223,50 @@ export const Test: React.FC = () => {
   };
   return (
     <>
-    {localStorage.getItem("testid") ? 
-    <div>
-    {readInstructions ?
-      <Row style={{ padding: '2%' }}>
-        <Col span={18}>
-          <Row>
-            <Col span={2}><Button onClick={onPrevious} type='primary' danger style={{ float: 'left' }}>Previous</Button></Col>
-            <Col span={20}><Card style={{ width: '100%' }}> Time Remaining</Card></Col>
-            <Col span={2}> <Button onClick={onNext} type='primary' style={{ float: 'right' }}>Next</Button></Col>
-          </Row>
-          <Row>
-            <Card style={{ width: '100%', height: '74vh' }}>
-              <Tabs onChange={onChangeTab}>
-                {response && response["subjects"].map((e: string, index: any) => (
-                  <Tabs.TabPane tab={e} key={e} >
-                    <QuestionComponent onSelect={onSelectAnswer} question={response[e][current - 1]} answers={answers}/>
-                  </Tabs.TabPane>
-                ))}
-              </Tabs>
-            </Card>
-          </Row>
-        </Col>
-        <Col span={6}>
-          <Card style={{ margin: '0 6%' }}>
-            {response !== undefined && answers && <TestDetails questions={response[tab]} setCurrentFunction={changeCurrent} current={current} answers={answers} />}
-            <Button onClick={markForReview}>Mark For Review</Button>
-            <Popconfirm
-              title="Are you sure you want to submit your test?"
-              onConfirm={onSubmit}
-              okText="Yes"
-              cancelText="No"
-              icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-            >
-              <Button style={{ width: '100%' }} type='primary'> Submit Test</Button>
-            </Popconfirm>
-          </Card>
-        </Col>
-      </Row> : <TestIntruction readInstruct={readInstruct} />}
-  </div> :
-  <>
-    <Result status='403' title='You are not authorized to access this test' subTitle='Go to your dashboard to start a new test'/>
-    <Link to='/dashboard'><Button type='primary' size='large'>Go to Dashboard</Button></Link>
-  </>}
-      
+      {localStorage.getItem("testid") ?
+        <div>
+          {readInstructions ?
+            <Row style={{ padding: '2%' }}>
+              <Col span={18}>
+                <Row>
+                  <Col span={2}><Button onClick={onPrevious} type='primary' danger style={{ float: 'left' }}>Previous</Button></Col>
+                  <Col span={20}><Card style={{ width: '100%' }}> Time Remaining</Card></Col>
+                  <Col span={2}> <Button onClick={onNext} type='primary' style={{ float: 'right' }}>Next</Button></Col>
+                </Row>
+                <Row>
+                  <Card style={{ width: '100%', height: '74vh' }}>
+                    <Tabs onChange={onChangeTab}>
+                      {response && response["subjects"].map((e: string, index: any) => (
+                        <Tabs.TabPane tab={e} key={e} >
+                          <QuestionComponent onSelect={onSelectAnswer} question={response[e][current - 1]} answers={answers} />
+                        </Tabs.TabPane>
+                      ))}
+                    </Tabs>
+                  </Card>
+                </Row>
+              </Col>
+              <Col span={6}>
+                <Card style={{ margin: '0 6%' }}>
+                  {response !== undefined && answers && <TestDetails questions={response[tab]} setCurrentFunction={changeCurrent} current={current} answers={answers} />}
+                  <Button onClick={markForReview}>Mark For Review</Button>
+                  <Popconfirm
+                    title="Are you sure you want to submit your test?"
+                    onConfirm={onSubmit}
+                    okText="Yes"
+                    cancelText="No"
+                    icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                  >
+                    <Button style={{ width: '100%' }} type='primary'> Submit Test</Button>
+                  </Popconfirm>
+                </Card>
+              </Col>
+            </Row> : <TestIntruction readInstruct={readInstruct} />}
+        </div> :
+        <>
+          <Result status='403' title='You are not authorized to access this test' subTitle='Go to your dashboard to start a new test' />
+          <Link to='/dashboard'><Button type='primary' size='large'>Go to Dashboard</Button></Link>
+        </>}
+
     </>
 
   );

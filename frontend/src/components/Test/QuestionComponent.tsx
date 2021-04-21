@@ -41,6 +41,7 @@ export const QuestionComponent: React.FC<QuestionInterface> = ({
           <h3>
             {question.statement}
             {question.qid}
+            
           </h3>
         )}
         {/* <Latex displayMode={true}>
@@ -48,13 +49,13 @@ export const QuestionComponent: React.FC<QuestionInterface> = ({
                 </Latex> */}
       </Row>
       <Row>
-        {question && <Radio.Group
+        {question && answers && answers[question.qid] !== undefined && <Radio.Group
           style={{ textAlign: "left", width: "100%" }}
           onChange={(e) => onSelect(e)}
-          defaultValue={answers[question?.qid][1][0]}
+          value={answers[question?.qid][1][0]}
           
         >
-          {answers[question?.qid][1][0]}  
+          
           {question?.options.map((option, index) => (
             <Row style={radioContainerStyle}>
               <Col span={1}>
