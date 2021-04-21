@@ -156,14 +156,6 @@ const allThree = (testObject, userid, res) => {
                                       var date = d.getDate();
                                       var month = d.getMonth();
                                       var year = d.getFullYear();
-                                      console.log(
-                                        hour,
-                                        min,
-                                        sec,
-                                        date,
-                                        month,
-                                        year
-                                      );
                                       res.json({
                                         userTestId: userTestId,
                                         subjects: [

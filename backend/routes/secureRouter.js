@@ -141,9 +141,9 @@ router
           res.json({
             userTestId: testid,
             subjects: subjects,
-            phyQues: phyQues[0],
-            chemQues: chemQues[0],
-            mathQues: mathQues[0],
+            Physics: phyQues[0],
+            Chemistry: chemQues[0],
+            Maths: mathQues[0],
           });
         });
       });

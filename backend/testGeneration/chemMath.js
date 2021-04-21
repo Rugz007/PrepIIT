@@ -99,6 +99,14 @@ const chemMath = (testObject, userid, res) => {
                           `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='maths' ORDER BY RANDOM() LIMIT ${matchColumnQuestions}`
                         ).then((resp) => {
                           if (resp.rows) mathQues = mathQues.concat(resp.rows);
+                          var d = new Date();
+                          console.log(d);
+                          var hour = d.getHours();
+                          var min = d.getMinutes();
+                          var sec = d.getSeconds();
+                          var date = d.getDate();
+                          var month = d.getMonth();
+                          var year = d.getFullYear();
                           res.json({
                             userTestId: userTestId,
                             subjects: ["Chemistry", "Maths"],
