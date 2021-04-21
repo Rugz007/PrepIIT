@@ -94,7 +94,7 @@ router
     var pflag = false;
     var cflag = false;
     db.query(
-      "SELECT * FROM tempquestioncache WHERE currenttestid=$1 OR subject=$2",
+      "SELECT currenttestid,qid,statement,img_path,type,subject,archive,latex,options FROM tempquestioncache WHERE currenttestid=$1 AND subject=$2",
       [testid, "physics"]
     ).then((resp) => {
       if (resp.rows.length > 0) {
@@ -102,7 +102,7 @@ router
         phyQues.push(resp.rows);
       }
       db.query(
-        "SELECT * FROM tempquestioncache WHERE currenttestid=$1 OR subject=$2",
+        "SELECT currenttestid,qid,statement,img_path,type,subject,archive,latex,options FROM tempquestioncache WHERE currenttestid=$1 AND subject=$2",
         [testid, "chemistry"]
       ).then((respo) => {
         if (respo.rows.length > 0) {
@@ -110,7 +110,7 @@ router
           chemQues.push(respo.rows);
         }
         db.query(
-          "SELECT * FROM tempquestioncache WHERE currenttestid=$1 OR subject=$2",
+          "SELECT currenttestid,qid,statement,img_path,type,subject,archive,latex,options FROM tempquestioncache WHERE currenttestid=$1 AND subject=$2",
           [testid, "maths"]
         ).then((respon) => {
           if (respon.rows.length > 0) {
@@ -141,9 +141,9 @@ router
           res.json({
             userTestId: testid,
             subjects: subjects,
-            phyQues: phyQues,
-            chemQues: chemQues,
-            mathQues: mathQues,
+            phyQues: phyQues[0],
+            chemQues: chemQues[0],
+            mathQues: mathQues[0],
           });
         });
       });
