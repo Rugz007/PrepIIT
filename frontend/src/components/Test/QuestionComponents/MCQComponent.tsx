@@ -14,11 +14,13 @@ interface QuestionInterface {
       }
     | undefined;
   onSelect: (e: RadioChangeEvent) => void;
+  answers:any,
 }
 
-export const QuestionComponent: React.FC<QuestionInterface> = ({
+export const MCQComponent: React.FC<QuestionInterface> = ({
   question,
   onSelect,
+  answers
 }) => {
   var Latex = require("react-latex");
   const radioStyle = {
@@ -39,6 +41,7 @@ export const QuestionComponent: React.FC<QuestionInterface> = ({
           <h3>
             {question.statement}
             {question.qid}
+            
           </h3>
         )}
         {/* <Latex displayMode={true}>
@@ -46,10 +49,13 @@ export const QuestionComponent: React.FC<QuestionInterface> = ({
                 </Latex> */}
       </Row>
       <Row>
-        <Radio.Group
+        {question && answers && answers[question.qid] !== undefined && <Radio.Group
           style={{ textAlign: "left", width: "100%" }}
           onChange={(e) => onSelect(e)}
+          value={answers[question?.qid][1][0]}
+          
         >
+          
           {question?.options.map((option, index) => (
             <Row style={radioContainerStyle}>
               <Col span={1}>
@@ -66,7 +72,8 @@ export const QuestionComponent: React.FC<QuestionInterface> = ({
               </Col>
             </Row>
           ))}
-        </Radio.Group>
+        </Radio.Group>}
+        
       </Row>
     </div>
   );

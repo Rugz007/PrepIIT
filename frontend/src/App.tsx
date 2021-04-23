@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import './App.less';
-import "antd/dist/antd.dark.css";
 import { Navbar } from './components/Navbar';
 import AOS from "aos";
 import 'aos/dist/aos.css';
