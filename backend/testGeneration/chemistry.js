@@ -20,40 +20,40 @@ const chemistry = (testObject, userid, res) => {
     });
   const mcqQuestions = testObject.mcqdata ? testObject.mcqdata[0] : 0;
   db.query(
-    `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='chemistry' ORDER BY RANDOM() LIMIT ${mcqQuestions}`
+    `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='chemistry' AND type='mcq' ORDER BY RANDOM() LIMIT ${mcqQuestions}`
   ).then((resp) => {
     if (resp.rows) chemQues = chemQues.concat(resp.rows);
     const fibQuestions = testObject.fibdata ? testObject.fibdata[0] : 0;
     db.query(
-      `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='chemistry' ORDER BY RANDOM() LIMIT ${fibQuestions}`
+      `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='chemistry' AND type='fib' ORDER BY RANDOM() LIMIT ${fibQuestions}`
     ).then((resp) => {
       if (resp.rows) chemQues = chemQues.concat(resp.rows);
       const assertionQuestions = testObject.assertiondata
         ? testObject.assertiondata[0]
         : 0;
       db.query(
-        `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='chemistry' ORDER BY RANDOM() LIMIT ${assertionQuestions}`
+        `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='chemistry' AND type='anr' ORDER BY RANDOM() LIMIT ${assertionQuestions}`
       ).then((resp) => {
         if (resp.rows) chemQues = chemQues.concat(resp.rows);
         const trueFalseQuestions = testObject.truefalse
           ? testObject.truefalse[0]
           : 0;
         db.query(
-          `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='chemistry' ORDER BY RANDOM() LIMIT ${trueFalseQuestions}`
+          `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='chemistry' AND type='tof' ORDER BY RANDOM() LIMIT ${trueFalseQuestions}`
         ).then((resp) => {
           if (resp.rows) chemQues = chemQues.concat(resp.rows);
           const numericalQuestions = testObject.numerical
             ? testObject.numerical[0]
             : 0;
           db.query(
-            `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='chemistry' ORDER BY RANDOM() LIMIT ${numericalQuestions}`
+            `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='chemistry' AND type='num' ORDER BY RANDOM() LIMIT ${numericalQuestions}`
           ).then((resp) => {
             if (resp.rows) chemQues = chemQues.concat(resp.rows);
             const matchColumnQuestions = testObject.matchcolumn
               ? testObject.matchcolumn[0]
               : 0;
             db.query(
-              `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='chemistry' ORDER BY RANDOM() LIMIT ${matchColumnQuestions}`
+              `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='chemistry' AND type='mtf' ORDER BY RANDOM() LIMIT ${matchColumnQuestions}`
             ).then((resp) => {
               if (resp.rows) chemQues = chemQues.concat(resp.rows);
               var d = new Date();
