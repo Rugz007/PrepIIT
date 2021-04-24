@@ -1,4 +1,5 @@
 const randomstring = require("randomstring");
+const moment = require("moment");
 const db = require("../db");
 
 const chemistry = (testObject, userid, res) => {
@@ -56,18 +57,21 @@ const chemistry = (testObject, userid, res) => {
               `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='chemistry' AND type='mtf' ORDER BY RANDOM() LIMIT ${matchColumnQuestions}`
             ).then((resp) => {
               if (resp.rows) chemQues = chemQues.concat(resp.rows);
-              var d = new Date();
+              var d = moment().add(3, "hours").toDate();
               console.log(d);
               var hour = d.getHours();
               var min = d.getMinutes();
               var sec = d.getSeconds();
               var date = d.getDate();
-              var month = d.getMonth();
+              var month = d.getMonth() + 1;
               var year = d.getFullYear();
+              var currentDate = moment();
+              var timeLeft = moment(d).diff(currentDate, "minutes");
               res.json({
                 userTestId: userTestId,
                 subjects: ["Chemistry"],
                 Chemistry: chemQues,
+                timeLeft: timeLeft,
               });
               chemQues.forEach((question) => {
                 questionPromise.push(

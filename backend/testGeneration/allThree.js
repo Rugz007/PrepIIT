@@ -1,4 +1,5 @@
 const randomstring = require("randomstring");
+const moment = require("moment");
 const db = require("../db");
 
 const allThree = (testObject, userid, res) => {
@@ -148,14 +149,19 @@ const allThree = (testObject, userid, res) => {
                                     ).then((resp) => {
                                       if (resp.rows)
                                         mathQues = mathQues.concat(resp.rows);
-                                      var d = new Date();
+                                      var d = moment().add(3, "hours").toDate();
                                       console.log(d);
                                       var hour = d.getHours();
                                       var min = d.getMinutes();
                                       var sec = d.getSeconds();
                                       var date = d.getDate();
-                                      var month = d.getMonth();
+                                      var month = d.getMonth() + 1;
                                       var year = d.getFullYear();
+                                      var currentDate = moment();
+                                      var timeLeft = moment(d).diff(
+                                        currentDate,
+                                        "minutes"
+                                      );
                                       res.json({
                                         userTestId: userTestId,
                                         subjects: [
@@ -166,6 +172,7 @@ const allThree = (testObject, userid, res) => {
                                         Physics: phyQues,
                                         Chemistry: chemQues,
                                         Maths: mathQues,
+                                        timeLeft: timeLeft,
                                       });
                                       phyQues.forEach((question) => {
                                         questionPromise.push(
