@@ -141,6 +141,7 @@ const updateLog = (questions, donetestid, testid, userid, res) => {
               const mathMarks = mathCorrectMarks + mathWrongMarks + mathNaMarks;
               var date = new Date();
               date = date.toISOString().split("T")[0];
+              date = date.toString();
               console.log(date);
               db.query(
                 "INSERT INTO usertest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)",
