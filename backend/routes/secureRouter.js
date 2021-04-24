@@ -155,7 +155,8 @@ router
       [req.body.userid]
     )
       .then((resp) => {
-        res.status(200).json({ Dates: resp.rows });
+        console.log(resp.rows);
+        res.status(200).json({ date: resp.rows.date, count: resp.rows.count });
       })
       .catch((err) => {
         console.log(err);
