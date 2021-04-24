@@ -152,7 +152,7 @@ router
   .post("/getheatmap", (req, res, next) => {
     db.query(
       "SELECT dateofsubmission AS date, COUNT(*) FROM usertest WHERE userid=$1 GROUP BY dateofsubmission",
-      req.body.userid
+      [req.body.userid]
     )
       .then((resp) => {
         res.status(200).json({ Dates: resp.rows });
