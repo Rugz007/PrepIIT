@@ -109,7 +109,7 @@ const phyChem = (testObject, userid, res) => {
                           var month = d.getMonth() + 1;
                           var year = d.getFullYear();
                           var currentDate = moment();
-                          var timeLeft = moment(d).diff(currentDate, "minutes");
+                          var timeLeft = moment(d).diff(currentDate, "seconds");
                           res.json({
                             userTestId: userTestId,
                             subjects: ["Physics", "Chemistry"],

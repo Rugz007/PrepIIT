@@ -160,7 +160,7 @@ const allThree = (testObject, userid, res) => {
                                       var currentDate = moment();
                                       var timeLeft = moment(d).diff(
                                         currentDate,
-                                        "minutes"
+                                        "seconds"
                                       );
                                       res.json({
                                         userTestId: userTestId,
