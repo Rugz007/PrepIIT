@@ -54,6 +54,7 @@ export const InputComponent: React.FC<QuestionInterface> = ({
                         value={answers[question?.qid][1][0]}
                         placeholder="Type your answer here"
                         onChange={onSelect}
+                        size='large'
                     />}
 
             </Row>

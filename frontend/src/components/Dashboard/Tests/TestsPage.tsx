@@ -74,7 +74,7 @@ export const TestsPage: React.FC = () => {
   }
   const [tests, setTests] = useState<TestCardProps | undefined | null>(null)
   return (
-    <Row style={{ minHeight: '95vh' }}>
+    <Row >
       <Col span={24}><h1 style={{ fontSize: "40px", textAlign: "left" ,width:'100%'}}>Tests</h1></Col>
       <Col span={24}>
       {tests && <Tabs style={{ textAlign: 'center' }}>

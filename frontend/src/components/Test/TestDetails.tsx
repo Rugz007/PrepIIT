@@ -1,4 +1,5 @@
-import { List, Row, Button } from 'antd';
+import { List, Row, Button,Col } from 'antd';
+import Countdown from 'antd/lib/statistic/Countdown';
 import React from 'react'
 
 interface TestDetailsProps {
@@ -6,9 +7,10 @@ interface TestDetailsProps {
     questions: any,
     setCurrentFunction: Function,
     answers: any,
+    timer: number | undefined,
 }
 
-export const TestDetails: React.FC<TestDetailsProps> = ({ current, questions, setCurrentFunction, answers }) => {
+export const TestDetails: React.FC<TestDetailsProps> = ({ current, questions, setCurrentFunction, answers, timer }) => {
     const goToIndex = (index: number) => {
         setCurrentFunction(index + 1);
     };
@@ -36,6 +38,11 @@ export const TestDetails: React.FC<TestDetailsProps> = ({ current, questions, se
         <>
             <Row>
                 <h1>Remaining Questions : 5</h1>
+            </Row>
+            <Row>
+                <Col span={12}> <h2 style={{width:'100%'}}>Time left: </h2></Col>
+                <Col span={12}>{timer && <Countdown value={timer} />}</Col>
+               
             </Row>
             {answers && <Row>
                 <List

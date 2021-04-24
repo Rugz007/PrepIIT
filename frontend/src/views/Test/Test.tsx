@@ -37,6 +37,7 @@ export const Test: React.FC = () => {
   const [tab, setTab] = useState("Physics");
   const [response, setResponse]: any = useState(undefined);
   const [answers, setAnswers]: any = useState(undefined);
+  const [timer, setTimer] = useState<number|undefined>(undefined)  
   const history = useHistory();
   const userContext = useContext(UserContext);
   useEffect(() => {
@@ -66,6 +67,8 @@ export const Test: React.FC = () => {
           },
         })
           .then((res) => {
+            var date = Date.now() + res.data['timeLeft'] * 1000
+            setTimer(date)
             setResponse(res.data);
             if (localStorage.getItem("answers") === null) {
               let questionsMap: any = {};
@@ -106,6 +109,8 @@ export const Test: React.FC = () => {
         })
           .then((res) => {
             localStorage.setItem("usertestid", res.data.userTestId);
+            var date = Date.now() + res.data['timeLeft'] * 1000
+            setTimer(date)
             setResponse(res.data);
             if (localStorage.getItem("answers") === null || localStorage.getItem("answers") === undefined) {
               let questionsMap: any = {};
@@ -288,7 +293,7 @@ export const Test: React.FC = () => {
               </Col>
               <Col span={6}>
                 <Card style={{ width: '100%', height: '100%' }}>
-                  {response !== undefined && answers && <TestDetails questions={response[tab]} setCurrentFunction={changeCurrent} current={current} answers={answers} />}
+                  {response !== undefined && answers && <TestDetails timer={timer} questions={response[tab]} setCurrentFunction={changeCurrent} current={current} answers={answers} />}
                   <Popconfirm
                     title="Are you sure you want to submit your test?"
                     onConfirm={onSubmit}

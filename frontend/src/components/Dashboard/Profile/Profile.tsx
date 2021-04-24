@@ -1,17 +1,49 @@
-import { Card, Row, Col, Avatar, Descriptions, Divider, Button, Tooltip } from 'antd';
-import React, { useContext } from 'react'
+import { Card, Row, Col, Avatar, Divider, Button } from 'antd';
+import React, { useContext, useState, useEffect } from 'react'
 import UserContext from '../../../context/User/UserContext';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import './Profile.css'
 import ReactTooltip from 'react-tooltip';
+import axios from 'axios';
+const { REACT_APP_NODEJS_URL } = process.env;
+
 interface ProfileProps {
 
+}
+interface HeatMapDetails {
+    date: string,
+    count: number | string,
 }
 
 export const Profile: React.FC<ProfileProps> = () => {
     const userContext = useContext(UserContext);
-
+    const [heatmapDetails, setHeatmapDetails] = useState<HeatMapDetails[] | undefined>(undefined)
+    const getHeatMapDetails = () => {
+        axios({
+            method: "POST",
+            url: `https://${REACT_APP_NODEJS_URL}/secure/getheatmap`,
+            headers: {
+                authorization: "Bearer " + localStorage.getItem("token"),
+            },
+            data: {
+                userid: userContext.user.userid
+            },
+        })
+            .then((res) => {
+                if (res.data !== []) {
+                    res.data.forEach((element :any)=> {
+                        element.count = parseInt(element.count)
+                    });
+                    setHeatmapDetails(res.data)
+                }
+            })
+    }
+    useEffect(() => {
+        if (heatmapDetails === undefined) {
+            getHeatMapDetails()
+        }
+    })
     return (
         <>
             <Row>
@@ -32,23 +64,17 @@ export const Profile: React.FC<ProfileProps> = () => {
                         <Row>
                             <Col span={24}><h2>Type: Free</h2></Col>
                             <Col span={24}><h2>Duration: --</h2></Col>
-                            
-                       </Row>
+
+                        </Row>
                         <Button style={{ float: 'right' }} type='primary'>Upgrade!</Button>
                     </Card>
                 </Col>
                 <Col span={16}>
                     <Card title={<h2>Your Test Activity</h2>} style={{ textAlign: 'left' }}>
-                        <CalendarHeatmap
-                            startDate={new Date('2015-12-31')}
-                            endDate={new Date('2016-12-01')}
-                            values={[
-                                { date: '2016-01-01', count: 1 },
-                                { date: '2016-01-12', count: 1 },
-                                { date: '2016-02-12', count: 1 },
-                                { date: '2016-01-30', count: 1 },
-                                // ...and so on
-                            ]}
+                        {heatmapDetails && <CalendarHeatmap
+                            startDate={new Date('2020-12-31')}
+                            endDate={new Date('2021-12-01')}
+                            values={heatmapDetails}
                             classForValue={(value) => {
                                 if (!value) {
                                     return 'color-empty';
@@ -63,8 +89,9 @@ export const Profile: React.FC<ProfileProps> = () => {
                                 }
                             }
                             }
-                        />
-                        <ReactTooltip/>
+                        />}
+
+                        <ReactTooltip />
                     </Card>
                 </Col>
             </Row>
