@@ -1,4 +1,5 @@
 var express = require("express");
+const moment = require("moment");
 var router = express.Router();
 
 const userAuth = require("../userAuth/userAuth");
@@ -93,61 +94,99 @@ router
     var mflag = false;
     var pflag = false;
     var cflag = false;
+    var timeLeft;
     db.query(
-      "SELECT currenttestid,qid,statement,img_path,type,subject,archive,latex,options FROM tempquestioncache WHERE currenttestid=$1 AND subject=$2",
-      [testid, "physics"]
-    ).then((resp) => {
-      if (resp.rows.length > 0) {
-        pflag = true;
-        phyQues.push(resp.rows);
-      }
+      "SELECT hoursubmit,minsubmit,secsubmit,datesubmit,monthsubmit,yearsubmit FROM tempquestioncache WHERE currenttestid=$1",
+      [testid]
+    ).then((respons) => {
+      const yearSubmit = respons.rows[0].yearsubmit;
+      const monthSubmit = respons.rows[0].monthsubmit - 1;
+      const dateSubmit = respons.rows[0].datesubmit;
+      const hourSubmit = respons.rows[0].hoursubmit;
+      const minSubmit = respons.rows[0].minsubmit;
+      const secSubmit = respons.rows[0].secsubmit;
+      var testEndDate = new Date(
+        yearSubmit,
+        monthSubmit,
+        dateSubmit,
+        hourSubmit,
+        minSubmit,
+        secSubmit
+      );
+      testEndDate = moment(testEndDate);
+      var currentDate = moment();
+      timeLeft = testEndDate.diff(currentDate, "seconds");
       db.query(
         "SELECT currenttestid,qid,statement,img_path,type,subject,archive,latex,options FROM tempquestioncache WHERE currenttestid=$1 AND subject=$2",
-        [testid, "chemistry"]
-      ).then((respo) => {
-        if (respo.rows.length > 0) {
-          cflag = true;
-          chemQues.push(respo.rows);
+        [testid, "physics"]
+      ).then((resp) => {
+        if (resp.rows.length > 0) {
+          pflag = true;
+          phyQues.push(resp.rows);
         }
         db.query(
           "SELECT currenttestid,qid,statement,img_path,type,subject,archive,latex,options FROM tempquestioncache WHERE currenttestid=$1 AND subject=$2",
-          [testid, "maths"]
-        ).then((respon) => {
-          if (respon.rows.length > 0) {
-            mflag = true;
-            mathQues.push(respon.rows);
+          [testid, "chemistry"]
+        ).then((respo) => {
+          if (respo.rows.length > 0) {
+            cflag = true;
+            chemQues.push(respo.rows);
           }
-          var subjects = [];
-          if (pflag && mflag && cflag) {
-            subjects[0] = "Physics";
-            subjects[1] = "Chemistry";
-            subjects[2] = "Maths";
-          } else if (pflag && mflag && !cflag) {
-            subjects[0] = "Physics";
-            subjects[1] = "Maths";
-          } else if (pflag && !mflag && cflag) {
-            subjects[0] = "Physics";
-            subjects[1] = "Chemistry";
-          } else if (pflag && !mflag && !cflag) {
-            subjects[0] = "Physics";
-          } else if (!pflag && mflag && cflag) {
-            subjects[0] = "Chemistry";
-            subjects[1] = "Maths";
-          } else if (!pflag && mflag && !cflag) {
-            subjects[0] = "Maths";
-          } else if (!pflag && !mflag && cflag) {
-            subjects[0] = "Chemistry";
-          }
-          res.json({
-            userTestId: testid,
-            subjects: subjects,
-            Physics: phyQues[0],
-            Chemistry: chemQues[0],
-            Maths: mathQues[0],
+          db.query(
+            "SELECT currenttestid,qid,statement,img_path,type,subject,archive,latex,options FROM tempquestioncache WHERE currenttestid=$1 AND subject=$2",
+            [testid, "maths"]
+          ).then((respon) => {
+            if (respon.rows.length > 0) {
+              mflag = true;
+              mathQues.push(respon.rows);
+            }
+            var subjects = [];
+            if (pflag && mflag && cflag) {
+              subjects[0] = "Physics";
+              subjects[1] = "Chemistry";
+              subjects[2] = "Maths";
+            } else if (pflag && mflag && !cflag) {
+              subjects[0] = "Physics";
+              subjects[1] = "Maths";
+            } else if (pflag && !mflag && cflag) {
+              subjects[0] = "Physics";
+              subjects[1] = "Chemistry";
+            } else if (pflag && !mflag && !cflag) {
+              subjects[0] = "Physics";
+            } else if (!pflag && mflag && cflag) {
+              subjects[0] = "Chemistry";
+              subjects[1] = "Maths";
+            } else if (!pflag && mflag && !cflag) {
+              subjects[0] = "Maths";
+            } else if (!pflag && !mflag && cflag) {
+              subjects[0] = "Chemistry";
+            }
+            res.json({
+              userTestId: testid,
+              subjects: subjects,
+              Physics: phyQues[0],
+              Chemistry: chemQues[0],
+              Maths: mathQues[0],
+              timeLeft: timeLeft,
+            });
           });
         });
       });
     });
+  })
+  .post("/getheatmap", (req, res, next) => {
+    db.query(
+      "SELECT dateofsubmission AS date, COUNT(*) FROM usertest WHERE userid=$1 GROUP BY dateofsubmission",
+      [req.body.userid]
+    )
+      .then((resp) => {
+        console.log(resp.rows);
+        res.status(200).send(resp.rows);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ errmess: "DB Error" });
+      });
   });
 
 module.exports = router;
