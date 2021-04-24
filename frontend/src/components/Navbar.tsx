@@ -21,7 +21,7 @@ const StaticHeader: React.FC = () => {
           <Col lg={2} />
           <Col lg={2} md={4} sm={4} xs={8} style={{ height: "100%" }}>
             <Link to="/" onClick={onClickLogo}>
-              <img alt="logo" src="logo.jpg" style={{ width: "55%" }} />
+              <img alt="logo" src="https://i.imgur.com/Nki0mn9.jpg" style={{ width: "55%" }} />
             </Link>
           </Col>
           <Col lg={16} xs={14} style={{ width: "100%", backgroundColor: "white", color: "black" }}>
@@ -114,12 +114,10 @@ const DashboardHeader: React.FC = () => {
         <Row style={{ height: "100%" }}>
           <Col lg={2}>
             <Link to="/" onClick={onClickLogo}>
-              <img alt="logo" src="frontend/public/logo.jpg" style={{ width: "57%" }} />
+              <img alt="logo" src="https://i.imgur.com/Nki0mn9.jpg" style={{ width: "57%" }} />
             </Link>
           </Col>
-          <Col lg={2} md={4} sm={4} xs={8} style={{ height: "100%" }}>
-
-          </Col>
+          <Col lg={2} md={4} sm={4} xs={8} style={{ height: "100%" }}/>
           <Col lg={16} xs={14} />
           <Col lg={4} xs={0} style={{ height: "100%" }}>
             {userContext.user != null ? (
@@ -182,7 +180,7 @@ const TestHeader: React.FC = () => {
         <Row style={{ height: "100%" }}>
           <Col lg={2}>
             <Link to='/'>
-              <img alt="logo" src="logo.jpg" style={{ width: "57%" }} />
+              <img alt="logo" src="https://i.imgur.com/Nki0mn9.jpg" style={{ width: "57%" }} />
             </Link>
           </Col>
           <Col lg={2} md={4} sm={4} xs={8} style={{ height: "100%" }}>

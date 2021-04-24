@@ -7,6 +7,7 @@ import { TestIntruction } from '../../components/Test/TestIntruction';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
 import UserContext from '../../context/User/UserContext';
+import { InputComponent } from '../../components/Test/QuestionComponents/InputComponent';
 const { REACT_APP_NODEJS_URL } = process.env;
 
 interface QuestionInterface {
@@ -147,6 +148,18 @@ export const Test: React.FC = () => {
     });
     console.log("Select Answer")
   };
+  const OnInputAnswer = (e: any) => {
+    var questionID = response[tab][current - 1]["qid"];
+    setAnswers({
+      ...answers,
+      [questionID]: [
+        response[tab][current - 1]["qid"],
+        [e.target.value],
+        "15",
+        "Marked",
+      ],
+    });
+  };
   const onNext = () => {
     if (current !== response[tab].length) {
       var questionID = response[tab][current - 1]["qid"];
@@ -244,33 +257,38 @@ export const Test: React.FC = () => {
   return (
     <>
       {localStorage.getItem("testid") ?
-        <div>
+        <div style={{ height: '100%' }}>
           {readInstructions ?
-            <Row style={{ padding: '2%' }}>
+            <Row style={{ height: '93.2vh' }}>
               <Col span={18}>
-                <Row>
-                  <Col span={2}><Button onClick={onPrevious} type='primary' danger style={{ float: 'left' }}>Previous</Button></Col>
-                  <Col span={20}><Card style={{ width: '100%' }}> Time Remaining</Card></Col>
-                  <Col span={2}> <Button onClick={onNext} type='primary' style={{ float: 'right' }}>Next</Button></Col>
-                </Row>
-                <Row>
-                  <Card style={{ width: '100%', height: '74vh' }}>
+                <Row >
+                  <Card style={{ width: '100%', height: '85vh' }}>
                     <Tabs onChange={onChangeTab}>
                       {response && response["subjects"].map((e: string, index: any) => (
                         <Tabs.TabPane tab={e} key={e} >
-                          {response[e][current - 1].type === 'mcq' && <MCQComponent onSelect={onSelectAnswer} question={response[e][current - 1]} answers={answers} />}
+                          {(response[e][current - 1].type === 'mcq' || response[e][current - 1].type === 'anr' || response[e][current - 1].type === 'tof') && <MCQComponent onSelect={onSelectAnswer} question={response[e][current - 1]} answers={answers} />}
+                          {(response[e][current - 1].type === 'fib' || response[e][current - 1].type === 'num') && <InputComponent onSelect={OnInputAnswer} question={response[e][current - 1]} answers={answers} />}
 
                         </Tabs.TabPane>
                       ))}
                     </Tabs>
                   </Card>
                 </Row>
+                <Row style={{ height: '7vh' }}>
+                  <Col span={20} style={{ display: 'flex', alignItems: 'center' }}>
+                    <Button style={{ margin: '0 2%' }} type='primary' onClick={clearAnswer}>Clear Answer</Button>
+                    <Button style={{ marginRight: '2%', backgroundColor: '#fce621', borderColor: '#fce621', color: 'black' }} type='primary' onClick={markForReview}>Mark For Review</Button>
+                    <Button style={{ marginRight: '2%' }} danger type='primary'>Report Question</Button>
+                  </Col>
+                  <Col span={4} style={{ display: 'flex', alignItems: 'center' }}>
+                    <Button onClick={onPrevious}>{"<"} Previous</Button>
+                    <Button onClick={onNext} type='primary' style={{ marginLeft: '10%' }}>Next  {">"}</Button>
+                  </Col>
+                </Row>
               </Col>
               <Col span={6}>
-                <Card style={{ margin: '0 6%' }}>
+                <Card style={{ width: '100%', height: '100%' }}>
                   {response !== undefined && answers && <TestDetails questions={response[tab]} setCurrentFunction={changeCurrent} current={current} answers={answers} />}
-                  <Button onClick={clearAnswer}>Clear Answer</Button>
-                  <Button onClick={markForReview}>Mark For Review</Button>
                   <Popconfirm
                     title="Are you sure you want to submit your test?"
                     onConfirm={onSubmit}

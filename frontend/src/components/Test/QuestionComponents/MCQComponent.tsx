@@ -53,7 +53,6 @@ export const MCQComponent: React.FC<QuestionInterface> = ({
           style={{ textAlign: "left", width: "100%" }}
           onChange={(e) => onSelect(e)}
           value={answers[question?.qid][1][0]}
-          
         >
           
           {question?.options.map((option, index) => (

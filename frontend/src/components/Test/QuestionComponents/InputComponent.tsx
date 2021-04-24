@@ -13,11 +13,11 @@ interface QuestionInterface {
         options: string[];
     }
     | undefined;
-    onSelect: (e: RadioChangeEvent) => void;
+    onSelect: React.ChangeEventHandler<HTMLInputElement> | undefined;
     answers: any,
 }
 
-export const NumericalComponent: React.FC<QuestionInterface> = ({
+export const InputComponent: React.FC<QuestionInterface> = ({
     question,
     onSelect,
     answers
@@ -50,7 +50,11 @@ export const NumericalComponent: React.FC<QuestionInterface> = ({
             </Row>
             <Row>
                 {question && answers && answers[question.qid] !== undefined &&
-                    <Input />}
+                    <Input
+                        value={answers[question?.qid][1][0]}
+                        placeholder="Type your answer here"
+                        onChange={onSelect}
+                    />}
 
             </Row>
         </div>
