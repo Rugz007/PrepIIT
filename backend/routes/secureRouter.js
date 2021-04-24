@@ -156,7 +156,7 @@ router
     )
       .then((resp) => {
         console.log(resp.rows);
-        res.status(200).json({ date: resp.rows.date, count: resp.rows.count });
+        res.status(200).send(resp.rows);
       })
       .catch((err) => {
         console.log(err);
