@@ -148,6 +148,19 @@ router
         });
       });
     });
+  })
+  .post("/getheatmap", (req, res, next) => {
+    db.query(
+      "SELECT dateofsubmission AS date, COUNT(*) FROM usertest WHERE userid=$1 GROUP BY dateofsubmission",
+      req.body.userid
+    )
+      .then((resp) => {
+        res.status(200).json({ Dates: resp.rows });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ errmess: "DB Error" });
+      });
   });
 
 module.exports = router;
