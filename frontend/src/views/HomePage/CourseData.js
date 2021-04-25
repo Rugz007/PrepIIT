@@ -2,27 +2,32 @@ const CourseData = [
     {
         name: 'JEE Mains and Advanced',
         description: '',
-        icon: <img alt='jee' src="https://img.icons8.com/office/100/000000/engineering.png" />
+        icon: <img alt='jee' src="JEE-Mains-and-Advanced.png" />
     },
     {
         name: 'KVPY and Olympiad Program',
         description: '',
-        icon: <img alt='kvpy' src="https://img.icons8.com/officel/100/000000/microscope.png" />
+        icon: <img alt='kvpy' src="KVPY-and-Olympiad-Program.png" />
     },
     {
         name: 'NDA and NA',
         description: '',
-        icon: <img alt='NDA' src="https://img.icons8.com/officel/100/000000/staff-sergeant-ssg.png" />
+        icon: <img alt='NDA' src="NDA---NA.png" />
     },
     {
-        name: 'Summer Foundation Program [STEM]',
+        name: 'Raising the Genuis',
         description: '',
-        icon: <img alt='stem' src="https://img.icons8.com/officel/100/000000/knowledge-sharing.png"/>
+        icon: <img alt='stem' src="Raising-the-Genius.png"/>
     },
     {
         name: 'PrepIIT Test Series',
         description: '',
-        icon: <img alt='test' src="https://img.icons8.com/officel/100/000000/math.png"/>
+        icon: <img alt='test' src="PrepIIT-Test-Series.png"/>
+    },
+    {
+        name: 'IIT JAM',
+        description: '',
+        icon: <img alt='test' src="IIT---JAM.png"/>
     },
 ]
 //NDA and NA:

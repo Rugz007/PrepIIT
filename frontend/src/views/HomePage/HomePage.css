@@ -4,3 +4,8 @@
     background-attachment: fixed;
     background-size: cover;
 }
+#course-list  :hover
+{
+    border-color: #3975ac !important;
+    border-width: 1.3px  !important;
+}

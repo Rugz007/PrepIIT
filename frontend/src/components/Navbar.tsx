@@ -1,5 +1,6 @@
 import { Button, Col, Menu, Row, Avatar, Dropdown } from "antd";
 import Layout, { Header } from "antd/lib/layout/layout";
+import SubMenu from "antd/lib/menu/SubMenu";
 import React, { useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import UserContext from "../context/User/UserContext";
@@ -36,9 +37,11 @@ const StaticHeader: React.FC = () => {
               <Menu.Item key="home">
                 <Link to="/">Home</Link>
               </Menu.Item>
-              <Menu.Item key="courses">
-                <Link to="/courses">Courses</Link>
-              </Menu.Item>
+              <SubMenu className='cool-menu' title="Courses" key="Courses">
+                <Menu.Item>
+                  JEE
+                </Menu.Item>
+              </SubMenu>
               <Menu.Item key="faq">
                 <Link to="/faq">FAQ</Link>
               </Menu.Item>
@@ -117,7 +120,7 @@ const DashboardHeader: React.FC = () => {
               <img alt="logo" src="https://i.imgur.com/Nki0mn9.jpg" style={{ width: "57%" }} />
             </Link>
           </Col>
-          <Col lg={2} md={4} sm={4} xs={8} style={{ height: "100%" }}/>
+          <Col lg={2} md={4} sm={4} xs={8} style={{ height: "100%" }} />
           <Col lg={16} xs={14} />
           <Col lg={4} xs={0} style={{ height: "100%" }}>
             {userContext.user != null ? (
