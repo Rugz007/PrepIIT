@@ -169,7 +169,7 @@ router
   .post("/testtype", (req, res, next) => {
     var body = req.body.values;
     const testname = body.name;
-    const subjectsallowed = body.subjects;
+    const subjectsallowed = body.subjectsallowed;
     var mcq = [],
       fib = [],
       anr = [],
@@ -177,32 +177,32 @@ router
       nq = [],
       mtf = [];
     body.questions.map((question) => {
-      if (question.type == "MCQ") {
+      if (question.type == "mcq") {
         mcq.push(question.number);
         mcq.push(question.correct);
         mcq.push(question.wrong);
         mcq.push(question.nullanswer);
-      } else if (question.type == "FIB") {
+      } else if (question.type == "fib") {
         fib.push(question.number);
         fib.push(question.correct);
         fib.push(question.wrong);
         fib.push(question.nullanswer);
-      } else if (question.type == "ANR") {
+      } else if (question.type == "anr") {
         anr.push(question.number);
         anr.push(question.correct);
         anr.push(question.wrong);
         anr.push(question.nullanswer);
-      } else if (question.type == "TOF") {
+      } else if (question.type == "tof") {
         tof.push(question.number);
         tof.push(question.correct);
         tof.push(question.wrong);
         tof.push(question.nullanswer);
-      } else if (question.type == "NQ") {
+      } else if (question.type == "num") {
         nq.push(question.number);
         nq.push(question.correct);
         nq.push(question.wrong);
         nq.push(question.nullanswer);
-      } else if (question.type == "MTF") {
+      } else if (question.type == "mtf") {
         mtf.push(question.number);
         mtf.push(question.correct);
         mtf.push(question.wrong);

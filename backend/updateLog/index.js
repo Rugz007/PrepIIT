@@ -189,7 +189,7 @@ const updateLog = (questions, donetestid, testid, userid, testObject, res) => {
                 (phyWrong["fib"] ? phyWrong["fib"] : 0) * fibWrongMarks +
                 (phyNa["fib"] ? phyNa["fib"] : 0) * fibNaMarks +
                 (phyCorrect["anr"] ? phyCorrect["anr"] : 0) * anrCorrectMarks +
-                (phyWrong["mcq"] ? phyWrong["mcq"] : 0) * anrWrongMarks +
+                (phyWrong["anr"] ? phyWrong["anr"] : 0) * anrWrongMarks +
                 (phyNa["anr"] ? phyNa["anr"] : 0) * anrNaMarks +
                 (phyCorrect["tof"] ? phyCorrect["tof"] : 0) * tofCorrectMarks +
                 (phyWrong["tof"] ? phyWrong["tof"] : 0) * tofWrongMarks +
@@ -211,7 +211,7 @@ const updateLog = (questions, donetestid, testid, userid, testObject, res) => {
                 (chemNa["fib"] ? chemNa["fib"] : 0) * fibNaMarks +
                 (chemCorrect["anr"] ? chemCorrect["anr"] : 0) *
                   anrCorrectMarks +
-                (chemWrong["mcq"] ? chemWrong["mcq"] : 0) * anrWrongMarks +
+                (chemWrong["anr"] ? chemWrong["anr"] : 0) * anrWrongMarks +
                 (chemNa["anr"] ? chemNa["anr"] : 0) * anrNaMarks +
                 (chemCorrect["tof"] ? chemCorrect["tof"] : 0) *
                   tofCorrectMarks +
@@ -236,7 +236,7 @@ const updateLog = (questions, donetestid, testid, userid, testObject, res) => {
                 (mathNa["fib"] ? mathNa["fib"] : 0) * fibNaMarks +
                 (mathCorrect["anr"] ? mathCorrect["anr"] : 0) *
                   anrCorrectMarks +
-                (mathWrong["mcq"] ? mathWrong["mcq"] : 0) * anrWrongMarks +
+                (mathWrong["anr"] ? mathWrong["anr"] : 0) * anrWrongMarks +
                 (mathNa["anr"] ? mathNa["anr"] : 0) * anrNaMarks +
                 (mathCorrect["tof"] ? mathCorrect["tof"] : 0) *
                   tofCorrectMarks +
