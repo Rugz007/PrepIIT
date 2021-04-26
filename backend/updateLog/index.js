@@ -151,8 +151,8 @@ const updateLog = (questions, donetestid, testid, userid, testObject, res) => {
                 else chemCorrect[answer.type] = 1;
               } else {
                 math[0]++;
-                if (chemCorrect[answer.type]) chemCorrect[answer.type]++;
-                else chemCorrect[answer.type] = 1;
+                if (mathCorrect[answer.type]) mathCorrect[answer.type]++;
+                else mathCorrect[answer.type] = 1;
               }
               correctPromise.push(
                 db
