@@ -15,6 +15,7 @@ import { HomePage } from './views/HomePage/HomePage';
 import { Test } from './views/Test/Test';
 import { TestAnalysis } from './views/Analysis/TestAnalysis';
 import { TestSubmitted } from './views/Test/TestSubmitted';
+import { CourseDescription } from './components/HomePage/CourseDescription';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={(props) => {
@@ -42,6 +43,7 @@ class Routes extends React.Component {
                 <ProtectedRoute path='/about' component={About} />
                 <ProtectedRoute path='/contact' component={Contact} />
                 <ProtectedRoute path='/courses' component={Courses} />
+                <ProtectedRoute path='/coursetest' component={CourseDescription} />
                 <ProtectedRoute path='/faq' component={FAQ} />
                 <Route path='/test/:id' exact component={Test}/>
                 <Route path='/testintruction' component={TestIntruction}/>
