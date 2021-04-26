@@ -8,9 +8,13 @@ const updateLog = (questions, donetestid, testid, userid, testObject, res) => {
   const fibCorrectMarks = testObject.fibdata ? testObject.fibdata[1] : 0;
   const fibWrongMarks = testObject.fibdata ? testObject.fibdata[2] : 0;
   const fibNaMarks = testObject.fibdata ? testObject.fibdata[3] : 0;
-  const anrCorrectMarks = testObject.anrdata ? testObject.anrdata[1] : 0;
-  const anrWrongMarks = testObject.anrdata ? testObject.anrdata[2] : 0;
-  const anrNaMarks = testObject.anrdata ? testObject.anrdata[3] : 0;
+  const anrCorrectMarks = testObject.assertiondata
+    ? testObject.assertiondata[1]
+    : 0;
+  const anrWrongMarks = testObject.assertiondata
+    ? testObject.assertiondata[2]
+    : 0;
+  const anrNaMarks = testObject.assertiondata ? testObject.assertiondata[3] : 0;
   const tofCorrectMarks = testObject.truefalse ? testObject.truefalse[1] : 0;
   const tofWrongMarks = testObject.truefalse ? testObject.truefalse[2] : 0;
   const tofNaMarks = testObject.truefalse ? testObject.truefalse[3] : 0;
