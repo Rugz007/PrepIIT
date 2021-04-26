@@ -178,62 +178,74 @@ const updateLog = (questions, donetestid, testid, userid, testObject, res) => {
         Promise.all(correctPromise).then((corEnd) => {
           Promise.all(notAttemptedPromise).then((naEnd) => {
             var phyMarks =
-                phyCorrect["mcq"] * mcqCorrectMarks +
-                phyWrong["mcq"] * mcqWrongMarks +
-                phyNa["mcq"] * mcqNaMarks +
-                phyCorrect["fib"] * fibCorrectMarks +
-                phyWrong["fib"] * fibWrongMarks +
-                phyNa["fib"] * fibNaMarks +
-                phyCorrect["anr"] * anrCorrectMarks +
-                phyWrong["mcq"] * anrWrongMarks +
-                phyNa["anr"] * anrNaMarks +
-                phyCorrect["tof"] * tofCorrectMarks +
-                phyWrong["tof"] * tofWrongMarks +
-                phyNa["tof"] * tofNaMarks +
-                phyCorrect["num"] * numCorrectMarks +
-                phyWrong["num"] * numWrongMarks +
-                phyNa["num"] * numNaMarks +
-                phyCorrect["mtf"] * mtfCorrectMarks +
-                phyWrong["mtf"] * mtfWrongMarks +
-                phyNa["mtf"] * mtfNaMarks,
+                (phyCorrect["mcq"] ? phyCorrect["mcq"] : 0) * mcqCorrectMarks +
+                (phyWrong["mcq"] ? phyWrong["mcq"] : 0) * mcqWrongMarks +
+                (phyNa["mcq"] ? phyNa["mcq"] : 0) * mcqNaMarks +
+                (phyCorrect["fib"] ? phyCorrect["fib"] : 0) * fibCorrectMarks +
+                (phyWrong["fib"] ? phyWrong["fib"] : 0) * fibWrongMarks +
+                (phyNa["fib"] ? phyNa["fib"] : 0) * fibNaMarks +
+                (phyCorrect["anr"] ? phyCorrect["anr"] : 0) * anrCorrectMarks +
+                (phyWrong["mcq"] ? phyWrong["mcq"] : 0) * anrWrongMarks +
+                (phyNa["anr"] ? phyNa["anr"] : 0) * anrNaMarks +
+                (phyCorrect["tof"] ? phyCorrect["tof"] : 0) * tofCorrectMarks +
+                (phyWrong["tof"] ? phyWrong["tof"] : 0) * tofWrongMarks +
+                (phyNa["tof"] ? phyNa["tof"] : 0) * tofNaMarks +
+                (phyCorrect["num"] ? phyCorrect["num"] : 0) * numCorrectMarks +
+                (phyWrong["num"] ? phyWrong["num"] : 0) * numWrongMarks +
+                (phyNa["num"] ? phyNa["num"] : 0) * numNaMarks +
+                (phyCorrect["mtf"] ? phyCorrect["mtf"] : 0) * mtfCorrectMarks +
+                (phyWrong["mtf"] ? phyWrong["mtf"] : 0) * mtfWrongMarks +
+                (phyNa["mtf"] ? phyNa["mtf"] : 0) * mtfNaMarks,
               chemMarks =
-                chemCorrect["mcq"] * mcqCorrectMarks +
-                chemWrong["mcq"] * mcqWrongMarks +
-                chemNa["mcq"] * mcqNaMarks +
-                chemCorrect["fib"] * fibCorrectMarks +
-                chemWrong["fib"] * fibWrongMarks +
-                chemNa["fib"] * fibNaMarks +
-                chemCorrect["anr"] * anrCorrectMarks +
-                chemWrong["mcq"] * anrWrongMarks +
-                chemNa["anr"] * anrNaMarks +
-                chemCorrect["tof"] * tofCorrectMarks +
-                chemWrong["tof"] * tofWrongMarks +
-                chemNa["tof"] * tofNaMarks +
-                chemCorrect["num"] * numCorrectMarks +
-                chemWrong["num"] * numWrongMarks +
-                chemNa["num"] * numNaMarks +
-                chemCorrect["mtf"] * mtfCorrectMarks +
-                chemWrong["mtf"] * mtfWrongMarks +
-                chemNa["mtf"] * mtfNaMarks,
+                (chemCorrect["mcq"] ? chemCorrect["mcq"] : 0) *
+                  mcqCorrectMarks +
+                (chemWrong["mcq"] ? chemWrong["mcq"] : 0) * mcqWrongMarks +
+                (chemNa["mcq"] ? chemNa["mcq"] : 0) * mcqNaMarks +
+                (chemCorrect["fib"] ? chemCorrect["fib"] : 0) *
+                  fibCorrectMarks +
+                (chemWrong["fib"] ? chemWrong["fib"] : 0) * fibWrongMarks +
+                (chemNa["fib"] ? chemNa["fib"] : 0) * fibNaMarks +
+                (chemCorrect["anr"] ? chemCorrect["anr"] : 0) *
+                  anrCorrectMarks +
+                (chemWrong["mcq"] ? chemWrong["mcq"] : 0) * anrWrongMarks +
+                (chemNa["anr"] ? chemNa["anr"] : 0) * anrNaMarks +
+                (chemCorrect["tof"] ? chemCorrect["tof"] : 0) *
+                  tofCorrectMarks +
+                (chemWrong["tof"] ? chemWrong["tof"] : 0) * tofWrongMarks +
+                (chemNa["tof"] ? chemNa["tof"] : 0) * tofNaMarks +
+                (chemCorrect["num"] ? chemCorrect["num"] : 0) *
+                  numCorrectMarks +
+                (chemWrong["num"] ? chemWrong["num"] : 0) * numWrongMarks +
+                (chemNa["num"] ? chemNa["num"] : 0) * numNaMarks +
+                (chemCorrect["mtf"] ? chemCorrect["mtf"] : 0) *
+                  mtfCorrectMarks +
+                (chemWrong["mtf"] ? chemWrong["mtf"] : 0) * mtfWrongMarks +
+                (chemNa["mtf"] ? chemNa["mtf"] : 0) * mtfNaMarks,
               mathMarks =
-                mathCorrect["mcq"] * mcqCorrectMarks +
-                mathWrong["mcq"] * mcqWrongMarks +
-                mathNa["mcq"] * mcqNaMarks +
-                mathCorrect["fib"] * fibCorrectMarks +
-                mathWrong["fib"] * fibWrongMarks +
-                mathNa["fib"] * fibNaMarks +
-                mathCorrect["anr"] * anrCorrectMarks +
-                mathWrong["mcq"] * anrWrongMarks +
-                mathNa["anr"] * anrNaMarks +
-                mathCorrect["tof"] * tofCorrectMarks +
-                mathWrong["tof"] * tofWrongMarks +
-                mathNa["tof"] * tofNaMarks +
-                mathCorrect["num"] * numCorrectMarks +
-                mathWrong["num"] * numWrongMarks +
-                mathNa["num"] * numNaMarks +
-                mathCorrect["mtf"] * mtfCorrectMarks +
-                mathWrong["mtf"] * mtfWrongMarks +
-                mathNa["mtf"] * mtfNaMarks;
+                (mathCorrect["mcq"] ? mathCorrect["mcq"] : 0) *
+                  mcqCorrectMarks +
+                (mathWrong["mcq"] ? mathWrong["mcq"] : 0) * mcqWrongMarks +
+                (mathNa["mcq"] ? mathNa["mcq"] : 0) * mcqNaMarks +
+                (mathCorrect["fib"] ? mathCorrect["fib"] : 0) *
+                  fibCorrectMarks +
+                (mathWrong["fib"] ? mathWrong["fib"] : 0) * fibWrongMarks +
+                (mathNa["fib"] ? mathNa["fib"] : 0) * fibNaMarks +
+                (mathCorrect["anr"] ? mathCorrect["anr"] : 0) *
+                  anrCorrectMarks +
+                (mathWrong["mcq"] ? mathWrong["mcq"] : 0) * anrWrongMarks +
+                (mathNa["anr"] ? mathNa["anr"] : 0) * anrNaMarks +
+                (mathCorrect["tof"] ? mathCorrect["tof"] : 0) *
+                  tofCorrectMarks +
+                (mathWrong["tof"] ? mathWrong["tof"] : 0) * tofWrongMarks +
+                (mathNa["tof"] ? mathNa["tof"] : 0) * tofNaMarks +
+                (mathCorrect["num"] ? mathCorrect["num"] : 0) *
+                  numCorrectMarks +
+                (mathWrong["num"] ? mathWrong["num"] : 0) * numWrongMarks +
+                (mathNa["num"] ? mathNa["num"] : 0) * numNaMarks +
+                (mathCorrect["mtf"] ? mathCorrect["mtf"] : 0) *
+                  mtfCorrectMarks +
+                (mathWrong["mtf"] ? mathWrong["mtf"] : 0) * mtfWrongMarks +
+                (mathNa["mtf"] ? mathNa["mtf"] : 0) * mtfNaMarks;
             var totalMarks = phyMarks + chemMarks + mathMarks;
             var date = new Date();
             date = date.toISOString().split("T")[0];
