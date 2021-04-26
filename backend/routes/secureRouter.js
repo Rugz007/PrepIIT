@@ -84,7 +84,12 @@ router
   .post("/verifyanswers", (req, res, next) => {
     const { donetestid, questions, testid, userid } = req.body;
     console.log(donetestid, testid, userid);
-    updateLog(questions, donetestid, testid, userid, res);
+    db.query("SELECT * FROM testtype WHERE testid=$1", [testid]).then(
+      (resp) => {
+        var testObject = resp.rows[0];
+        updateLog(questions, donetestid, testid, userid, testObject, res);
+      }
+    );
   })
   .post("/cachequestions", (req, res, next) => {
     var testid = req.body.testid;
