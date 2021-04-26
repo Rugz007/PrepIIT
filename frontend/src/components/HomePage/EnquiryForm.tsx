@@ -29,13 +29,13 @@ export const EnquiryForm: React.FC = () => {
   return (
     <Card
       bordered={false}
-      style={{ height: "100%", borderRadius: "17px",  }}
+      style={{ height: "100%", borderRadius: "17px", margin:'0 2%' }}
     >
       <h1 style={{ fontSize: "40px", marginBottom: "0" }}>
-        <b>Reach out to us! Join us</b>
+        <b>Reach out to us!</b>
       </h1>
       <h3>Put in your details and we will be in touch with you soon.</h3>
-      <h3>or call admission hotline: 9999999999</h3>
+      <h3>or call admission hotline: 9890401239</h3>
       <Divider />
       <Form
         name="enquiry"
@@ -44,10 +44,10 @@ export const EnquiryForm: React.FC = () => {
         style={{ textAlign: "left" }}
       >
         <h2>
-          <b>Full Name:</b>
+          <b>Name:</b>
         </h2>
         <Form.Item name="name">
-          <Input placeholder={"Enter your Full Name."} />
+          <Input placeholder={"Enter your Name."} />
         </Form.Item>
         <h2>
           <b>Phone Number</b>
