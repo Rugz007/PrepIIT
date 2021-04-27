@@ -168,7 +168,7 @@ router
   })
   .post("/testtype", (req, res, next) => {
     var body = req.body.values;
-    const testname = body.name;
+    const testname = body.testname;
     const subjectsallowed = body.subjectsallowed;
     var mcq = [],
       fib = [],
@@ -246,7 +246,7 @@ router
       .catch((err) => {
         console.log(err);
         console.log("DB Error");
-        res.json({ success: false });
+        res.status(500).json({ success: false });
       });
   })
   .post("/livetest", upload.single("QuestionBank"), (req, res, next) => {

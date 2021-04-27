@@ -113,7 +113,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
                           name={[field.name, "type"]}
                           label="Question Type"
                         >
-                          <Select defaultValue="mcq">
+                          <Select>
                             <Option value="mcq">MCQ</Option>
                             <Option value="fib">Fill in the blanks</Option>
                             <Option value="anr">Assertion and Reason</Option>
