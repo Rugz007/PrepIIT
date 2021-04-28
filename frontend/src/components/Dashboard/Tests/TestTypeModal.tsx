@@ -18,27 +18,30 @@ interface TestTypeInterface {
       number: number;
     }>;
   };
-  buttonText:string;
+  buttonText: string;
 }
-export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test,buttonText }) => {
+export const TestTypeModal: React.FC<TestTypeInterface> = ({
+  Test,
+  buttonText,
+}) => {
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
   const toSubmit = (e: any) => {
     console.log(e);
   };
-  
+
   const SubmitTest = async (values: TestTypeInterface) => {
     console.log(values);
     try {
       const response = await axios.post(
-        `https://${REACT_APP_NODEJS_URL}admin/testtype`,
+        `https://${REACT_APP_NODEJS_URL}/admin/testtype`,
         {
           values,
         },
         {
-            headers: {
-                authorization: "Bearer " + localStorage.getItem("token"),
-              },
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
         }
       );
       console.log(response);
@@ -66,7 +69,13 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test,buttonText }) 
         }}
       >
         <br />
-        <Form name="TestType" layout="vertical" form={form} onFinish={toSubmit} initialValues={Test}>
+        <Form
+          name="TestType"
+          layout="vertical"
+          form={form}
+          onFinish={toSubmit}
+          initialValues={Test}
+        >
           <Form.Item label="Test Name" name="testname">
             <Input />
           </Form.Item>
@@ -104,13 +113,13 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({ Test,buttonText }) 
                           name={[field.name, "type"]}
                           label="Question Type"
                         >
-                          <Select defaultValue="MCQ">
-                            <Option value="MCQ">MCQ</Option>
-                            <Option value="FIB">Fill in the blanks</Option>
-                            <Option value="ANR">Assertion and Reason</Option>
-                            <Option value="TOF">True or False</Option>
-                            <Option value="NQ">Numerical Question</Option>
-                            <Option value="MTF">
+                          <Select>
+                            <Option value="mcq">MCQ</Option>
+                            <Option value="fib">Fill in the blanks</Option>
+                            <Option value="anr">Assertion and Reason</Option>
+                            <Option value="tof">True or False</Option>
+                            <Option value="num">Numerical Question</Option>
+                            <Option value="mtf">
                               Match the Following Questions
                             </Option>
                           </Select>
