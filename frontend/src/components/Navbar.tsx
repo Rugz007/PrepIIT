@@ -37,9 +37,24 @@ const StaticHeader: React.FC = () => {
               <Menu.Item key="home">
                 <Link to="/">Home</Link>
               </Menu.Item>
-              <SubMenu className='cool-menu' title="Courses" key="Courses">
-                <Menu.Item>
-                  JEE
+              <SubMenu className='cool-menu' title="Courses">
+                <Menu.Item key='jee'>
+                  <Link to='/courses/jee'>JEE Mains and Advanced</Link>
+                </Menu.Item>
+                <Menu.Item key='kvpy'>
+                  <Link to='/courses/kvpy'>KVPY and Olympiad Program</Link>
+                </Menu.Item>
+                <Menu.Item key='nda'>
+                  <Link to='/courses/nda'>NDA and NA</Link>
+                </Menu.Item>
+                <Menu.Item key='genius'>
+                  <Link to='/courses/genius'>Raising the genius</Link>
+                </Menu.Item>
+                <Menu.Item key='tests'>
+                  <Link to='/courses/tests'>PrepIIT Test Series</Link>
+                </Menu.Item>
+                <Menu.Item key='jam'>
+                  <Link to='/courses/jam'>IIT JAM</Link>
                 </Menu.Item>
               </SubMenu>
               <Menu.Item key="faq">

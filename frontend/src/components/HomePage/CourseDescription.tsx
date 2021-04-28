@@ -1,20 +1,53 @@
 import { Row, Col, List, Card, Divider, Button } from 'antd';
-import React from 'react'
+import React, { useEffect ,useState} from 'react'
+import { useLocation } from 'react-router';
+import { Link } from 'react-router-dom';
 import CourseData from '../../views/HomePage/CourseData';
+import { Error404 } from '../Errors/Error404';
 
 interface CourseDescriptionProps {
     showBatches?: boolean,
-    course?: CourseInterface
+    course?: CourseInterface,
 }
 interface CourseInterface {
     name: string,
     description: string | React.DetailedHTMLProps<React.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>,
     icon: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>,
+    tag:string,
+    batches?:JSX.Element[],
 }
 
 export const CourseDescription: React.FC<CourseDescriptionProps> = ({ showBatches, course }) => {
     let courseData: Array<CourseInterface> = CourseData;
+    const [courseState, setCourseState] = useState(course)
+    const location = useLocation()
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        switch (location.pathname.split("/")[2]) {
+            case 'jee':
+                setCourseState(courseData[0])
+                break;
+            case 'kvpy':
+                setCourseState(courseData[1])
+                break;
+            case 'nda':
+                setCourseState(courseData[2])
+                break;
+            case 'genius':
+                setCourseState(courseData[3])
+                break;
+            case 'tests':
+                setCourseState(courseData[4])
+                break;
+            case 'jam':
+                setCourseState(courseData[5])
+                break;
+            default:
+                <Error404 />
+                break;
+        }
 
+    }, [location.pathname.split("/")[2]])
     return (
         <div>
             {showBatches !== false ?
@@ -22,34 +55,11 @@ export const CourseDescription: React.FC<CourseDescriptionProps> = ({ showBatche
                     <Row style={{ marginTop: '5%' }}>
                         <Col lg={2} />
                         <Col lg={12}>
-                            <p style={{ textAlign: 'left' }}>
-                                <h1><b>Integrated Program:</b> JEE Mains and Advanced + XI and XII</h1>
+                            <p style={{textAlign:'left'}}>
+                                <h1><b>Integrated Program:</b> {courseState?.name}</h1>
                                 <Divider />
-                  ( CBSE | ICSE | HSC )<br />
-                                <b>Duration:</b> 2 years
-                  <br />
-                  Over 1000 Hrs of classroom teaching + Over 200 hrs of revision
-                  sessions + over 100 evaluation tests
-                  <br />
-                                <b>Eligibility:</b> Motivated students passing/ passed 10th
-                  standard with the consistent academic record.
-                  <br />
-                  PrepiiT will hold a screening test and personal interview and
-                  issue the admission letter to all eligible candidates.
-                  <br />
-                                <b>PrepiiT Screening test:</b> The test is administered at our
-                  centers to evaluate basic understanding of Maths and science
-                  subjects.
-                  <br />
-                                <b>Personal interview:</b> This is most important aspect of
-                  the admission process, in this 5 to 10 minutes interview all
-                  we want is to ascertain is the sincerity, motivation, and
-                  dedication of the candidate. To phrase it in one line this
-                  process helps us to ascertain if the student is ready to take
-                  on the challenges for next two years, we are always there by
-                  their side as a support system once we start this journey
-                  together.
-                </p>
+                                {courseState?.description}.
+                            </p>
                         </Col>
                         <Col lg={8}>
                             <img
@@ -64,8 +74,7 @@ export const CourseDescription: React.FC<CourseDescriptionProps> = ({ showBatche
                         </Col>
                         <Col lg={2} />
                     </Row>
-
-                    <Row style={{ marginTop: '3%' }}>
+                    {courseState?.batches && <Row style={{ marginTop: '3%' }}>
                         <Col lg={2} />
                         <Col lg={20}>
                             <h1 style={{ textAlign: 'center', fontSize: '48px', marginBottom: '0' }}>Batches for this course:</h1>
@@ -80,13 +89,11 @@ export const CourseDescription: React.FC<CourseDescriptionProps> = ({ showBatche
                                 xxl: 4,
                             }}
                                 style={{ width: "100%", margin: 'auto' }}
-                                dataSource={courseData}
+                                dataSource={courseState?.batches}
                                 renderItem={(item) => (
                                     <List.Item id="course-list">
                                         <Card className="course-card" style={{ width: '100%', minHeight: '206px' }}>
-                                            <h1>PropPrep+</h1>
-                                            <h3>Class 9th passed/appeared</h3>
-                                            <h3>Duration: 3 years</h3>
+                                            {item}
                                         </Card>
                                     </List.Item>
                                 )}
@@ -94,7 +101,8 @@ export const CourseDescription: React.FC<CourseDescriptionProps> = ({ showBatche
                         </Col>
                         <Col lg={2} />
                         <Col lg={2} />
-                    </Row>
+                    </Row>}
+                    
                 </div> :
                 <div style={{ minHeight: '45vh' }}>
                     <Row style={{ marginTop: '5%' }}>
@@ -114,16 +122,16 @@ export const CourseDescription: React.FC<CourseDescriptionProps> = ({ showBatche
                             />
                         </Col>
                         <Col lg={12}>
-                            <h1><b>Integrated Program:</b> {course?.name}</h1>
+                            <h1><b>Integrated Program:</b> {courseState?.name}</h1>
                             <Divider />
-                            {course?.description}
-                            <Button>Click to view more</Button>
+                            {courseState?.description}
+                            <Link to={`/courses/${courseState?.tag}`}><Button>Click to view more</Button></Link>
                         </Col>
-                        
                         <Col lg={1} />
                     </Row>
-                </div>}
-        </div>
+                </div>
+            }
+        </div >
 
 
     );
