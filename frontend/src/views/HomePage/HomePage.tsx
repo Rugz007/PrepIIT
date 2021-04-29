@@ -11,6 +11,9 @@ interface CourseInterface {
   name: string,
   description: string | React.DetailedHTMLProps<React.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>,
   icon: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>,
+  tag:string,
+  batches?:JSX.Element[],
+
 }
 
 export const HomePage: React.FC = () => {
