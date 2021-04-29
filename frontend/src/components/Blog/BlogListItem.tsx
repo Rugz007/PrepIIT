@@ -3,8 +3,8 @@ import { Card,Row } from 'antd';
 import { Link } from 'react-router-dom';
 
 interface BlogListItemProps {
-    id: number;
-    icon: React.ReactNode;
+    id: string;
+    icon?: React.ReactNode;
     title: string;
     description?: string;
 }

@@ -1,32 +1,43 @@
 import { Avatar, Col, List, Row } from 'antd';
-import React from 'react'
+import axios from 'axios';
+import React,{useState,useEffect} from 'react'
 import { Route, Switch } from 'react-router-dom';
 import { BlogListItem } from '../../components/Blog/BlogListItem';
 import { BlogPage } from './BlogPage';
+const { REACT_APP_NODEJS_URL } = process.env;
+
+
+interface BlogsInterface 
+{
+    postid:string,
+    title:string,
+    image_path:string,
+    content:string,
+    author:string,
+    userid:number,
+    date:string,
+}
 
 export const BlogList: React.FC = () => {
-    const data = [{
-        'id':1,
-        'title': 'How to Crack JEE',
-        'icon': <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />,
-        'content': 'How to Crack JEE in 2 Days!!!!!'
-    },
+    const [blogs, setBlogs] = useState<Array<BlogsInterface> | undefined>(undefined)
+    const getBlogs  = async () =>
     {
-        'id':2,
-        'title': 'How to Crack JEE',
-        'icon': <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />,
-        'content': 'How to Crack JEE in 2 Days!!!!!'
-    }];
+        const response = await axios.get(`https://${REACT_APP_NODEJS_URL}/blogs/allblogs`)
+        setBlogs(response.data)
+    }
+    useEffect(() => {
+        getBlogs()
+    }, [])
     return (
         <Row style={{ height: '90vh', marginTop: '3%' }}>
-            <Col span={4} />
-            <Col span={16}>
+            <Col span={3} />
+            <Col span={18}>
                 <Row>
                     <h1 style={{ fontSize: "2.3rem", margin: 'auto' }}>Blog List</h1>
                 </Row>
                 <Row>
                     <List
-                        dataSource={data}
+                        dataSource={blogs}
                         itemLayout="vertical"
                         size="large"
                         style={{ width: '100%', textAlign: 'left' }}
@@ -44,13 +55,13 @@ export const BlogList: React.FC = () => {
                             />
                         }
                         renderItem={item => (
-                            <BlogListItem id={item.id} icon={item.icon} title={item.title} description={item.content} />
+                            <BlogListItem id={item.postid} title={item.title} description={item.content} />
                         )}>
                     </List>
                     
                 </Row>
             </Col>
-            <Col span={4} />
+            <Col span={3} />
         </Row>
     );
 }
