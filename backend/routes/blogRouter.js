@@ -25,3 +25,5 @@ router
         res.status(500).json({ errmess: "DB Error" });
       });
   });
+
+module.exports = router;
