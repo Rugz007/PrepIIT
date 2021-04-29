@@ -1,24 +1,36 @@
-import { Button ,Card,Table} from 'antd';
-import React from 'react'
+import { Button, Card, Table } from 'antd';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom';
+const { REACT_APP_NODEJS_URL } = process.env;
 
 interface BlogsElementInterface {
-    name: string,
+    postid: string,
+    title: string,
+    image_path: string,
+    content: string,
     author: string,
+    userid: number,
     date: string,
 }
-
 export const BlogsTable: React.FC = () => {
-    const data: BlogsElementInterface[] = [
-        {
-            name: 'Crack JEE',
-            author: 'Rajesh',
-            date: '10th Feb 2021',
-        },]
+    const [blogs, setBlogs] = useState<Array<BlogsElementInterface> | undefined>(undefined)
+    const getBlogs = async () => {
+        const response = await axios.get(`https://${REACT_APP_NODEJS_URL}/blogs/allblogs`)
+        setBlogs(response.data)
+    }
+    const onDelete = (id:string) =>
+    {
+
+    }
+    useEffect(() => {
+        getBlogs()
+    }, [])
     const columns = [
         {
             title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'title',
+            key: 'title',
         },
         {
             title: 'Author',
@@ -31,18 +43,22 @@ export const BlogsTable: React.FC = () => {
             key: 'date',
         },
         {
-            title: 'Action [Work in Progress]',
+            title: 'Action',
             dataIndex: '',
             key: 'action',
-            render: (text: any, record: BlogsElementInterface) => <><Button type='primary'style={{marginRight:'2%'}}>View</Button><Button type='primary' danger>Delete</Button></>,
+            render: (text: any, record: BlogsElementInterface) =>
+                <>
+                    <Link to={"/blogs/"+record.postid}><Button type='primary' style={{ marginRight: '2%' }}>View</Button></Link>
+                    <Button type='primary' danger onClick={() => onDelete(record.postid)}>Delete</Button>
+                </>,
         },
     ];
     return (
         <div style={{ textAlign: 'left' }}>
             <h1 style={{ fontSize: '40px' }}>Blogs</h1>
             <Card style={{ textAlign: 'left', borderRadius: '10px' }}>
-            <h1 style={{ fontSize: '30px' }}>View Latest Enquiry Forms</h1>
-                <Table columns={columns} dataSource={data} style={{ width: "100%" }} />
+                <h1 style={{ fontSize: '30px' }}>View all Blogs</h1>
+                {blogs && <Table columns={columns} dataSource={blogs} style={{ width: "100%" }} />}
             </Card>
         </div>
 
