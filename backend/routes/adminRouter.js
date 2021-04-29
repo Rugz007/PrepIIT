@@ -2,6 +2,7 @@ var express = require("express");
 var upload = require("../multer/index");
 const uploadQuestions = require("../uploadQuestions/index");
 var uploadLiveTest = require("../uploadLiveTest/index");
+const randomstring = require("randomstring");
 
 var router = express.Router();
 
@@ -303,6 +304,61 @@ router
       .catch((err) => {
         console.log(err);
         res.status(500).json({ success: false });
+      });
+  })
+  .get("/allblogs", (req, res, next) => {
+    db.query("SELECT * FROM blogs")
+      .then((resp) => {
+        console.log(resp.rows);
+        res.status(200).json(resp.rows);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ errmess: "DB Error" });
+      });
+  })
+  .get("/blog", (req, res, next) => {
+    const postid = req.headers.postid;
+    db.query("SELECT * FROM blogs WHERE postid=$1", [postid])
+      .then((resp) => {
+        console.log(resp.rows);
+        res.json(resp.rows);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ errmess: "DB Error" });
+      });
+  })
+  .post("/blog", (req, res, next) => {
+    const postid = randomstring.generate({
+      length: 15,
+      charset: "alphabetic",
+    });
+    const title = req.body.title;
+    const content = req.body.content;
+    const author = req.body.author;
+    const userid = req.body.userid;
+    var date = new Date();
+    date = date.toDateString();
+    db.query("INSERT INTO blogs VALUES($1,$2,$3,$4,$5,$6)", [
+      postid,
+      title,
+      content,
+      author,
+      userid,
+      date,
+    ])
+      .then((resp) => {
+        console.log("Inserted Successfully");
+        res.status(200).json({
+          success: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({
+          success: false,
+        });
       });
   });
 
