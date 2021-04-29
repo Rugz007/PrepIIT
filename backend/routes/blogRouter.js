@@ -19,7 +19,7 @@ router
     db.query("SELECT * FROM blogs WHERE postid=$1", [postid])
       .then((resp) => {
         console.log(resp.rows);
-        res.json(resp.rows);
+        res.json(resp.rows[0]);
       })
       .catch((err) => {
         console.log(err);

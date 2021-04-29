@@ -338,15 +338,17 @@ router
     const content = req.body.content;
     const author = req.body.author;
     const userid = req.body.userid;
+    const imagepath = req.body.imagepath;
     var date = new Date();
     date = date.toDateString();
-    db.query("INSERT INTO blogs VALUES($1,$2,$3,$4,$5,$6)", [
+    db.query("INSERT INTO blogs VALUES($1,$2,$3,$4,$5,$6,$7)", [
       postid,
       title,
       content,
       author,
       userid,
       date,
+      imagepath,
     ])
       .then((resp) => {
         console.log("Inserted Successfully");
