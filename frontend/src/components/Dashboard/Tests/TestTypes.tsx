@@ -60,7 +60,7 @@ export const TestTypes: React.FC = () => {
   }, [])
   const fetchTestDetails = async () => {
     try {
-      const response = await axios.get("https://localhost:3000/admin/testtype", {
+      const response = await axios.get("http://localhost:3000/admin/testtype", {
         headers: {'Authorization':"Bearer " + localStorage.getItem("token")},
       });
       setTestDetails(response.data);

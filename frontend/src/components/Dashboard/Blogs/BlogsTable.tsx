@@ -16,7 +16,7 @@ interface BlogsElementInterface {
 export const BlogsTable: React.FC = () => {
     const [blogs, setBlogs] = useState<Array<BlogsElementInterface> | undefined>(undefined)
     const getBlogs = async () => {
-        const response = await axios.get(`https://${REACT_APP_NODEJS_URL}/blogs/allblogs`)
+        const response = await axios.get(`http://${REACT_APP_NODEJS_URL}/blogs/allblogs`)
         setBlogs(response.data)
     }
     const onDelete = (id:string) =>

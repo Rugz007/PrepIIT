@@ -106,9 +106,12 @@ const StaticHeader: React.FC = () => {
                 </Button>
               </Dropdown>
             ) : (
-              <Button type="primary" size="large">
-                <Link to="/login">TAKE A TEST</Link>
-              </Button>
+              <>
+                {/* <Button type="primary" size="large">
+                  <Link to="/login">TAKE A TEST</Link>
+                </Button> */}
+              </>
+
             )}
           </Col>
         </Row>
@@ -180,9 +183,12 @@ const DashboardHeader: React.FC = () => {
                 </Button>
               </Dropdown>
             ) : (
-              <Button type="primary" size="large">
-                <Link to="/login">TAKE A TEST</Link>
-              </Button>
+              <>
+                // <Button type="primary" size="large">
+                  //   <Link to="/login">TAKE A TEST</Link>
+              // </Button>
+              </>
+
             )}
           </Col>
         </Row>

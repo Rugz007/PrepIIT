@@ -22,7 +22,7 @@ export const Profile: React.FC<ProfileProps> = () => {
     const getHeatMapDetails = () => {
         axios({
             method: "POST",
-            url: `https://${REACT_APP_NODEJS_URL}/secure/getheatmap`,
+            url: `http://${REACT_APP_NODEJS_URL}/secure/getheatmap`,
             headers: {
                 authorization: "Bearer " + localStorage.getItem("token"),
             },

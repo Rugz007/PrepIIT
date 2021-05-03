@@ -22,7 +22,7 @@ export const BlogList: React.FC = () => {
     const [blogs, setBlogs] = useState<Array<BlogsInterface> | undefined>(undefined)
     const getBlogs  = async () =>
     {
-        const response = await axios.get(`https://${REACT_APP_NODEJS_URL}/blogs/allblogs`)
+        const response = await axios.get(`http://${REACT_APP_NODEJS_URL}/blogs/allblogs`)
         setBlogs(response.data)
     }
     useEffect(() => {

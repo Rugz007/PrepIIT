@@ -57,7 +57,7 @@ export const TestsPage: React.FC = () => {
   const getTests = async () => {
     if (userContext.user) {
       try {
-        const res = await axios.get(`https://${REACT_APP_NODEJS_URL}/secure/test`, {
+        const res = await axios.get(`http://${REACT_APP_NODEJS_URL}/secure/test`, {
           headers: {
             authorization: "Bearer " + localStorage.getItem("token"),
             userid: userContext.user.userid

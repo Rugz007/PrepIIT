@@ -24,7 +24,7 @@ async function deleteEnquiry(
   try {
     const response = await axios({
       method: "DELETE",
-      url: `https://${REACT_APP_NODEJS_URL}/admin/enquiry`,
+      url: `http://${REACT_APP_NODEJS_URL}/admin/enquiry`,
       headers: {
         authorization: "Bearer " + localStorage.getItem("token"),
       },

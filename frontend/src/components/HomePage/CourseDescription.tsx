@@ -54,7 +54,7 @@ export const CourseDescription: React.FC<CourseDescriptionProps> = ({ showBatche
                 <div style={{ minHeight: '90vh' }}>
                     <Row style={{ marginTop: '5%' }}>
                         <Col lg={2} />
-                        <Col lg={12}>
+                        <Col lg={12} style={{margin:'0% 2%'}}>
                             <p style={{textAlign:'left'}}>
                                 <h1><b>Integrated Program:</b> {courseState?.name}</h1>
                                 <Divider />
@@ -67,6 +67,7 @@ export const CourseDescription: React.FC<CourseDescriptionProps> = ({ showBatche
                                     height: "30vh",
                                     zIndex: 5,
                                     boxShadow: "17px 10px 37px 0px rgba(0,0,0,0.75)",
+                                    margin:'auto',
                                 }}
                                 src="https://shahpourpouyan.com/wp-content/uploads/2018/10/orionthemes-placeholder-image-1.png"
                                 alt="insertimage"

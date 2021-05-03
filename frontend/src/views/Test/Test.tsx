@@ -61,7 +61,7 @@ export const Test: React.FC = () => {
       if (testID && userContext.user) {
         axios({
           method: "POST",
-          url: `https://${REACT_APP_NODEJS_URL}/secure/cachequestions`,
+          url: `http://${REACT_APP_NODEJS_URL}/secure/cachequestions`,
           headers: {
             authorization: "Bearer " + localStorage.getItem("token"),
           },
@@ -98,7 +98,7 @@ export const Test: React.FC = () => {
       if (testID && userContext.user) {
         axios({
           method: "POST",
-          url: `https://${REACT_APP_NODEJS_URL}/secure/test`,
+          url: `http://${REACT_APP_NODEJS_URL}/secure/test`,
           headers: {
             authorization: "Bearer " + localStorage.getItem("token"),
           },
@@ -239,7 +239,7 @@ export const Test: React.FC = () => {
     }
     axios({
       method: "POST",
-      url: `https://${REACT_APP_NODEJS_URL}/secure/verifyanswers`,
+      url: `http://${REACT_APP_NODEJS_URL}/secure/verifyanswers`,
       headers: {
         authorization: "Bearer " + localStorage.getItem("token"),
       },

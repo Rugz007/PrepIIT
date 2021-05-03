@@ -37,19 +37,19 @@ class Routes extends React.Component {
             // TODO: Make Protected Routes
             <Switch>
                 <ProtectedRoute path="/" exact component={HomePage} />
-                <ProtectedRoute path='/login' component={Login} />
+                {/* <ProtectedRoute path='/login' component={Login} />
                 <ProtectedRoute path='/register' component={Register} />
-                <ProtectedRoute path='/dashboard' component={Dashboard} />
+                <ProtectedRoute path='/dashboard' component={Dashboard} /> */}
                 <ProtectedRoute path='/about' component={About} />
                 <ProtectedRoute path='/contact' component={Contact} />
                 <ProtectedRoute path='/courses/:course' component={CourseDescription} />
                 <ProtectedRoute path='/faq' component={FAQ} />
-                <Route path='/test/:id' exact component={Test}/>
+                {/* <Route path='/test/:id' exact component={Test}/>
                 <Route path='/testintruction' component={TestIntruction}/>
                 <ProtectedRoute path='/testanalysis' component={TestAnalysis} />
                 <Route path='/submitted' component={TestSubmitted} />
                 <ProtectedRoute path='/blogs' exact component={BlogList} />
-                <ProtectedRoute path='/blogs/:id' component={BlogPage} />
+                <ProtectedRoute path='/blogs/:id' component={BlogPage} /> */}
                 <Route component={Error404} />
             </Switch>
         );

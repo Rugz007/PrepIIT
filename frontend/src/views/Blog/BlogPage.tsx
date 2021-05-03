@@ -20,7 +20,7 @@ export const BlogPage: React.FC = () => {
         getBlog(location.pathname.split("/")[2])
     }, [])
     const getBlog = async (path: string) => {
-        const response = await axios.get(`https://${REACT_APP_NODEJS_URL}/blogs/blog`,
+        const response = await axios.get(`http://${REACT_APP_NODEJS_URL}/blogs/blog`,
             {
                 headers: {
                     postid: path,
