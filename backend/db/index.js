@@ -1,10 +1,10 @@
 const { Pool } = require("pg");
 const pool = new Pool({
   user: "postgres",
-  host: "8.tcp.ngrok.io",
+  host: process.env.DBHOST,
   database: "prepiit",
   password: "postgres",
-  port: 17794,
+  port: process.env.DBPORT,
 });
 
 module.exports = {
