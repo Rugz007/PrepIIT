@@ -107,9 +107,9 @@ const StaticHeader: React.FC = () => {
               </Dropdown>
             ) : (
               <>
-                {/* <Button type="primary" size="large">
+                <Button type="primary" size="large">
                   <Link to="/login">TAKE A TEST</Link>
-                </Button> */}
+                </Button>
               </>
 
             )}
@@ -184,9 +184,9 @@ const DashboardHeader: React.FC = () => {
               </Dropdown>
             ) : (
               <>
-                // <Button type="primary" size="large">
-                  //   <Link to="/login">TAKE A TEST</Link>
-              // </Button>
+                <Button type="primary" size="large">
+                    <Link to="/login">TAKE A TEST</Link>
+                </Button>
               </>
 
             )}
