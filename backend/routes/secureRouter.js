@@ -189,7 +189,13 @@ router
     )
       .then((resp) => {
         console.log(resp.rows);
-        res.status(200).send(resp.rows);
+        db.query(
+          "SELECT dateofsubmission AS date, COUNT(*) FROM liveusertest WHERE userid=$1 GROUP BY dateofsubmission",
+          [req.body.userid]
+        ).then((respo) => {
+          const tests = resp.rows[0].concat(respo.rows[0]);
+          res.status(200).send([tests]);
+        });
       })
       .catch((err) => {
         console.log(err);
