@@ -38,6 +38,7 @@ export const Profile: React.FC<ProfileProps> = () => {
                     setHeatmapDetails(res.data)
                 }
             })
+            .catch((err) => console.log(err))
     }
     useEffect(() => {
         if (heatmapDetails === undefined) {

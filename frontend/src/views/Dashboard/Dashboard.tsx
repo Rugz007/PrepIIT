@@ -22,6 +22,7 @@ import { ReportedQuestions } from "../../components/Dashboard/Questions/Reported
 import { AddQuestionPage } from "../../components/Dashboard/Questions/AddQuestionPage";
 import { TestTypes } from "../../components/Dashboard/Tests/TestTypes";
 import { TestsPage } from "../../components/Dashboard/Tests/TestsPage";
+import { LiveTests } from "../../components/Dashboard/Tests/LiveTests";
 
 const { SubMenu } = Menu;
 export const Dashboard: React.FC = () => {
@@ -113,6 +114,7 @@ export const Dashboard: React.FC = () => {
               {tab === "11" && userContext.user.admin != null && <ReportedQuestions />}
               {tab === "12" && userContext.user.admin != null && <></>}
               {tab === "13" && userContext.user.admin != null && <TestTypes />}
+              {tab === "14" && userContext.user.admin != null && <LiveTests />}
               {tab === "12" && userContext.user.admin != null && <></>}
               {tab === "15" && userContext.user.admin != null && <TestsPage />}
             </Content>
