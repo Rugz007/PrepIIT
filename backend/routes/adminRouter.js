@@ -157,7 +157,7 @@ router
         res.status(500).json({ success: false });
       });
   })
-  .get("/testtype", (req, res, next) => {
+  .get("/statictest", (req, res, next) => {
     db.query("SELECT * FROM testtype")
       .then((resp) => {
         res.json(resp.rows);
@@ -167,7 +167,7 @@ router
         res.json({ success: false });
       });
   })
-  .post("/testtype", (req, res, next) => {
+  .post("/statictest", (req, res, next) => {
     var body = req.body.values;
     const testname = body.testname;
     const subjectsallowed = body.subjectsallowed;
@@ -250,6 +250,16 @@ router
         res.status(500).json({ success: false });
       });
   })
+  .get("/livetest", (req, res, next) => {
+    db.query("SELECT * FROM livetest")
+      .then((resp) => {
+        res.status(200).json(resp.rows);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: "DB Error" });
+      });
+  })
   .post("/livetest", upload.single("QuestionBank"), (req, res, next) => {
     var startDate = new Date(req.body.startDate);
     var endDate = new Date(req.body.endDate);
@@ -267,6 +277,42 @@ router
     const endTime = req.body.endTime.split(":");
     const endHour = parseInt(endTime[0]);
     const endMinute = parseInt(endTime[1]);
+    const mcqCorrectMarks = req.body.mcqcorrectmarks
+      ? req.body.mcqcorrectmarks
+      : 0;
+    const mcqWrongMarks = req.body.mcqwrongmarks ? req.body.mcqwrongmarks : 0;
+    const mcqNaMarks = req.body.mcqnamarks ? req.body.mcqnamarks : 0;
+    const fibCorrectMarks = req.body.fibcorrectmarks
+      ? req.body.fibcorrectmarks
+      : 0;
+    const fibWrongMarks = req.body.fibwrongmarks ? req.body.fibwrongmarks : 0;
+    const fibNaMarks = req.body.fibnamarks ? req.body.fibnamarks : 0;
+    const anrCorrectMarks = req.body.anrcorrectmarks
+      ? req.body.anrcorrectmarks
+      : 0;
+    const anrWrongMarks = req.body.anrwrongmarks ? req.body.anrwrongmarks : 0;
+    const anrNaMarks = req.body.anrnamarks ? req.body.anrnamarks : 0;
+    const tofCorrectMarks = req.body.tofcorrectmarks
+      ? req.body.tofcorrectmarks
+      : 0;
+    const tofWrongMarks = req.body.tofwrongmarks ? req.body.tofwrongmarks : 0;
+    const tofNaMarks = req.body.tofnamarks ? req.body.tofnamarks : 0;
+    const numCorrectMarks = req.body.numcorrectmarks
+      ? req.bodynumcorrectmarks
+      : 0;
+    const numWrongMarks = req.body.numwrongmarks ? req.body.numwrongmarks : 0;
+    const numNaMarks = req.body.numnamarks ? req.body.numnamarks : 0;
+    const mtfCorrectMarks = req.body.mtfcorrectmarks
+      ? req.body.mtfcorrectmarks
+      : 0;
+    const mtfWrongMarks = req.body.mtfwrongmarks ? req.body.mtfwrongmarks : 0;
+    const mtfNaMarks = req.body.mtfnamarks ? req.body.mtfnamarks : 0;
+    const mcqdata = [mcqCorrectMarks, mcqWrongMarks, mcqNaMarks];
+    const fibdata = [fibCorrectMarks, fibWrongMarks, fibNaMarks];
+    const assertiondata = [anrCorrectMarks, anrWrongMarks, anrNaMarks];
+    const truefalse = [tofCorrectMarks, tofWrongMarks, tofNaMarks];
+    const numerical = [numCorrectMarks, numWrongMarks, numNaMarks];
+    const matchcolumn = [mtfCorrectMarks, mtfWrongMarks, mtfNaMarks];
     console.log(
       liveid,
       livename,
@@ -279,10 +325,16 @@ router
       endMonth,
       endYear,
       endHour,
-      endMinute
+      endMinute,
+      mcqdata,
+      fibdata,
+      assertiondata,
+      truefalse,
+      numerical,
+      matchcolumn
     );
     db.query(
-      "INSERT INTO livetest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)",
+      "INSERT INTO livetest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)",
       [
         liveid,
         livename,
@@ -296,6 +348,12 @@ router
         endYear,
         endHour,
         endMinute,
+        mcqdata,
+        fibdata,
+        assertiondata,
+        truefalse,
+        numerical,
+        matchcolumn,
       ]
     )
       .then((resp) => {
