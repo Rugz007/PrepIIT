@@ -15,12 +15,10 @@ router.use(adminAuth);
 router
   .get("/enquiry", (req, res, next) => {
     db.query(`SELECT * FROM enquiry`).then((resp) => {
-      console.log(resp.rows);
       res.json(resp.rows);
     });
   })
   .delete("/enquiry", (req, res, next) => {
-    console.log(req.body);
     db.query("DELETE FROM enquiry WHERE enqid=$1", [req.body.enqid])
       .then((resp) => {
         console.log("Deleted Successfully");
@@ -40,7 +38,6 @@ router
       });
   })
   .post("/question", (req, res, next) => {
-    console.log(req.body);
     const {
       statement,
       img_path,
@@ -104,7 +101,6 @@ router
     uploadQuestions(req.file.originalname, res);
   })
   .post("/editquestion", (req, res, next) => {
-    console.log(req.body);
     const {
       archive,
       img_path,
@@ -178,39 +174,42 @@ router
       tof = [],
       nq = [],
       mtf = [];
-    body.questions.map((question) => {
-      if (question.type == "mcq") {
-        mcq.push(question.number);
-        mcq.push(question.correct);
-        mcq.push(question.wrong);
-        mcq.push(question.nullanswer);
-      } else if (question.type == "fib") {
-        fib.push(question.number);
-        fib.push(question.correct);
-        fib.push(question.wrong);
-        fib.push(question.nullanswer);
-      } else if (question.type == "anr") {
-        anr.push(question.number);
-        anr.push(question.correct);
-        anr.push(question.wrong);
-        anr.push(question.nullanswer);
-      } else if (question.type == "tof") {
-        tof.push(question.number);
-        tof.push(question.correct);
-        tof.push(question.wrong);
-        tof.push(question.nullanswer);
-      } else if (question.type == "num") {
-        nq.push(question.number);
-        nq.push(question.correct);
-        nq.push(question.wrong);
-        nq.push(question.nullanswer);
-      } else if (question.type == "mtf") {
-        mtf.push(question.number);
-        mtf.push(question.correct);
-        mtf.push(question.wrong);
-        mtf.push(question.nullanswer);
-      }
-    });
+    if (body.questions != null)
+      body.questions.map((question) => {
+        if (questions) {
+          if (question.type == "mcq") {
+            mcq.push(question.number);
+            mcq.push(question.correct);
+            mcq.push(question.wrong);
+            mcq.push(question.nullanswer);
+          } else if (question.type == "fib") {
+            fib.push(question.number);
+            fib.push(question.correct);
+            fib.push(question.wrong);
+            fib.push(question.nullanswer);
+          } else if (question.type == "anr") {
+            anr.push(question.number);
+            anr.push(question.correct);
+            anr.push(question.wrong);
+            anr.push(question.nullanswer);
+          } else if (question.type == "tof") {
+            tof.push(question.number);
+            tof.push(question.correct);
+            tof.push(question.wrong);
+            tof.push(question.nullanswer);
+          } else if (question.type == "num") {
+            nq.push(question.number);
+            nq.push(question.correct);
+            nq.push(question.wrong);
+            nq.push(question.nullanswer);
+          } else if (question.type == "mtf") {
+            mtf.push(question.number);
+            mtf.push(question.correct);
+            mtf.push(question.wrong);
+            mtf.push(question.nullanswer);
+          }
+        }
+      });
     if (mcq.length == 0) {
       mcq = null;
     }
@@ -229,7 +228,6 @@ router
     if (mtf.length == 0) {
       mtf = null;
     }
-    console.log(mcq, fib, anr, tof, nq, mtf);
     db.query("INSERT INTO testtype VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8)", [
       testname,
       subjectsallowed,
@@ -241,7 +239,6 @@ router
       mtf,
     ])
       .then((resp) => {
-        console.log(resp);
         console.log("Inserted Successfully");
         res.json({ success: true });
       })
@@ -261,8 +258,7 @@ router
         res.status(500).json({ error: "DB Error" });
       });
   })
-  .post("/livetest",  (req, res, next) => {
-    console.log(req)
+  .post("/livetest", (req, res, next) => {
     var startDate = new Date(req.body.date);
     const liveid = randomstring.generate({ length: 20 });
     const startMonth = parseInt(startDate.getUTCMonth() + 1);
@@ -285,39 +281,43 @@ router
       tof = [],
       nq = [],
       mtf = [];
-    req.body.questions.map((question) => {
-      if (question.type == "mcq") {
-        mcq.push(question.number);
-        mcq.push(question.correct);
-        mcq.push(question.wrong);
-        mcq.push(question.nullanswer);
-      } else if (question.type == "fib") {
-        fib.push(question.number);
-        fib.push(question.correct);
-        fib.push(question.wrong);
-        fib.push(question.nullanswer);
-      } else if (question.type == "anr") {
-        anr.push(question.number);
-        anr.push(question.correct);
-        anr.push(question.wrong);
-        anr.push(question.nullanswer);
-      } else if (question.type == "tof") {
-        tof.push(question.number);
-        tof.push(question.correct);
-        tof.push(question.wrong);
-        tof.push(question.nullanswer);
-      } else if (question.type == "num") {
-        nq.push(question.number);
-        nq.push(question.correct);
-        nq.push(question.wrong);
-        nq.push(question.nullanswer);
-      } else if (question.type == "mtf") {
-        mtf.push(question.number);
-        mtf.push(question.correct);
-        mtf.push(question.wrong);
-        mtf.push(question.nullanswer);
-      }
-    });
+    if (req.body.values.questions != null) {
+      req.body.values.questions.map((question) => {
+        if (question) {
+          if (question.type == "mcq") {
+            mcq.push(question.number);
+            mcq.push(question.correct);
+            mcq.push(question.wrong);
+            mcq.push(question.nullanswer);
+          } else if (question.type == "fib") {
+            fib.push(question.number);
+            fib.push(question.correct);
+            fib.push(question.wrong);
+            fib.push(question.nullanswer);
+          } else if (question.type == "anr") {
+            anr.push(question.number);
+            anr.push(question.correct);
+            anr.push(question.wrong);
+            anr.push(question.nullanswer);
+          } else if (question.type == "tof") {
+            tof.push(question.number);
+            tof.push(question.correct);
+            tof.push(question.wrong);
+            tof.push(question.nullanswer);
+          } else if (question.type == "num") {
+            nq.push(question.number);
+            nq.push(question.correct);
+            nq.push(question.wrong);
+            nq.push(question.nullanswer);
+          } else if (question.type == "mtf") {
+            mtf.push(question.number);
+            mtf.push(question.correct);
+            mtf.push(question.wrong);
+            mtf.push(question.nullanswer);
+          }
+        }
+      });
+    }
     if (mcq.length == 0) {
       mcq = null;
     }
@@ -336,27 +336,6 @@ router
     if (mtf.length == 0) {
       mtf = null;
     }
-    console.log(
-      liveid,
-      livename,
-      startDay,
-      startMonth,
-      startYear,
-      startHour,
-      startMinute,
-      endDay,
-      endMonth,
-      endYear,
-      endHour,
-      endMinute,
-      mcq,
-      fib,
-      anr,
-      tof,
-      nq,
-      mtf,
-      subjectsallowed
-    );
     db.query(
       "INSERT INTO livetest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)",
       [
@@ -383,7 +362,7 @@ router
     )
       .then((resp) => {
         // uploadLiveTest(req.file.originalname, res, liveid);
-        res.end()
+        res.end();
       })
       .catch((err) => {
         console.log(err);
