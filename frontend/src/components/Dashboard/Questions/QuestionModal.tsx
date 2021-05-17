@@ -145,7 +145,7 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
               </Form.Item>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Answer" key="2">
-              <Select style={{ width: '30%' }} onSelect={handleSelect} defaultValue="MCQ">
+              <Select style={{ width: '30%',marginBottom:'2%' }} onSelect={handleSelect} defaultValue="MCQ">
                 <Option value="MCQ">Multiple Choice</Option>
                 <Option value="FIB">Fill in the blank</Option>
                 <Option value="NUM">Numerical Question</Option>
@@ -164,7 +164,7 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
               </>
                 }
               {answerType === "FIB" &&
-                <Form.Item name="fiBAnswer">
+                <Form.Item name="fibAnswer">
                   <Input placeholder="Enter the correct answer" />
                 </Form.Item>}
               {answerType === "MCQ" && <Form.Item name="answer"><Input placeholder="Enter the start range" /></Form.Item>}
@@ -177,7 +177,6 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
                 </Form.Item>}
               {answerType === "AAR" && <Form.Item name="answer"><Input placeholder="Enter the start range" /></Form.Item>}
             </Tabs.TabPane>
-
           </Tabs>
         </Form>
       </Modal>

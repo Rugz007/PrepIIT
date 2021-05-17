@@ -1,7 +1,9 @@
-import { Button, Modal, Form, Select, Space, Input } from "antd";
+import { Button, Modal, Form, Select, Space, Input, TimePicker, Divider } from "antd";
 import React, { useState } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
+
+
 const { REACT_APP_NODEJS_URL } = process.env;
 
 const { Option } = Select;
@@ -26,6 +28,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
+  const [time, setTime] = useState(['', ''])
   const toSubmit = (e: any) => {
     console.log(e);
   };
@@ -34,9 +37,10 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
     console.log(values);
     try {
       const response = await axios.post(
-        `http://${REACT_APP_NODEJS_URL}/admin/testtype`,
+        `http://${REACT_APP_NODEJS_URL}/admin/statictest`,
         {
           values,
+          time,
         },
         {
           headers: {
@@ -49,6 +53,9 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
       console.log(e);
     }
   };
+  const onChangeTime = (value: any, timeString: [string, string]) => {
+    setTime(timeString)
+  }
   return (
     <>
       <Button onClick={() => setVisible(true)}>{buttonText}</Button>
@@ -68,6 +75,8 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
           setVisible(false);
         }}
       >
+        <h1>Create Static Test</h1>
+        <Divider />
         <br />
         <Form
           name="TestType"
@@ -173,6 +182,11 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
               </>
             )}
           </Form.List>
+          <Form.Item name='startDate' label="Select time of test">
+            <Space direction="horizontal" size={12}>
+              <TimePicker.RangePicker onChange={onChangeTime} format={"HH:mm"} />
+            </Space>
+          </Form.Item>
         </Form>
       </Modal>
     </>
