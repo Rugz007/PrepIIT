@@ -1,4 +1,5 @@
 var express = require("express");
+var express = require("express");
 var upload = require("../multer/index");
 const uploadQuestions = require("../uploadQuestions/index");
 var uploadLiveTest = require("../uploadLiveTest/index");
@@ -260,8 +261,9 @@ router
         res.status(500).json({ error: "DB Error" });
       });
   })
-  .post("/livetest", upload.single("QuestionBank"), (req, res, next) => {
-    var startDate = new Date(req.body.startDate);
+  .post("/livetest",  (req, res, next) => {
+    console.log(req)
+    var startDate = new Date(req.body.date);
     const liveid = randomstring.generate({ length: 20 });
     const startMonth = parseInt(startDate.getUTCMonth() + 1);
     const startDay = parseInt(startDate.getUTCDate());
@@ -275,8 +277,8 @@ router
     const endTime = req.body.time[1].split(":");
     const endHour = parseInt(endTime[0]);
     const endMinute = parseInt(endTime[1]);
-    const livename = req.body.testname;
-    const subjectsallowed = req.body.subjectsallowed;
+    const livename = req.body.values.testname;
+    const subjectsallowed = req.body.values.subjectsallowed;
     var mcq = [],
       fib = [],
       anr = [],
@@ -380,7 +382,8 @@ router
       ]
     )
       .then((resp) => {
-        uploadLiveTest(req.file.originalname, res, liveid);
+        // uploadLiveTest(req.file.originalname, res, liveid);
+        res.end()
       })
       .catch((err) => {
         console.log(err);

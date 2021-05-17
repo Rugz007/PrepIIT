@@ -41,7 +41,6 @@ export const LiveTestModal: React.FC<TestTypeInterface> = ({
           values,
           date,
           time,
-          file
         },
         {
           headers: {

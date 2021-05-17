@@ -77,7 +77,7 @@ export const TestsPage: React.FC = () => {
     <Row >
       <Col span={24}><h1 style={{ fontSize: "40px", textAlign: "left" ,width:'100%'}}>Tests</h1></Col>
       <Col span={24}>
-      {tests && <Tabs style={{ textAlign: 'center' }}>
+      {tests?.availableTest && <Tabs style={{ textAlign: 'center' }}>
           <Tabs.TabPane tab="Available Tests" key="1">
             <Row>
               <List

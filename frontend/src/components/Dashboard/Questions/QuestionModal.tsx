@@ -164,7 +164,7 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
               </>
                 }
               {answerType === "FIB" &&
-                <Form.Item name="fibAnswer">
+                <Form.Item name="fib Answer">
                   <Input placeholder="Enter the correct answer" />
                 </Form.Item>}
               {answerType === "MCQ" && <Form.Item name="answer"><Input placeholder="Enter the start range" /></Form.Item>}
