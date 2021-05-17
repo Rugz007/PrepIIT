@@ -262,57 +262,78 @@ router
   })
   .post("/livetest", upload.single("QuestionBank"), (req, res, next) => {
     var startDate = new Date(req.body.startDate);
-    var endDate = new Date(req.body.endDate);
-    const liveid = req.body.liveid;
-    const livename = req.body.livename;
+    const liveid = randomstring.generate({ length: 20 });
     const startMonth = parseInt(startDate.getUTCMonth() + 1);
     const startDay = parseInt(startDate.getUTCDate());
     const startYear = parseInt(startDate.getUTCFullYear());
-    const startTime = req.body.startTime.split(":");
+    const startTime = req.body.time[0].split(":");
     const startHour = parseInt(startTime[0]);
     const startMinute = parseInt(startTime[1]);
-    const endMonth = parseInt(endDate.getUTCMonth() + 1);
-    const endDay = parseInt(endDate.getUTCDate());
-    const endYear = parseInt(endDate.getUTCFullYear());
-    const endTime = req.body.endTime.split(":");
+    const endMonth = startMonth;
+    const endDay = startDay;
+    const endYear = startYear;
+    const endTime = req.body.time[1].split(":");
     const endHour = parseInt(endTime[0]);
     const endMinute = parseInt(endTime[1]);
-    const mcqCorrectMarks = req.body.mcqcorrectmarks
-      ? req.body.mcqcorrectmarks
-      : 0;
-    const mcqWrongMarks = req.body.mcqwrongmarks ? req.body.mcqwrongmarks : 0;
-    const mcqNaMarks = req.body.mcqnamarks ? req.body.mcqnamarks : 0;
-    const fibCorrectMarks = req.body.fibcorrectmarks
-      ? req.body.fibcorrectmarks
-      : 0;
-    const fibWrongMarks = req.body.fibwrongmarks ? req.body.fibwrongmarks : 0;
-    const fibNaMarks = req.body.fibnamarks ? req.body.fibnamarks : 0;
-    const anrCorrectMarks = req.body.anrcorrectmarks
-      ? req.body.anrcorrectmarks
-      : 0;
-    const anrWrongMarks = req.body.anrwrongmarks ? req.body.anrwrongmarks : 0;
-    const anrNaMarks = req.body.anrnamarks ? req.body.anrnamarks : 0;
-    const tofCorrectMarks = req.body.tofcorrectmarks
-      ? req.body.tofcorrectmarks
-      : 0;
-    const tofWrongMarks = req.body.tofwrongmarks ? req.body.tofwrongmarks : 0;
-    const tofNaMarks = req.body.tofnamarks ? req.body.tofnamarks : 0;
-    const numCorrectMarks = req.body.numcorrectmarks
-      ? req.bodynumcorrectmarks
-      : 0;
-    const numWrongMarks = req.body.numwrongmarks ? req.body.numwrongmarks : 0;
-    const numNaMarks = req.body.numnamarks ? req.body.numnamarks : 0;
-    const mtfCorrectMarks = req.body.mtfcorrectmarks
-      ? req.body.mtfcorrectmarks
-      : 0;
-    const mtfWrongMarks = req.body.mtfwrongmarks ? req.body.mtfwrongmarks : 0;
-    const mtfNaMarks = req.body.mtfnamarks ? req.body.mtfnamarks : 0;
-    const mcqdata = [mcqCorrectMarks, mcqWrongMarks, mcqNaMarks];
-    const fibdata = [fibCorrectMarks, fibWrongMarks, fibNaMarks];
-    const assertiondata = [anrCorrectMarks, anrWrongMarks, anrNaMarks];
-    const truefalse = [tofCorrectMarks, tofWrongMarks, tofNaMarks];
-    const numerical = [numCorrectMarks, numWrongMarks, numNaMarks];
-    const matchcolumn = [mtfCorrectMarks, mtfWrongMarks, mtfNaMarks];
+    const livename = req.body.testname;
+    const subjectsallowed = req.body.subjectsallowed;
+    var mcq = [],
+      fib = [],
+      anr = [],
+      tof = [],
+      nq = [],
+      mtf = [];
+    req.body.questions.map((question) => {
+      if (question.type == "mcq") {
+        mcq.push(question.number);
+        mcq.push(question.correct);
+        mcq.push(question.wrong);
+        mcq.push(question.nullanswer);
+      } else if (question.type == "fib") {
+        fib.push(question.number);
+        fib.push(question.correct);
+        fib.push(question.wrong);
+        fib.push(question.nullanswer);
+      } else if (question.type == "anr") {
+        anr.push(question.number);
+        anr.push(question.correct);
+        anr.push(question.wrong);
+        anr.push(question.nullanswer);
+      } else if (question.type == "tof") {
+        tof.push(question.number);
+        tof.push(question.correct);
+        tof.push(question.wrong);
+        tof.push(question.nullanswer);
+      } else if (question.type == "num") {
+        nq.push(question.number);
+        nq.push(question.correct);
+        nq.push(question.wrong);
+        nq.push(question.nullanswer);
+      } else if (question.type == "mtf") {
+        mtf.push(question.number);
+        mtf.push(question.correct);
+        mtf.push(question.wrong);
+        mtf.push(question.nullanswer);
+      }
+    });
+    if (mcq.length == 0) {
+      mcq = null;
+    }
+    if (fib.length == 0) {
+      fib = null;
+    }
+    if (anr.length == 0) {
+      anr = null;
+    }
+    if (tof.length == 0) {
+      tof = null;
+    }
+    if (nq.length == 0) {
+      nq = null;
+    }
+    if (mtf.length == 0) {
+      mtf = null;
+    }
     console.log(
       liveid,
       livename,
@@ -326,15 +347,16 @@ router
       endYear,
       endHour,
       endMinute,
-      mcqdata,
-      fibdata,
-      assertiondata,
-      truefalse,
-      numerical,
-      matchcolumn
+      mcq,
+      fib,
+      anr,
+      tof,
+      nq,
+      mtf,
+      subjectsallowed
     );
     db.query(
-      "INSERT INTO livetest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)",
+      "INSERT INTO livetest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)",
       [
         liveid,
         livename,
@@ -348,12 +370,13 @@ router
         endYear,
         endHour,
         endMinute,
-        mcqdata,
-        fibdata,
-        assertiondata,
-        truefalse,
-        numerical,
-        matchcolumn,
+        mcq,
+        fib,
+        anr,
+        tof,
+        nq,
+        mtf,
+        subjectsallowed,
       ]
     )
       .then((resp) => {

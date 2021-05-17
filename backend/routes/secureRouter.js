@@ -20,22 +20,43 @@ router.use(userAuth);
 
 router
   .get("/test", (req, res, next) => {
-    var availableTest = [];
-    var givenTest = [];
+    var availableStaticTest = [];
+    var availableLiveTest = [];
+    var staticTest = [];
+    var liveTest = [];
     const userid = req.headers.userid;
     db.query(
       "SELECT testid,testname,subjectsallowed FROM testtype tt WHERE tt.testid NOT IN (SELECT ut.testid FROM usertest ut WHERE userid=$1 GROUP BY ut.testid)",
       [userid]
     )
       .then((resp) => {
-        availableTest.push(resp.rows);
+        availableStaticTest.push(resp.rows);
         db.query("SELECT * FROM usertest WHERE userid=$1", [userid])
           .then((respo) => {
-            givenTest.push(respo.rows);
-            res.status(200).json({
-              availableTest: availableTest,
-              givenTest: givenTest,
-            });
+            staticTest.push(respo.rows);
+            db.query("SELECT * FROM liveusertest WHERE userid=$1", [userid])
+              .then((respon) => {
+                liveTest.push(respon.rows);
+                db.query(
+                  "SELECT liveid,livename FROM livetest lt WHERE lt.liveid NOT IN (SELECT lut.testid FROM liveusertest lut WHERE userid=$1 GROUP BY lut.testid)",
+                  [userid]
+                )
+                  .then((respons) => {
+                    availableLiveTest.push(respons.rows);
+                    res.status(200).json({
+                      availableStaticTest: availableStaticTest,
+                      availableLiveTest: availableLiveTest,
+                      staticTest: staticTest,
+                      liveTest: liveTest,
+                    });
+                  })
+                  .catch((err) => {
+                    res.status(500).json({ err: "Some Error Occured" });
+                  });
+              })
+              .catch((err) => {
+                res.status(500).json({ err: "Some Error Occured" });
+              });
           })
           .catch((err) => {
             res.status(500).json({
@@ -189,7 +210,13 @@ router
     )
       .then((resp) => {
         console.log(resp.rows);
-        res.status(200).send(resp.rows);
+        db.query(
+          "SELECT dateofsubmission AS date, COUNT(*) FROM liveusertest WHERE userid=$1 GROUP BY dateofsubmission",
+          [req.body.userid]
+        ).then((respo) => {
+          const tests = resp.rows[0].concat(respo.rows[0]);
+          res.status(200).send([tests]);
+        });
       })
       .catch((err) => {
         console.log(err);
