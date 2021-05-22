@@ -79,29 +79,37 @@ router
               db.query(
                 "SELECT qid,liveid,statement,img_path,type,subject,latex,options FROM livetestquestions WHERE liveid=$1 AND subject='chemistry'",
                 [req.body.liveid]
-              ).then((respon) => {
-                if (respon.rows) chemQues.push(respon.rows);
-                db.query(
-                  "SELECT qid,liveid,statement,img_path,type,subject,latex,options FROM livetestquestions WHERE liveid=$1 AND subject='maths'",
-                  [req.body.liveid]
-                ).then((respons) => {
-                  if (respons.rows) mathQues.push(respons.rows);
-                  const donetestid = randomstring.generate({
-                    length: 15,
-                    charset: "alphabetic",
-                  });
-                  const timeLeft =
-                    (liveEndDate.getTime() - currentDate.getTime()) / 1000;
-                  res.status(200).json({
-                    userTestId: donetestid,
-                    subjects: resp.rows[0].subjectsallowed,
-                    Physics: phyQues,
-                    Chemistry: chemQues,
-                    Maths: mathQues,
-                    timeLeft: timeLeft,
-                  });
+              )
+                .then((respon) => {
+                  if (respon.rows) chemQues.push(respon.rows);
+                  db.query(
+                    "SELECT qid,liveid,statement,img_path,type,subject,latex,options FROM livetestquestions WHERE liveid=$1 AND subject='maths'",
+                    [req.body.liveid]
+                  )
+                    .then((respons) => {
+                      if (respons.rows) mathQues.push(respons.rows);
+                      const donetestid = randomstring.generate({
+                        length: 15,
+                        charset: "alphabetic",
+                      });
+                      const timeLeft =
+                        (liveEndDate.getTime() - currentDate.getTime()) / 1000;
+                      res.status(200).json({
+                        userTestId: donetestid,
+                        subjects: resp.rows[0].subjectsallowed,
+                        Physics: phyQues,
+                        Chemistry: chemQues,
+                        Maths: mathQues,
+                        timeLeft: timeLeft,
+                      });
+                    })
+                    .catch((err) => {
+                      res.status(500).json({ errmess: "Some Error Occured" });
+                    });
+                })
+                .catch((err) => {
+                  res.status(500).json({ errmess: "Some Error Occured" });
                 });
-              });
             })
             .catch((err) => {
               res.status(500).json({ errmess: "Some Error Occured" });
