@@ -214,7 +214,12 @@ router
           "SELECT dateofsubmission AS date, COUNT(*) FROM liveusertest WHERE userid=$1 GROUP BY dateofsubmission",
           [req.body.userid]
         ).then((respo) => {
-          const tests = resp.rows[0].concat(respo.rows[0]);
+          var tests = [];
+          if (resp.rows && respo.rows)
+            tests = resp.rows[0].concat(respo.rows[0]);
+          else if (resp.rows && !respo.rows) tests = resp.rows[0];
+          else if (!resp.rows && respo.rows) tests = respo.rows[0];
+          else tests = [];
           res.status(200).send([tests]);
         });
       })
