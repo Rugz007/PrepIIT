@@ -25,8 +25,8 @@ export const LiveTests: React.FC = () => {
   const columns = [
     {
       title: "Name",
-      dataIndex: "testname",
-      key: "testname",
+      dataIndex: "livename",
+      key: "livename",
     },
     {
       title: "Class",
