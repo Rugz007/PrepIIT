@@ -10,6 +10,7 @@ var router = express.Router();
 const db = require("../db");
 
 const adminAuth = require("../adminAuth/adminAuth");
+const { max } = require("moment");
 
 router.use(adminAuth);
 router
@@ -173,7 +174,8 @@ router
       anr = [],
       tof = [],
       nq = [],
-      mtf = [];
+      mtf = [],
+      mac = [];
     if (body.questions != null)
       body.questions.map((question) => {
         if (questions) {
@@ -207,6 +209,11 @@ router
             mtf.push(question.correct);
             mtf.push(question.wrong);
             mtf.push(question.nullanswer);
+          } else if (question.type == "mac") {
+            mac.push(question.number);
+            mac.push(question.correct);
+            mac.push(question.wrong);
+            mac.push(question.nullanswer);
           }
         }
       });
@@ -228,16 +235,13 @@ router
     if (mtf.length == 0) {
       mtf = null;
     }
-    db.query("INSERT INTO testtype VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8)", [
-      testname,
-      subjectsallowed,
-      mcq,
-      anr,
-      fib,
-      tof,
-      nq,
-      mtf,
-    ])
+    if (mac.length == 0) {
+      mac = null;
+    }
+    db.query(
+      "INSERT INTO testtype VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9)",
+      [testname, subjectsallowed, mcq, anr, fib, tof, nq, mtf, mac]
+    )
       .then((resp) => {
         console.log("Inserted Successfully");
         res.json({ success: true });
@@ -280,7 +284,8 @@ router
       anr = [],
       tof = [],
       nq = [],
-      mtf = [];
+      mtf = [],
+      mac = [];
     if (req.body.values.questions != null) {
       req.body.values.questions.map((question) => {
         if (question) {
@@ -314,6 +319,11 @@ router
             mtf.push(question.correct);
             mtf.push(question.wrong);
             mtf.push(question.nullanswer);
+          } else if (question.type == "mac") {
+            mac.push(question.number);
+            mac.push(question.correct);
+            mac.push(question.wrong);
+            mac.push(question.nullanswer);
           }
         }
       });
@@ -336,8 +346,11 @@ router
     if (mtf.length == 0) {
       mtf = null;
     }
+    if (mac.length == 0) {
+      mac = null;
+    }
     db.query(
-      "INSERT INTO livetest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)",
+      "INSERT INTO livetest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)",
       [
         liveid,
         livename,
@@ -358,6 +371,7 @@ router
         nq,
         mtf,
         subjectsallowed,
+        mac,
       ]
     )
       .then((resp) => {

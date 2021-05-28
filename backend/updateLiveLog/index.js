@@ -151,7 +151,7 @@ const updateLiveLog = (
               notAttemptedPromise.push(
                 db
                   .query(
-                    `UPDATE testquestions SET status='not attempted' WHERE qid=${answer.qid}`
+                    `UPDATE livetestlog SET status='not attempted' WHERE qid=${answer.qid}`
                   )
                   .catch((err) => err)
               );
@@ -178,7 +178,7 @@ const updateLiveLog = (
                 correctPromise.push(
                   db
                     .query(
-                      `UPDATE testquestions SET status='correct' WHERE qid=${answer.qid}`
+                      `UPDATE livetestlog SET status='correct' WHERE qid=${answer.qid}`
                     )
                     .catch((err) => err)
                 );

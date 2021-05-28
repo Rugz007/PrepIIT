@@ -124,7 +124,7 @@ router
   .post("/verifyanswers", (req, res, next) => {
     const { donetestid, questions, liveid, userid } = req.body;
     console.log(donetestid, liveid, userid);
-    db.query("SELECT * FROM liveusertest WHERE testid=$1", [testid]).then(
+    db.query("SELECT * FROM livetest WHERE liveid=$1", [testid]).then(
       (resp) => {
         var testObject = resp.rows[0];
         updateLiveLog(questions, donetestid, testid, userid, testObject, res);
