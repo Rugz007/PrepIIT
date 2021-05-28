@@ -215,10 +215,12 @@ router
           [req.body.userid]
         ).then((respo) => {
           var tests = [];
-          if (resp.rows && respo.rows)
+          if (resp.rows.length > 0 && respo.rows.length > 0)
             tests = resp.rows[0].concat(respo.rows[0]);
-          else if (resp.rows && !respo.rows) tests = resp.rows[0];
-          else if (!resp.rows && respo.rows) tests = respo.rows[0];
+          else if (resp.rows.length > 0 && !respo.rows.length > 0)
+            tests = resp.rows[0];
+          else if (!resp.rows.length > 0 && respo.rows.length > 0)
+            tests = respo.rows[0];
           else tests = [];
           res.status(200).send([tests]);
         });

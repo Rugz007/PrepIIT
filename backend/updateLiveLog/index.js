@@ -1,7 +1,14 @@
 const db = require("../db/index");
-const { notNumerical, numerical } = require("../verifyAnswerType/index");
+const { notNumerical, numerical, mac } = require("../verifyAnswerType/index");
 
-const updateLiveLog = (questions, donetestid, testid, userid, testObject, res) => {
+const updateLiveLog = (
+  questions,
+  donetestid,
+  testid,
+  userid,
+  testObject,
+  res
+) => {
   const mcqCorrectMarks = testObject.mcqdata ? testObject.mcqdata[1] : 0;
   const mcqWrongMarks = testObject.mcqdata ? testObject.mcqdata[2] : 0;
   const mcqNaMarks = testObject.mcqdata ? testObject.mcqdata[3] : 0;
@@ -26,6 +33,12 @@ const updateLiveLog = (questions, donetestid, testid, userid, testObject, res) =
     : 0;
   const mtfWrongMarks = testObject.matchcolumn ? testObject.matchcolumn[2] : 0;
   const mtfNaMarks = testObject.matchcolumn ? testObject.matchcolumn[3] : 0;
+  const macCorrectMarks = testObject.mac ? testObject.mac[1] : 0;
+  const macWrongMarks = testObject.mac ? testObject.mac[2] : 0;
+  const macNaMarks = testObject.mac ? testObject.mac[3] : 0;
+  var phyMacMarks = 0;
+  var chemMacMarks = 0;
+  var mathMacMarks = 0;
   const query = `INSERT INTO livetestlog VALUES ('${donetestid}',$1,$2,'wrong',$3,$4)`;
   var questionQueries = [];
   questions.forEach((question) => {
@@ -55,7 +68,7 @@ const updateLiveLog = (questions, donetestid, testid, userid, testObject, res) =
       ).then((respo) => {
         const answers = respo.rows;
         answers.forEach((answer) => {
-          if (answer.type == "numerical") {
+          if (answer.type == "num") {
             if (!answer.useranswer || !answer.useranswer.length) {
               totalNonAttempted++;
               if (answer.subject == "physics") {
@@ -116,7 +129,80 @@ const updateLiveLog = (questions, donetestid, testid, userid, testObject, res) =
                 else mathWrong[answer.type] = 1;
               }
             }
-          } else if (answer.type != "numerical") {
+          } else if (answer.type == "mac") {
+            if (!answer.useranswer || !answer.useranswer.length) {
+              totalNonAttempted++;
+              if (answer.subject == "physics") {
+                phy[2]++;
+                phyMacMarks += macNaMarks;
+                if (phyNa[answer.type]) phyNa[answer.type]++;
+                else phyNa[answer.type] = 1;
+              } else if (answer.subject == "chemistry") {
+                chem[2]++;
+                chemMacMarks += macNaMarks;
+                if (chemNa[answer.type]) chemNa[answer.type]++;
+                else chemNa[answer.type] = 1;
+              } else {
+                math[2]++;
+                mathMacMarks += macNaMarks;
+                if (mathNa[answer.type]) mathNa[answer.type]++;
+                else mathNa[answer.type] = 1;
+              }
+              notAttemptedPromise.push(
+                db
+                  .query(
+                    `UPDATE testquestions SET status='not attempted' WHERE qid=${answer.qid}`
+                  )
+                  .catch((err) => err)
+              );
+            } else {
+              const checkCorrect = mac(answer, macCorrectMarks);
+              if (checkCorrect[0]) {
+                totalCorrect++;
+                if (answer.subject == "physics") {
+                  phy[0]++;
+                  phyMacMarks += checkCorrect[1];
+                  if (phyCorrect[answer.type]) phyCorrect[answer.type]++;
+                  else phyCorrect[answer.type] = 1;
+                } else if (answer.subject == "chemistry") {
+                  chem[0]++;
+                  chemMacMarks += checkCorrect[1];
+                  if (chemCorrect[answer.type]) chemCorrect[answer.type]++;
+                  else chemCorrect[answer.type] = 1;
+                } else {
+                  math[0]++;
+                  chemMacMarks += checkCorrect[1];
+                  if (mathCorrect[answer.type]) mathCorrect[answer.type]++;
+                  else mathCorrect[answer.type] = 1;
+                }
+                correctPromise.push(
+                  db
+                    .query(
+                      `UPDATE testquestions SET status='correct' WHERE qid=${answer.qid}`
+                    )
+                    .catch((err) => err)
+                );
+              } else {
+                totalWrong++;
+                if (answer.subject == "physics") {
+                  phy[1]++;
+                  phyMacMarks += macWrongMarks;
+                  if (phyWrong[answer.type]) phyWrong[answer.type]++;
+                  else phyWrong[answer.type] = 1;
+                } else if (answer.subject == "chemistry") {
+                  chem[1]++;
+                  chemMacMarks += macWrongMarks;
+                  if (chemWrong[answer.type]) chemWrong[answer.type]++;
+                  else chemWrong[answer.type] = 1;
+                } else {
+                  math[1]++;
+                  mathMacMarks += macWrongMarks;
+                  if (mathWrong[answer.type]) mathWrong[answer.type]++;
+                  else mathWrong[answer.type] = 1;
+                }
+              }
+            }
+          } else if (answer.type != "num") {
             if (!answer.useranswer || !answer.useranswer.length) {
               totalNonAttempted++;
               if (answer.subject == "physics") {
@@ -199,7 +285,8 @@ const updateLiveLog = (questions, donetestid, testid, userid, testObject, res) =
                 (phyNa["num"] ? phyNa["num"] : 0) * numNaMarks +
                 (phyCorrect["mtf"] ? phyCorrect["mtf"] : 0) * mtfCorrectMarks +
                 (phyWrong["mtf"] ? phyWrong["mtf"] : 0) * mtfWrongMarks +
-                (phyNa["mtf"] ? phyNa["mtf"] : 0) * mtfNaMarks,
+                (phyNa["mtf"] ? phyNa["mtf"] : 0) * mtfNaMarks +
+                phyMacMarks,
               chemMarks =
                 (chemCorrect["mcq"] ? chemCorrect["mcq"] : 0) *
                   mcqCorrectMarks +
@@ -224,7 +311,8 @@ const updateLiveLog = (questions, donetestid, testid, userid, testObject, res) =
                 (chemCorrect["mtf"] ? chemCorrect["mtf"] : 0) *
                   mtfCorrectMarks +
                 (chemWrong["mtf"] ? chemWrong["mtf"] : 0) * mtfWrongMarks +
-                (chemNa["mtf"] ? chemNa["mtf"] : 0) * mtfNaMarks,
+                (chemNa["mtf"] ? chemNa["mtf"] : 0) * mtfNaMarks +
+                chemMacMarks,
               mathMarks =
                 (mathCorrect["mcq"] ? mathCorrect["mcq"] : 0) *
                   mcqCorrectMarks +
@@ -249,7 +337,8 @@ const updateLiveLog = (questions, donetestid, testid, userid, testObject, res) =
                 (mathCorrect["mtf"] ? mathCorrect["mtf"] : 0) *
                   mtfCorrectMarks +
                 (mathWrong["mtf"] ? mathWrong["mtf"] : 0) * mtfWrongMarks +
-                (mathNa["mtf"] ? mathNa["mtf"] : 0) * mtfNaMarks;
+                (mathNa["mtf"] ? mathNa["mtf"] : 0) * mtfNaMarks +
+                mathMacMarks;
             var totalMarks = phyMarks + chemMarks + mathMarks;
             var date = new Date();
             date = date.toISOString().split("T")[0];
