@@ -229,6 +229,56 @@ router
         console.log(err);
         res.status(500).json({ errmess: "DB Error" });
       });
+  })
+  .post("/giventests", (req, res, next) => {
+    db.query("SELECT * FROM usertest WHERE userid=$1", [req.body.userid])
+      .then((resp) => {
+        db.query("SELECT * FROM liveusertest WHERE userid=$1", [
+          req.body.userid,
+        ])
+          .then((respo) => {
+            res
+              .status(200)
+              .json({ statictest: resp.rows, livetest: respo.rows });
+          })
+          .catch((err) => {
+            console.log(err);
+            res.status(500).json({ err: "DB Error" });
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ err: "DB Error" });
+      });
+  })
+  .post("/specifictestdetails", (req, res, next) => {
+    if (req.body.statictest) {
+      db.query(
+        `SELECT * FROM testquestions INNER JOIN questions ON testquestions.qid=questions.qid AND testquestions.donetestid='${req.body.donetestid}'`
+      )
+        .then((resp) => {
+          res
+            .status(200)
+            .json({ donetestid: req.body.donetestid, questions: resp.rows });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({ err: "DB Error" });
+        });
+    } else {
+      db.query(
+        `SELECT * FROM livetestlog INNER JOIN questions ON livetestlog.qid=questions.qid AND livetestlog.donetestid='${req.body.donetestid}'`
+      )
+        .then((resp) => {
+          res
+            .status(200)
+            .json({ donetestid: req.body.donetestid, questions: resp.rows });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({ err: "DB Error" });
+        });
+    }
   });
 
 module.exports = router;

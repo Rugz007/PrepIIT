@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const randomstring = require("randomstring");
 
 const db = require("../db");
 
@@ -25,9 +26,9 @@ router
       subject: "Verification for access to content provided by PrepiiT",
       html: `Hello ${req.body.name}!
           <p>Thank you for showing an interest in PrepiiT</p>
-          <p> <a href="http://localhost:3000/user/${token}">Click</a> here to verify yourself on PrepiiT</p>
-       <p>Yours,</p>
-       <p>PrepIIT Team</p>`,
+          <p> Click <a href="http://localhost:3000/user/${token}">here</a> to verify yourself on PrepiiT</p>
+          <p>Yours,</p>
+          <p>PrepiiT Team</p>`,
     };
     transporter
       .sendMail(mailOptions)
@@ -106,5 +107,49 @@ router
       res.status(404).json({ error: "No Token Found" });
       console.log("No Token");
     }
+  })
+  .post("/forgotpassword", (req, res, next) => {
+    const tempPassword = randomstring.generate({ length: 15 });
+    db.query("SELECT * from users WHERE email=$1", [req.body.email])
+      .then((resp) => {
+        if (resp.rows.length > 0) {
+          const mailOptions = {
+            from: process.env.EMAIL,
+            to: req.body.email,
+            subject: "Temporary password to access your PrepiiT Account",
+            html: `Hello ${resp.rows[0].name}!
+          <p>This mail is in response to a request you've sent to reset your password</p>
+          <p>Your new password is ${tempPassword}</p>
+          <p>Yours,</p>
+          <p>PrepiiT Team</p>`,
+          };
+          db.query("UPDATE users SET password=$1 WHERE email=$2", [
+            tempPassword,
+            req.body.email,
+          ])
+            .then((respo) => {
+              transporter
+                .sendMail(mailOptions)
+                .then((respon) => {
+                  console.log("Email Sent");
+                  res.end();
+                })
+                .catch((err) => {
+                  console.log(err);
+                  res.status(500).json({ err: "Mail not sent" });
+                });
+            })
+            .catch((err) => {
+              console.log(err);
+              res.status(500).json({ err: "DB Error" });
+            });
+        } else {
+          res.status(404).json({ err: "No such email is registered" });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ err: "DB Error" });
+      });
   });
 module.exports = router;
