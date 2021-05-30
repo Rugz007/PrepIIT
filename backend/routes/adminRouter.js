@@ -1,5 +1,4 @@
 var express = require("express");
-var express = require("express");
 var upload = require("../multer/index");
 const uploadQuestions = require("../uploadQuestions/index");
 var uploadLiveTest = require("../uploadLiveTest/index");
