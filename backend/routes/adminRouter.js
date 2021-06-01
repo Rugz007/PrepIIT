@@ -117,7 +117,7 @@ router
       answers,
     } = req.body;
     db.query(
-      "UPDATE questions SET statement=$1, img_path=$2, type=$3, subject=$4, topic=$5, subtopic=$6, level=$7, archive=$8, is_reported=$9, latex=$11, options=$12, answers=$13 WHERE qid=$10",
+      "UPDATE questions SET statement=$1, img_path=$2, type=$3, subject=$4, topic=$5, subtopic=$6, level=$7, archive=$8, is_reported=$9, latex=$10, options=$11, answers=$12 WHERE qid=$13",
       [
         statement,
         img_path,
@@ -128,10 +128,10 @@ router
         level,
         archive,
         is_reported,
-        qid,
         latex,
         options,
         answers,
+        qid,
       ]
     )
       .then((resp) => {
@@ -139,8 +139,8 @@ router
         res.json({ success: true });
       })
       .catch((err) => {
-        console.log("DB Error");
-        res.json({ success: false });
+        console.log(err);
+        res.status(500).json({ success: false });
       });
   })
   .get("/reported", (req, res, next) => {
@@ -175,9 +175,9 @@ router
       nq = [],
       mtf = [],
       mac = [];
-    if (body.questions != null)
+    if (body.questions != null) {
       body.questions.map((question) => {
-        if (questions) {
+        if (question) {
           if (question.type == "mcq") {
             mcq.push(question.number);
             mcq.push(question.correct);
@@ -216,6 +216,7 @@ router
           }
         }
       });
+    }
     if (mcq.length == 0) {
       mcq = null;
     }

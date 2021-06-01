@@ -22,8 +22,6 @@ router
   .get("/test", (req, res, next) => {
     var availableStaticTest = [];
     var availableLiveTest = [];
-    var staticTest = [];
-    var liveTest = [];
     const userid = req.headers.userid;
     db.query(
       "SELECT testid,testname,subjectsallowed FROM testtype tt WHERE tt.testid NOT IN (SELECT ut.testid FROM usertest ut WHERE userid=$1 GROUP BY ut.testid)",
@@ -31,37 +29,19 @@ router
     )
       .then((resp) => {
         availableStaticTest.push(resp.rows);
-        db.query("SELECT * FROM usertest WHERE userid=$1", [userid])
-          .then((respo) => {
-            staticTest.push(respo.rows);
-            db.query("SELECT * FROM liveusertest WHERE userid=$1", [userid])
-              .then((respon) => {
-                liveTest.push(respon.rows);
-                db.query(
-                  "SELECT liveid,livename FROM livetest lt WHERE lt.liveid NOT IN (SELECT lut.testid FROM liveusertest lut WHERE userid=$1 GROUP BY lut.testid)",
-                  [userid]
-                )
-                  .then((respons) => {
-                    availableLiveTest.push(respons.rows);
-                    res.status(200).json({
-                      availableStaticTest: availableStaticTest,
-                      availableLiveTest: availableLiveTest,
-                      staticTest: staticTest,
-                      liveTest: liveTest,
-                    });
-                  })
-                  .catch((err) => {
-                    res.status(500).json({ err: "Some Error Occured" });
-                  });
-              })
-              .catch((err) => {
-                res.status(500).json({ err: "Some Error Occured" });
-              });
+        db.query(
+          "SELECT liveid,livename,subjectsallowed FROM livetest lt WHERE lt.liveid NOT IN (SELECT lut.testid FROM liveusertest lut WHERE userid=$1 GROUP BY lut.testid)",
+          [userid]
+        )
+          .then((respons) => {
+            availableLiveTest.push(respons.rows);
+            res.status(200).json({
+              availableStaticTest: availableStaticTest[0],
+              availableLiveTest: availableLiveTest[0],
+            });
           })
           .catch((err) => {
-            res.status(500).json({
-              err: "Some Error Occured",
-            });
+            res.status(500).json({ err: "Some Error Occured" });
           });
       })
       .catch((err) => {
@@ -105,12 +85,20 @@ router
   .post("/verifyanswers", (req, res, next) => {
     const { donetestid, questions, testid, userid } = req.body;
     console.log(donetestid, testid, userid);
-    db.query("SELECT * FROM testtype WHERE testid=$1", [testid]).then(
-      (resp) => {
-        var testObject = resp.rows[0];
-        updateLog(questions, donetestid, testid, userid, testObject, res);
-      }
-    );
+    db.query("SELECT * FROM testtype WHERE testid=$1", [testid])
+      .then((resp) => {
+        console.log(resp.rows);
+        if (resp.rows.length > 0) {
+          var testObject = resp.rows[0];
+          updateLog(questions, donetestid, testid, userid, testObject, res);
+        } else {
+          res.status(404).json({ err: "No such testid" });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ err: "No Such testid" });
+      });
   })
   .post("/cachequestions", (req, res, next) => {
     var testid = req.body.testid;
