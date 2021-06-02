@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Error404 } from './components/Errors/Error404';
 import { TestIntruction } from './components/Test/TestIntruction';
@@ -9,7 +9,6 @@ import { BlogPage } from './views/Blog/BlogPage';
 import { Dashboard } from './views/Dashboard/Dashboard';
 import { About } from './views/HomePage/About';
 import { Contact } from './views/HomePage/Contact';
-import { Courses } from './views/HomePage/Courses';
 import { FAQ } from './views/HomePage/FAQ';
 import { HomePage } from './views/HomePage/HomePage';
 import { Test } from './views/Test/Test';
@@ -34,7 +33,6 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
 class Routes extends React.Component {
     render() {
         return (
-            // TODO: Make Protected Routes
             <Switch>
                 <ProtectedRoute path="/" exact component={HomePage} />
                 <ProtectedRoute path='/login' component={Login} />

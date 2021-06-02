@@ -1,6 +1,6 @@
 import { Button, Card, Col, Divider, List, Modal, Row } from 'antd';
 import Layout, { Content } from 'antd/lib/layout/layout';
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import { EnquiryForm } from '../../components/HomePage/EnquiryForm';
 import { EyeOutlined } from '@ant-design/icons';
 import { Blob } from 'react-blob'
@@ -11,18 +11,17 @@ interface CourseInterface {
   name: string,
   description: string | React.DetailedHTMLProps<React.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>,
   icon: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>,
-  tag:string,
-  batches?:JSX.Element[],
+  tag: string,
+  batches?: JSX.Element[],
 
 }
 
 export const HomePage: React.FC = () => {
   const [modalView, setModalView] = useState(false)
   const [currentCourse, setCurrentCourse] = useState<CourseInterface | undefined>(undefined)
-  const onClickView = (e :React.MouseEvent<HTMLElement, MouseEvent>,tag?:string,course? :CourseInterface) =>
-  {
-    if(modalView === false)
-    {
+  const onClickView = (e: React.MouseEvent<HTMLElement, MouseEvent>, tag?: string, course?: CourseInterface) => {
+    console.log(modalView,course)
+    if (modalView === false) {
       setCurrentCourse(course)
     }
     setModalView(!modalView)
@@ -54,11 +53,10 @@ export const HomePage: React.FC = () => {
           </Col>
           <Col xxl={4} xs={0} />
         </Row>
-        <Row style={{ minHeight: '48vh' }}>
-          <Col span={24} style={{ height: '20%' }}><h1 style={{ textAlign: 'center', fontSize: '60px', marginBottom: '0' }}>Courses Offered</h1></Col>
-          <Col span={2} style={{ height: '80%' }} />
-
-          <Col span={20} style={{ height: '80%' }}>
+        <Row><h1 style={{ textAlign: 'center', fontSize: '30px', marginBottom: '0', width: '100%' }}>Courses Offered</h1></Row>
+        <Row style={{ minHeight: '38vh' }}>
+          <Col span={2} style={{ height: '90%' }} />
+          <Col span={20} style={{ height: '90%' }}>
             <List grid={{
               gutter: 24,
               xs: 1,
@@ -72,20 +70,23 @@ export const HomePage: React.FC = () => {
               dataSource={courseData}
               renderItem={(item) => (
                 <List.Item id="course-list">
-                  <Card className="course-card" hoverable style={{ width: '100%', minHeight: '206px' }}>
+                  <Card className="course-card" hoverable style={{ width: '100%', minHeight: '206px' ,borderRadius:'5px'}} onClick={e => onClickView(e, undefined, item)}>
                     <Row>
                       <div style={{ margin: 'auto' }}>{item.icon}</div>
                     </Row>
                     <h1>{item.name}</h1>
                   </Card>
+                  <Modal width={"200vw"} footer={null} visible={modalView} onCancel={onClickView}>
+                    <CourseDescription course={currentCourse} showBatches={false} />
+                  </Modal>
                 </List.Item>
               )}
             />
           </Col>
-          <Col style={{ height: '80%' }} />
+          <Col style={{ height: '90%' }} />
         </Row>
         <Row style={{ height: '280px', textAlign: 'center' }} className='parallex'>
-          <h1 style={{ width: '100%', margin: 'auto', fontSize: '30px' }}><b>Located in Pune, We are here to nurture bright minds for their bright future.</b></h1>
+          <h1 style={{ width: '100%', margin: 'auto', fontSize: '30px' }}><b>We are here to nurture bright minds for their bright future.</b></h1>
         </Row>
         <Row style={{ marginTop: '3%', marginBottom: '2%' }}>
           <Col xxl={2} />
@@ -105,19 +106,16 @@ export const HomePage: React.FC = () => {
               dataSource={courseData}
               renderItem={(item) => (
                 <List.Item>
-                  <Card style={{ minHeight: '200px',margin:"0 2%" }}>
+                  <Card style={{ minHeight: '200px', margin: "0 2%" }}>
                     <Row>
                       <div style={{ width: '100%', margin: 'auto' }}>{item.icon}</div>
                     </Row>
                     <h1>{item.name}</h1>
-                    <Button type='primary' onClick={e => onClickView(e,undefined,item)}><EyeOutlined />View</Button>
                   </Card>
                 </List.Item>
               )}
             />
-            <Modal width={"200vw"} footer={null} visible={modalView} onCancel={onClickView}>
-              <CourseDescription course={currentCourse} showBatches={false}/>
-            </Modal>
+
           </Col>
           <Col xxl={2} />
         </Row>
