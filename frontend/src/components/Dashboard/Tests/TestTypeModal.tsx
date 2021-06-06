@@ -28,7 +28,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
-  const [time, setTime] = useState(['', ''])
+  const [time, setTime] = useState('')
   const toSubmit = (e: any) => {
     console.log(e);
   };
@@ -53,7 +53,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
       console.log(e);
     }
   };
-  const onChangeTime = (value: any, timeString: [string, string]) => {
+  const onChangeTime = (value: any, timeString: string) => {
     setTime(timeString)
   }
   return (
@@ -184,7 +184,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
           </Form.List>
           <Form.Item name='startDate' label="Select time of test">
             <Space direction="horizontal" size={12}>
-              <TimePicker.RangePicker onChange={onChangeTime} format={"HH:mm"} />
+              <TimePicker onChange={onChangeTime} format={"HH:mm"} />
             </Space>
           </Form.Item>
         </Form>

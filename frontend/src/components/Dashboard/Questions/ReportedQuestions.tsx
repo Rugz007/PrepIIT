@@ -52,7 +52,7 @@ export const ReportedQuestions: React.FC = () => {
   };
   useEffect(() => {
     fetchReportedDetails();
-  }, [reported]);
+  }, []);
 
   const fetchReportedDetails = async () => {
     try {
