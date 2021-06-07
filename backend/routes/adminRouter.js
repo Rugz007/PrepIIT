@@ -439,6 +439,17 @@ router
           success: false,
         });
       });
+  })
+  .delete("/blog", (req, res, next) => {
+    const postid = req.body.postid;
+    db.query("DELETE FROM blogs WHERE postid=$1", [postid])
+      .then((resp) => {
+        res.json({ success: true });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json({ success: false });
+      });
   });
 
 module.exports = router;
