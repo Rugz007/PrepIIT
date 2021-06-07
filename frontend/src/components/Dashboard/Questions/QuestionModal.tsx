@@ -13,7 +13,8 @@ import TextArea from "antd/lib/input/TextArea";
 import Modal from "antd/lib/modal/Modal";
 import React, { useState } from "react";
 import Levels from "./DifficultyLevel";
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined, MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+
 import "./QuestionModal.css";
 const { Option } = Select;
 
@@ -38,6 +39,15 @@ interface QuestionInterface {
 interface Level {
   name: string;
 }
+
+export const OptionComponent: React.FC = () => {
+  return (
+    <>
+      <Input />
+    </>
+  )
+}
+
 export const QuestionModal: React.FC<QuestionInterface> = ({
   Question,
   submitEdit,
@@ -145,7 +155,7 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
               </Form.Item>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Answer" key="2">
-              <Select style={{ width: '30%',marginBottom:'2%' }} onSelect={handleSelect} defaultValue="MCQ">
+              <Select style={{ width: '30%', marginBottom: '2%' }} onSelect={handleSelect} defaultValue="MCQ">
                 <Option value="MCQ">Multiple Choice</Option>
                 <Option value="FIB">Fill in the blank</Option>
                 <Option value="NUM">Numerical Question</Option>
@@ -153,21 +163,48 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
                 <Option value="AAR">Assertion and Reason</Option>
               </Select>
               {answerType === "NUM" &&
-              <>
-              <Form.Item name="range0">
-                  <Input placeholder="Enter the start range" />
-                </Form.Item>
-                <Form.Item name="range1">
-                  <Input placeholder="Enter the end range" />
-                </Form.Item>
-                <h3>NOTE: If you want exact answer, input same values in both the ranges.</h3>
-              </>
-                }
+                <>
+                  <Form.Item name="range0">
+                    <Input placeholder="Enter the start range" />
+                  </Form.Item>
+                  <Form.Item name="range1">
+                    <Input placeholder="Enter the end range" />
+                  </Form.Item>
+                  <h3>NOTE: If you want exact answer, input same values in both the ranges.</h3>
+                </>
+              }
               {answerType === "FIB" &&
                 <Form.Item name="fib Answer">
                   <Input placeholder="Enter the correct answer" />
                 </Form.Item>}
-              {answerType === "MCQ" && <Form.Item name="answer"><Input placeholder="Enter the start range" /></Form.Item>}
+              {(answerType === "MCQ" || answerType === "AAR") &&
+                <Form.List name="answers">
+                  {(fields, { add, remove }) => (
+                    <>
+                      {fields.map((field,index) => (
+                        <Space
+                          key={index}
+                          style={{ display: "flex", marginBottom: 8, width: "100%" }}
+                          align="baseline">
+                          <Form.Item {...field} name={"Option " + (index+1)} style={{width:'100%'}}>
+                            <Input placeholder={"Option " +(index+1).toString()} style={{width:'100%'}}/>
+                          </Form.Item>
+                          <MinusCircleOutlined onClick={() => remove(field.name)} />
+                        </Space>
+                      ))}
+                      <Form.Item>
+                        <Button
+                          type="dashed"
+                          onClick={() => add()}
+                          block
+                          icon={<PlusOutlined />}
+                        >
+                          Add field
+                  </Button>
+                      </Form.Item>
+                    </>
+                  )}
+                </Form.List>}
               {answerType === "TOF" &&
                 <Form.Item name="trueorfalseAnswer">
                   <Select placeholder="Select True or False">
@@ -175,7 +212,6 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
                     <Option value="false">False</Option>
                   </Select>
                 </Form.Item>}
-              {answerType === "AAR" && <Form.Item name="answer"><Input placeholder="Enter the start range" /></Form.Item>}
             </Tabs.TabPane>
           </Tabs>
         </Form>

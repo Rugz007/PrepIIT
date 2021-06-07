@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import { useReducer } from "react";
 import {
   LOGIN_FAIL,
   AUTH_ERROR,
@@ -16,6 +16,9 @@ interface LoginInterface {
   email: string;
   password: string;
 }
+interface ForgetPasswordInterface {
+  email: string;
+}
 interface RegisterInterface {
   name: string;
   email: string;
@@ -29,10 +32,10 @@ const UserState = (props: any) => {
     token: null,
     user: null,
     isAuth: false,
+    isError:null,
   };
   const [state, dispatch] = useReducer(UserReducer, initialState);
   const login = async (formData: LoginInterface) => {
-    console.log(REACT_APP_NODEJS_URL)
     try {
       const response = await axios({
         method: "post",
@@ -43,7 +46,6 @@ const UserState = (props: any) => {
           password: formData.password,
         },
       });
-      console.log(response);
       dispatch({
         type: LOGIN_SUCCESS,
         payload: response.data,
@@ -52,6 +54,7 @@ const UserState = (props: any) => {
       dispatch({
         type: LOGIN_FAIL,
       });
+      throw 401;
     }
   };
   const register = async (formData: RegisterInterface) => {
@@ -75,6 +78,10 @@ const UserState = (props: any) => {
     dispatch({
       type:LOGOUT,
     })
+  }
+  const forgetPassword = async (formData : ForgetPasswordInterface) =>
+  {
+    console.log("Forget Password")
   }
   const loadUser = async () => {
     try {
@@ -105,10 +112,12 @@ const UserState = (props: any) => {
         token: state.token,
         user: state.user,
         isAuth: state.isAuth,
+        isError:state.isError,
         login,
         logout,
         loadUser,
         register,
+        forgetPassword
       }}
     >
       {props.children}

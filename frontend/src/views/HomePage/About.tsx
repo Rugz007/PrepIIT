@@ -84,7 +84,7 @@ export const About: React.FC = () => {
   return (
     <Layout>
       <Content style={{ backgroundColor: "#1c2229" }}>
-        <Row style={{ height: "100vh" }}>
+        <Row style={{ height: "10vh" }}>
           <Col
             lg={12}
             style={{

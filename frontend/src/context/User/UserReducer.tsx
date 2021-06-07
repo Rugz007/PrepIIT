@@ -20,6 +20,7 @@ export default (state: any, action: any) => {
         ...action.payload,
         isAuth: true,
         user: action.payload.user,
+        isError:null,
       };
     case LOGIN_SUCCESS:
       localStorage.setItem("token", action.payload.token);
@@ -27,14 +28,20 @@ export default (state: any, action: any) => {
         ...state,
         ...action.payload,
         isAuth: true,
+        isError:null,
       };
     case LOGIN_FAIL:
+      return{
+        ...state,
+        isError:'asdas',
+      };
     case AUTH_ERROR:
       return {
         ...state,
         token: null,
         user: null,
         isAuth: false,
+        isError:'asda',
       };
 
     case LOGOUT:
@@ -44,6 +51,7 @@ export default (state: any, action: any) => {
         token: null,
         isAuth: false,
         user: null,
+        isError:null,
       };
 
     case REGISTER_FAIL:

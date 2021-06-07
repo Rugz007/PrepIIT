@@ -29,13 +29,14 @@ export const EnquiryForm: React.FC = () => {
   return (
     <Card
       bordered={false}
-      style={{ height: "100%", borderRadius: "17px", margin:'0 2%' }}
+      style={{ height: "100%", borderRadius: "17px", margin: '0 2%' }}
     >
-      <h1 style={{ fontSize: "40px", marginBottom: "0" }}>
-        <b>Reach out to us!</b>
+      <h1 style={{ fontSize: "25px", marginBottom: "0" }}>
+        <b>Call admission hotline: <span style={{fontSize:'30px'}}>9890401239</span></b>
       </h1>
-      <h3>Put in your details and we will be in touch with you soon.</h3>
-      <h3>or call admission hotline: 9890401239</h3>
+      <h1 style={{ fontSize: "25px", marginBottom: "0" }}>
+        <b> or Reach out to us!</b>
+      </h1>
       <Divider />
       <Form
         name="enquiry"
@@ -55,12 +56,12 @@ export const EnquiryForm: React.FC = () => {
         <Form.Item name="number">
           <Input placeholder={"Enter your Phone Number."} />
         </Form.Item>
-        
+
         <ReCAPTCHA
           sitekey="6LfhIz0aAAAAAORE5vd7fw2XQjYKfVsFjHyB5EGQ"
           theme="dark"
           onChange={onCaptchaChange}
-         />
+        />
         <Form.Item name="button">
           <Button
             type="primary"

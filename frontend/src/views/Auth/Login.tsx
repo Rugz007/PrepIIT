@@ -1,9 +1,8 @@
 import Layout, { Content } from "antd/lib/layout/layout";
-import React, { useContext, useState } from "react";
-import { Row, Col, Form, Input, Card, Divider, Button } from "antd";
+import React, { useContext } from "react";
+import { Row, Col, Form, Input, Card, Divider, Button, message } from "antd";
 import { UserOutlined, KeyOutlined } from "@ant-design/icons";
 import { Link, useHistory } from "react-router-dom";
-import axios from "axios";
 import UserContext from "../../context/User/UserContext";
 
 interface LoginInterface {
@@ -11,12 +10,19 @@ interface LoginInterface {
   password: string;
 }
 export const Login: React.FC = () => {
-  let history = useHistory();
+  let history = useHistory()
   const userContext = useContext(UserContext);
 
   const onFinish = (values: LoginInterface) => {
-    userContext.login(values);
-    history.push("/dashboard");
+
+    userContext.login(values).then(()=>
+    {
+      history.push('/dashboard')
+    }).catch(() =>
+    {
+      message.error("Error logging in");
+
+    });
   };
 
   return (
@@ -68,6 +74,7 @@ export const Login: React.FC = () => {
                     placeholder={"Enter your Password."}
                   />
                 </Form.Item>
+                {userContext.isError && <h3 style={{textAlign:"center",color:'red'}}>Password or email is wrong</h3>}
                 <Form.Item>
                   <Button
                     type="primary"
@@ -79,7 +86,7 @@ export const Login: React.FC = () => {
                   </Button>
                 </Form.Item>
               </Form>
-              <a>Forgot Password?</a>
+              <a href="/asdasd">Forgot Password?</a>
               <Divider />
               <p>
                 Don't have an account? <Link to="/register">Register!</Link>

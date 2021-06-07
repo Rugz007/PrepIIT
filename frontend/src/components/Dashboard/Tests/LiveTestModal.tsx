@@ -147,7 +147,6 @@ export const LiveTestModal: React.FC<TestTypeInterface> = ({
                         </Form.Item>
                       )}
                     </Form.Item>
-
                     <Form.Item
                       {...field}
                       fieldKey={[field.fieldKey, "number"]}
