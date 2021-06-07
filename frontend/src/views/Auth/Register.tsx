@@ -1,6 +1,6 @@
 import Layout, { Content } from "antd/lib/layout/layout";
 import React, { useContext, useState } from "react";
-import { Row, Col, Form, Input, Card, Divider, Button, Select, Result } from "antd";
+import { Row, Col, Form, Input, Card, Divider, Button, Select, Result, message } from "antd";
 import {
   UserOutlined,
   KeyOutlined,
@@ -28,6 +28,9 @@ export const Register: React.FC = () => {
     delete values.confirmPassword;
     userContext.register(values).then(() => {
       setSentMail(true)
+    }).catch(() => 
+    {
+      message.error("Error while registering. Please try again in sometime.");
     });
   };
   return (

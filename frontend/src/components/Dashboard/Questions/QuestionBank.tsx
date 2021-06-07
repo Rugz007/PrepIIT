@@ -25,7 +25,6 @@ export const QuestionBank: React.FC = () => {
     fetchBankDetails();
   }, []);
   const submitEdit = async (Question: QuestionInterface) => {
-    console.log(Question);
     try {
       const response = await axios.post(
         `http://${REACT_APP_NODEJS_URL}/admin/editquestion`,

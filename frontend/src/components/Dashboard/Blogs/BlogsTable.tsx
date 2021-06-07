@@ -21,7 +21,7 @@ export const BlogsTable: React.FC = () => {
     }
     const onDelete = (id:string) =>
     {
-
+        
     }
     useEffect(() => {
         getBlogs()
