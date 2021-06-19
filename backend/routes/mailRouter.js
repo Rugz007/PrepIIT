@@ -17,12 +17,9 @@ router
     res.json({ message: "send a POST request" });
   })
   .post("/", (req, res, next) => {
-    db.query(`INSERT INTO enquiry VALUES ($1,$2,$3,$4,DEFAULT,$5 )`, [
+    db.query(`INSERT INTO enquiry VALUES ($1,$2,DEFAULT)`, [
       req.body.name,
-      req.body.email,
       req.body.number,
-      req.body.standard,
-      req.body.type,
     ])
       .then((resp) => {
         const mailOptions = {
