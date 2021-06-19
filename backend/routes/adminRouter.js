@@ -440,8 +440,8 @@ router
         });
       });
   })
-  .delete("/blog", (req, res, next) => {
-    const postid = req.body.postid;
+  .delete("/blog/:postid", (req, res, next) => {
+    const postid = req.params.postid;
     db.query("DELETE FROM blogs WHERE postid=$1", [postid])
       .then((resp) => {
         res.json({ success: true });

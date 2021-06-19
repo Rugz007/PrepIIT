@@ -1,4 +1,4 @@
-import { Button, Card, Table } from 'antd';
+import { Button, Card, message, Table } from 'antd';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
@@ -19,9 +19,11 @@ export const BlogsTable: React.FC = () => {
         const response = await axios.get(`http://${REACT_APP_NODEJS_URL}/blogs/allblogs`)
         setBlogs(response.data)
     }
-    const onDelete = (id:string) =>
-    {
-        
+    const onDelete = (id: string) => {
+        axios.delete(`http://${REACT_APP_NODEJS_URL}/admin/blog/${id}`).then(() => {
+            message.success("Deleted the blog");
+            getBlogs();
+        }).catch(error => console.log(error))
     }
     useEffect(() => {
         getBlogs()
@@ -48,7 +50,7 @@ export const BlogsTable: React.FC = () => {
             key: 'action',
             render: (text: any, record: BlogsElementInterface) =>
                 <>
-                    <Link to={"/blogs/"+record.postid}><Button type='primary' style={{ marginRight: '2%' }}>View</Button></Link>
+                    <Link to={"/blogs/" + record.postid}><Button type='primary' style={{ marginRight: '2%' }}>View</Button></Link>
                     <Button type='primary' danger onClick={() => onDelete(record.postid)}>Delete</Button>
                 </>,
         },
@@ -61,6 +63,5 @@ export const BlogsTable: React.FC = () => {
                 {blogs && <Table columns={columns} dataSource={blogs} style={{ width: "100%" }} />}
             </Card>
         </div>
-
     );
 }

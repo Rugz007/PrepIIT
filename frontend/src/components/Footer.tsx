@@ -1,4 +1,4 @@
-import { Row, Col, Input } from 'antd'
+import { Row, Col } from 'antd'
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import { MailOutlined, PhoneOutlined } from '@ant-design/icons';
