@@ -218,8 +218,8 @@ router
         res.status(500).json({ errmess: "DB Error" });
       });
   })
-  .post("/giventests", (req, res, next) => {
-    db.query("SELECT * FROM usertest WHERE userid=$1", [req.body.userid])
+  .get("/giventests", (req, res, next) => {
+    db.query("SELECT * FROM usertest WHERE userid=$1", [req.headers.userid])
       .then((resp) => {
         db.query("SELECT * FROM liveusertest WHERE userid=$1", [
           req.body.userid,
