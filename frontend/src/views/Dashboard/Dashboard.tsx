@@ -35,7 +35,7 @@ export const Dashboard: React.FC = () => {
     <Layout>
       {userContext.user != null ? (
         <>
-          <Sider style={{ height: "93vh" }}>
+          <Sider style={{ minHeight: "93vh" }}>
             <Menu
               mode="inline"
               defaultSelectedKeys={["4"]}

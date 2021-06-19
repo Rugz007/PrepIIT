@@ -72,6 +72,7 @@ const UserState = (props: any) => {
         type: REGISTER_FAIL,
         payload: e.response.data.msg,
       });
+      throw 400;
     }
   };
   const logout = async () => {
@@ -100,7 +101,6 @@ const UserState = (props: any) => {
         payload: data,
       });
     } catch (e) {
-      console.log(e);
       dispatch({
         type: AUTH_ERROR,
       });

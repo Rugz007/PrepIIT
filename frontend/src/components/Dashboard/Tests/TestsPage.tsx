@@ -1,11 +1,9 @@
-import { Row, Col, List, Collapse, Tabs, Table, Button } from 'antd';
+import { Row, Col, List, Tabs, Table, Button } from 'antd';
 import axios from 'axios';
 import React, { useState, useEffect, useContext } from 'react'
 import { TestCard } from '../../Test/TestCard';
 import UserContext from '../../../context/User/UserContext';
 const { REACT_APP_NODEJS_URL } = process.env;
-
-const { Panel } = Collapse;
 
 interface Test {
   testid: number,
@@ -21,10 +19,9 @@ interface TestCardProps {
   //     testname: string,
   //     subjectsallowed: string[],
   //   }
-  // ]]
+  // ]]`
 
 }
-
 export const TestsPage: React.FC = () => {
   const userContext = useContext(UserContext)
   useEffect(() => {
@@ -70,7 +67,6 @@ export const TestsPage: React.FC = () => {
         console.log("Tests not Loaded");
       }
     }
-
   }
   const [tests, setTests] = useState<TestCardProps | undefined | null>(null)
   return (
