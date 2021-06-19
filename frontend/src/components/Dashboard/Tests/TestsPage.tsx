@@ -11,21 +11,19 @@ interface Test {
   subjectsallowed: string[],
 }
 interface TestCardProps {
-  availableTest: Array<Array<Test>>,
-  givenTest: any
-  // givenTest: [[
-  //   {
-  //     testid: number,
-  //     testname: string,
-  //     subjectsallowed: string[],
-  //   }
-  // ]]`
+  availableStaticTest: Array<Test>,
+  availableLiveTest: Array<Test>,
+}
+interface GivenTestCardProps {
+  statictest: Array<Test>,
+  giventest: Array<Test>,
 
 }
 export const TestsPage: React.FC = () => {
   const userContext = useContext(UserContext)
   useEffect(() => {
-    getTests();
+    getAvailableTests();
+    getGivenTests();
   }, [userContext.user])
   const columns = [
     {
@@ -51,7 +49,7 @@ export const TestsPage: React.FC = () => {
 
     },
   ];
-  const getTests = async () => {
+  const getAvailableTests = async () => {
     if (userContext.user) {
       try {
         const res = await axios.get(`http://${REACT_APP_NODEJS_URL}/secure/test`, {
@@ -61,21 +59,37 @@ export const TestsPage: React.FC = () => {
           },
         });
         console.log(res.data);
-        //TODO: Change is back to availableTest
-        setTests(res.data);
+        setAvailableTests(res.data);
       } catch (e) {
         console.log("Tests not Loaded");
       }
     }
   }
-  const [tests, setTests] = useState<TestCardProps | undefined | null>(null)
+  const getGivenTests = async () => {
+    if (userContext.user) {
+      try {
+        const res = await axios.get(`http://${REACT_APP_NODEJS_URL}/secure/giventests`, {
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("token"),
+            userid: userContext.user.userid
+          },
+        });
+        console.log(res.data);
+        setGivenTests(res.data);
+      } catch (e) {
+        console.log("Tests not Loaded");
+      }
+    }
+  }
+  const [availableTests, setAvailableTests] = useState<TestCardProps | undefined | null>(null)
+  const [givenTests, setGivenTests] = useState<GivenTestCardProps | undefined | null>(null)
   return (
     <Row >
-      <Col span={24}><h1 style={{ fontSize: "40px", textAlign: "left" ,width:'100%'}}>Tests</h1></Col>
+      <Col span={24}><h1 style={{ fontSize: "40px", textAlign: "left", width: '100%' }}>Tests</h1></Col>
       <Col span={24}>
-      {tests?.availableTest && <Tabs style={{ textAlign: 'center' }}>
+        <Tabs style={{ textAlign: 'center' }}>
           <Tabs.TabPane tab="Available Tests" key="1">
-            <Row>
+            {availableTests?.availableStaticTest ? <Row>
               <List
                 grid={{
                   gutter: 16,
@@ -86,19 +100,37 @@ export const TestsPage: React.FC = () => {
                   xl: 3,
                   xxl: 3,
                 }}
-                dataSource={tests.availableTest[0]}
+                dataSource={availableTests.availableStaticTest}
                 renderItem={item => (
-                  <List.Item  >
+                  <List.Item>
                     <TestCard test={item} />
                   </List.Item>
                 )}
               />
-            </Row>
+            </Row> : <h3>No Tests Available.</h3>}
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Attempted Tests" key="2">
-            <Table columns={columns} dataSource={tests?.givenTest[0].rows} />
+          <Tabs.TabPane tab="Given Tests" key="2">
+            {givenTests?.statictest ? <Row>
+              <List
+                grid={{
+                  gutter: 16,
+                  xs: 1,
+                  sm: 1,
+                  md: 2,
+                  lg: 3,
+                  xl: 3,
+                  xxl: 3,
+                }}
+                dataSource={givenTests.statictest}
+                renderItem={item => (
+                  <List.Item>
+                    <TestCard test={item} />
+                  </List.Item>
+                )}
+              />
+            </Row> : <h3>No Tests Available.</h3>}
           </Tabs.TabPane>
-        </Tabs>}
+        </Tabs>
       </Col>
       <Col span={1} />
       <Col span={22}>

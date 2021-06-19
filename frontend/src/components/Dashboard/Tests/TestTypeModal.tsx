@@ -40,7 +40,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
         `http://${REACT_APP_NODEJS_URL}/admin/statictest`,
         {
           values,
-          time,
+          //time,
         },
         {
           headers: {

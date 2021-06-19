@@ -244,7 +244,7 @@ export const Test: React.FC = () => {
         authorization: "Bearer " + localStorage.getItem("token"),
       },
       data: {
-        testid: 33,
+        testid: localStorage.getItem("testid"),
         userid: 1,
         donetestid: response.userTestId,
         questions: temp,
