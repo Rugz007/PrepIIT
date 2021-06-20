@@ -31,6 +31,8 @@ interface QuestionInterface {
     level: string | undefined;
     archive?: string | undefined;
     is_reported: boolean | undefined;
+    answers: Array<string>;
+    options: Array<string>;
   };
   submitEdit: Function | undefined;
   submitNew: Function | undefined;
@@ -47,7 +49,6 @@ export const OptionComponent: React.FC = () => {
     </>
   )
 }
-
 export const QuestionModal: React.FC<QuestionInterface> = ({
   Question,
   submitEdit,
@@ -78,6 +79,40 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
   const handleSelect = (e: any) => {
     setAnswerType(e)
   }
+  const onOk = (e: any) => {
+    var values = form.getFieldsValue();
+    console.log(values)
+    form.resetFields();
+    if (Question !== undefined) {
+      values.qid = Question.qid;
+    }
+    var proccessed = processAnswers(values)
+    if (submitEdit) submitEdit(proccessed);
+    else if (submitNew) submitNew(proccessed);
+    setVisible(false);
+  }
+  const processAnswers = (values : any) =>
+  {
+    switch(answerType)
+    {
+       case 'MCQ':
+         break;
+       case 'AAR':
+         break;
+       case 'FIB':
+         values.answers = [values.answers];
+         break;
+       case 'TOF':
+         values.options = ['true','false'];
+         values.answers = [values.answers];
+         break;
+       case 'NUM':
+         values.options = [values.range1,values.range2];
+         //Ask Rajat about answer value
+         break;
+    }
+    return values;
+  }
   return (
     <>
       <Button
@@ -90,16 +125,7 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
       <Modal
         width="60%"
         visible={visible}
-        onOk={() => {
-          var values = form.getFieldsValue();
-          form.resetFields();
-          if (Question !== undefined) {
-            values.qid = Question.qid;
-          }
-          if (submitEdit) submitEdit(values);
-          else if (submitNew) submitNew(values);
-          setVisible(false);
-        }}
+        onOk={onOk}
         onCancel={() => setVisible(false)}
       >
         <br />
@@ -164,34 +190,35 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
               </Select>
               {answerType === "NUM" &&
                 <>
-                  <Form.Item name="range0">
+                  <Form.Item name='range1'>
                     <Input placeholder="Enter the start range" />
                   </Form.Item>
-                  <Form.Item name="range1">
+                  <Form.Item name='range2'>
                     <Input placeholder="Enter the end range" />
                   </Form.Item>
-                  <h3>NOTE: If you want exact answer, input same values in both the ranges.</h3>
                 </>
               }
               {answerType === "FIB" &&
-                <Form.Item name="fib Answer">
+                <Form.Item name="answers">
                   <Input placeholder="Enter the correct answer" />
                 </Form.Item>}
               {(answerType === "MCQ" || answerType === "AAR") &&
-                <Form.List name="answers">
+                <Form.List name="options">
                   {(fields, { add, remove }) => (
                     <>
-                      {fields.map((field,index) => (
-                        <Space
-                          key={index}
-                          style={{ display: "flex", marginBottom: 8, width: "100%" }}
-                          align="baseline">
-                          <Form.Item {...field} name={"Option " + (index+1)} style={{width:'100%'}}>
-                            <Input placeholder={"Option " +(index+1).toString()} style={{width:'100%'}}/>
+                      {fields.map((field, index) => (
+                        <Form.Item
+                          label={index === 0 ? 'Option' : ''}
+                          required={false}
+                          key={field.key}>
+                          <Form.Item  {...field}
+                            validateTrigger={['onChange', 'onBlur']} style={{ width: '90%' }}>
+                            <Input placeholder={"Option " + (index + 1).toString()} style={{ width: '90%' }} />
                           </Form.Item>
                           <MinusCircleOutlined onClick={() => remove(field.name)} />
-                        </Space>
+                        </Form.Item>
                       ))}
+                      
                       <Form.Item>
                         <Button
                           type="dashed"
@@ -200,13 +227,13 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
                           icon={<PlusOutlined />}
                         >
                           Add field
-                  </Button>
+                        </Button>
                       </Form.Item>
                     </>
                   )}
                 </Form.List>}
               {answerType === "TOF" &&
-                <Form.Item name="trueorfalseAnswer">
+                <Form.Item name="answers">
                   <Select placeholder="Select True or False">
                     <Option value="true">True</Option>
                     <Option value="false">False</Option>

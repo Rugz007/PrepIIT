@@ -1,4 +1,4 @@
-import { Row, Col, List, Tabs, Table, Button } from 'antd';
+import { Row, Col, List, Tabs, Button } from 'antd';
 import axios from 'axios';
 import React, { useState, useEffect, useContext } from 'react'
 import { TestCard } from '../../Test/TestCard';
@@ -111,23 +111,7 @@ export const TestsPage: React.FC = () => {
           </Tabs.TabPane>
           <Tabs.TabPane tab="Given Tests" key="2">
             {givenTests?.statictest ? <Row>
-              <List
-                grid={{
-                  gutter: 16,
-                  xs: 1,
-                  sm: 1,
-                  md: 2,
-                  lg: 3,
-                  xl: 3,
-                  xxl: 3,
-                }}
-                dataSource={givenTests.statictest}
-                renderItem={item => (
-                  <List.Item>
-                    <TestCard test={item} />
-                  </List.Item>
-                )}
-              />
+              Got some
             </Row> : <h3>No Tests Available.</h3>}
           </Tabs.TabPane>
         </Tabs>

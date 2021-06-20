@@ -58,7 +58,7 @@ export const Dashboard: React.FC = () => {
                     title="Enquiry Forms"
                   >
                     <Menu.Item key="1">View Latest Forms</Menu.Item>
-                    <Menu.Item key="2">Analysis</Menu.Item>
+                    {/* <Menu.Item key="2">Analysis</Menu.Item> */}
                     <Menu.Item key="3">Settings</Menu.Item>
                   </SubMenu>
                   <SubMenu
@@ -69,7 +69,7 @@ export const Dashboard: React.FC = () => {
                     <Menu.Item key="9">Question Bank</Menu.Item>
                     <Menu.Item key="10">Add Questions</Menu.Item>
                     <Menu.Item key="11">Reported Questions</Menu.Item>
-                    <Menu.Item key="12">Question Analysis</Menu.Item>
+                    {/* <Menu.Item key="12">Question Analysis</Menu.Item> */}
                   </SubMenu>
                   <SubMenu
                     key="testsettings"

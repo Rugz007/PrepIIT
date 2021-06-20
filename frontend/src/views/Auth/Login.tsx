@@ -86,7 +86,7 @@ export const Login: React.FC = () => {
                   </Button>
                 </Form.Item>
               </Form>
-              <a href="/asdasd">Forgot Password?</a>
+              <Link to="/forget-password">Forgot Password?</Link>
               <Divider />
               <p>
                 Don't have an account? <Link to="/register">Register!</Link>

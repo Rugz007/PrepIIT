@@ -14,13 +14,14 @@ interface QuestionInterface {
   level: string;
   archive?: string;
   is_reported: boolean | undefined;
+  answers: Array<string>;
+  options: Array<string>;
 }
 export const AddQuestion: React.FC = () => {
   const [questions, setQuestions] = useState<
     Array<QuestionInterface> | undefined
   >(undefined);
   const uploadQuestions = async (values: QuestionInterface) => {
-    console.log(values);
     try {
       if (questions === undefined) {
         setQuestions([values]);
@@ -46,7 +47,6 @@ export const AddQuestion: React.FC = () => {
           },
         }
       );
-      
       console.log(response);
     } catch (e) {
       console.log("Couldn't Update");

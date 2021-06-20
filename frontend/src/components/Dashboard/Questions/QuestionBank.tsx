@@ -15,6 +15,8 @@ interface QuestionInterface {
   level: string;
   archive?: string;
   is_reported: boolean;
+  answers: Array<string>;
+  options: Array<string>;
 }
 
 export const QuestionBank: React.FC = () => {

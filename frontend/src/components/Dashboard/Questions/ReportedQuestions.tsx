@@ -15,6 +15,8 @@ interface QuestionInterface {
   level: string;
   archive?: string;
   is_reported: boolean | undefined;
+  answers: Array<string>;
+  options: Array<string>;
 }
 
 export const ReportedQuestions: React.FC = () => {
@@ -43,8 +45,6 @@ export const ReportedQuestions: React.FC = () => {
           },
         }
       );
-      console.log("Response")
-
       console.log(response);
     } catch (e) {
       console.log("Couldn't Update");

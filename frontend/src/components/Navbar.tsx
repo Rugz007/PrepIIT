@@ -133,14 +133,14 @@ const DashboardHeader: React.FC = () => {
     <Layout>
       <Header style={{ backgroundColor: "white", padding: 0 }}>
         <Row style={{ height: "100%" }}>
-          <Col lg={2}>
+          <Col lg={2} xs={4}>
             <Link to="/" onClick={onClickLogo}>
               <img alt="logo" src="https://i.imgur.com/Nki0mn9.jpg" style={{ width: "57%" }} />
             </Link>
           </Col>
           <Col lg={2} md={4} sm={4} xs={8} style={{ height: "100%" }} />
-          <Col lg={16} xs={14} />
-          <Col lg={4} xs={0} style={{ height: "100%" }}>
+          <Col lg={16} xs={10} />
+          <Col lg={4} xs={2} style={{ height: "100%" }}>
             {userContext.user != null ? (
               <Dropdown
                 overlay={
@@ -202,7 +202,7 @@ const TestHeader: React.FC = () => {
     <Layout>
       <Header style={{ backgroundColor: "white", padding: 0 }}>
         <Row style={{ height: "100%" }}>
-          <Col lg={2}>
+          <Col lg={2} >
             <Link to='/'>
               <img alt="logo" src="https://i.imgur.com/Nki0mn9.jpg" style={{ width: "57%" }} />
             </Link>
