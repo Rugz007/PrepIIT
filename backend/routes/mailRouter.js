@@ -22,28 +22,28 @@ router
       req.body.number,
     ])
       .then((resp) => {
-        const mailOptions = {
-          from: process.env.EMAIL,
-          to: req.body.email,
-          subject: "Thank you for reaching out to PrepIIT",
-          text: `Hello ${req.body.name}!
-          Thank You for reaching out to PrepIIT, we are excited that you've shown an interest in us and hope yo have a long and fruitful relationship with you. A member of our team will be in touch with you shortly.
-       Yours,
-       PrepIIT Team`,
-        };
-        transporter
-          .sendMail(mailOptions)
-          .then((respo) => {
-            console.log("Email Sent");
-            res.end();
-          })
-          .catch((err) => {
-            console.log(err);
-            res.end();
-          });
-        res.end();
-        console.log("Inserted Successfully");
-        res.end();
+        db.query("SELECT * FROM template").then((respo) => {
+          console.log(respo.rows[0]);
+          const mailOptions = {
+            from: process.env.EMAIL,
+            to: req.body.email,
+            subject: "Thank you for reaching out to PrepIIT",
+            text: `Hello ${req.body.name}!
+            ${respo.rows[0]}
+         Yours,
+         PrepiiT Team`,
+          };
+          transporter
+            .sendMail(mailOptions)
+            .then((respo) => {
+              console.log("Email Sent");
+              res.end();
+            })
+            .catch((err) => {
+              console.log(err);
+              res.end();
+            });
+        });
       })
       .catch((err) => {
         res.end();
