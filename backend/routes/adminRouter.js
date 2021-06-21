@@ -450,6 +450,27 @@ router
         console.log(err);
         res.json({ success: false });
       });
+  })
+  .get("/template", (req, res, next) => {
+    db.query("SELECT * FROM template")
+      .then((resp) => {
+        res.status(200).json({ template: resp.rows[0] });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ error: "DB Error" });
+      });
+  })
+  .post("/template", (req, res, next) => {
+    const template = req.body.template;
+    db.query("UPDATE template SET content=$1", [template])
+      .then((resp) => {
+        res.status(200).json({ success: "true" });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ success: "false" });
+      });
   });
 
 module.exports = router;
