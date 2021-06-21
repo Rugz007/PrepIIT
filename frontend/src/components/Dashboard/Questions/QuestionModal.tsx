@@ -11,7 +11,7 @@ import {
 } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import Modal from "antd/lib/modal/Modal";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Levels from "./DifficultyLevel";
 import { UploadOutlined, MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
@@ -33,6 +33,8 @@ interface QuestionInterface {
     is_reported: boolean | undefined;
     answers: Array<string>;
     options: Array<string>;
+    range1?: string;
+    range2?: string;
   };
   submitEdit: Function | undefined;
   submitNew: Function | undefined;
@@ -58,7 +60,16 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
   const [form] = Form.useForm();
   const levels: Array<Level> | undefined = Levels;
   const [visible, setVisible] = useState(false);
-  const [answerType, setAnswerType] = useState("MCQ")
+  const [answerType, setAnswerType] = useState(Question?.type)
+  useEffect(() => {
+    if (Question?.type) {
+      console.log(Question)
+      setAnswerType(Question.type)
+    }
+    else{
+      setAnswerType("mcq")
+    }
+  }, [])
   const props = {
     name: "file",
     action: "",
@@ -83,33 +94,39 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
     var values = form.getFieldsValue();
     console.log(values)
     form.resetFields();
+    var proccessed = values;
     if (Question !== undefined) {
       values.qid = Question.qid;
     }
-    var proccessed = processAnswers(values)
-    if (submitEdit) submitEdit(proccessed);
-    else if (submitNew) submitNew(proccessed);
+    else {
+      proccessed = processAnswers(values)
+    }
+    console.log(proccessed)
+    if (submitEdit) {
+      submitEdit(proccessed)
+
+    } else if (submitNew) { submitNew(proccessed) }
     setVisible(false);
   }
-  const processAnswers = (values : any) =>
-  {
-    switch(answerType)
-    {
-       case 'MCQ':
-         break;
-       case 'AAR':
-         break;
-       case 'FIB':
-         values.answers = [values.answers];
-         break;
-       case 'TOF':
-         values.options = ['true','false'];
-         values.answers = [values.answers];
-         break;
-       case 'NUM':
-         values.options = [values.range1,values.range2];
-         //Ask Rajat about answer value
-         break;
+  
+  const processAnswers = (values: any) => {
+    switch (answerType) {
+      case 'mcq':
+        values.answers = [values.options[values.answers - 1]]
+        break;
+      case 'anr':
+        values.answers = [values.options[values.answers]]
+        break;
+      case 'fib':
+        values.answers = [values.answers];
+        break;
+      case 'tof':
+        values.options = ['true', 'false'];
+        values.answers = [values.answers];
+        break;
+      case 'num':
+        values.options = [values.range1, values.range2];
+        break;
     }
     return values;
   }
@@ -141,9 +158,6 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
                 />
               </Form.Item>
               <Space align="baseline" style={{ display: "flex" }}>
-                <Form.Item name="type" label="Question Type">
-                  <Input placeholder="Enter Question Type Here" />
-                </Form.Item>
                 <Form.Item name="img_path" label="Question Image">
                   <Upload {...props}>
                     <Button type="primary" icon={<UploadOutlined />}>
@@ -181,14 +195,17 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
               </Form.Item>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Answer" key="2">
-              <Select style={{ width: '30%', marginBottom: '2%' }} onSelect={handleSelect} defaultValue="MCQ">
-                <Option value="MCQ">Multiple Choice</Option>
-                <Option value="FIB">Fill in the blank</Option>
-                <Option value="NUM">Numerical Question</Option>
-                <Option value="TOF">True or False</Option>
-                <Option value="AAR">Assertion and Reason</Option>
-              </Select>
-              {answerType === "NUM" &&
+              <Form.Item name='type'>
+                <Select style={{ width: '30%', marginBottom: '2%' }} onSelect={handleSelect} defaultValue="MCQ">
+                  <Option value="mcq">Multiple Choice</Option>
+                  <Option value="fib">Fill in the blank</Option>
+                  <Option value="num">Numerical Question</Option>
+                  <Option value="tof">True or False</Option>
+                  <Option value="anr">Assertion and Reason</Option>
+                </Select>
+              </Form.Item>
+
+              {answerType === "num" &&
                 <>
                   <Form.Item name='range1'>
                     <Input placeholder="Enter the start range" />
@@ -198,41 +215,45 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
                   </Form.Item>
                 </>
               }
-              {answerType === "FIB" &&
+              {answerType === "fib" &&
                 <Form.Item name="answers">
                   <Input placeholder="Enter the correct answer" />
                 </Form.Item>}
-              {(answerType === "MCQ" || answerType === "AAR") &&
-                <Form.List name="options">
-                  {(fields, { add, remove }) => (
-                    <>
-                      {fields.map((field, index) => (
-                        <Form.Item
-                          label={index === 0 ? 'Option' : ''}
-                          required={false}
-                          key={field.key}>
-                          <Form.Item  {...field}
-                            validateTrigger={['onChange', 'onBlur']} style={{ width: '90%' }}>
-                            <Input placeholder={"Option " + (index + 1).toString()} style={{ width: '90%' }} />
+              {(answerType === "mcq" || answerType === "anr") &&
+                <>
+                  <Form.List name="options">
+                    {(fields, { add, remove }) => (
+                      <>
+                        {fields.map((field, index) => (
+                          <Form.Item
+                            label={index === 0 ? 'Option' : ''}
+                            required={false}
+                            key={field.key}>
+                            <Form.Item  {...field}
+                              validateTrigger={['onChange', 'onBlur']} style={{ width: '90%' }}>
+                              <Input placeholder={"Option " + (index + 1).toString()} style={{ width: '90%' }} />
+                            </Form.Item>
+                            <MinusCircleOutlined onClick={() => remove(field.name)} />
                           </Form.Item>
-                          <MinusCircleOutlined onClick={() => remove(field.name)} />
+                        ))}
+                        <Form.Item>
+                          <Button
+                            type="dashed"
+                            onClick={() => add()}
+                            block
+                            icon={<PlusOutlined />}
+                          >
+                            Add field
+                          </Button>
                         </Form.Item>
-                      ))}
-                      
-                      <Form.Item>
-                        <Button
-                          type="dashed"
-                          onClick={() => add()}
-                          block
-                          icon={<PlusOutlined />}
-                        >
-                          Add field
-                        </Button>
-                      </Form.Item>
-                    </>
-                  )}
-                </Form.List>}
-              {answerType === "TOF" &&
+                      </>
+                    )}
+                  </Form.List>
+                  <Form.Item name='answers'>
+                    <Input placeholder='Enter the number of correct option [1,2,3...]' />
+                  </Form.Item>
+                </>}
+              {answerType === "tof" &&
                 <Form.Item name="answers">
                   <Select placeholder="Select True or False">
                     <Option value="true">True</Option>

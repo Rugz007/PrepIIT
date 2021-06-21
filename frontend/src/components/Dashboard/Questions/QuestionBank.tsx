@@ -17,6 +17,8 @@ interface QuestionInterface {
   is_reported: boolean;
   answers: Array<string>;
   options: Array<string>;
+  range1?:string;
+  range2?:string;
 }
 
 export const QuestionBank: React.FC = () => {
@@ -41,6 +43,8 @@ export const QuestionBank: React.FC = () => {
           level: Question.level,
           archive: Question.archive,
           is_reported: Question.is_reported,
+          answers:Question.answers,
+          options:Question.options
         },
         {
           headers: {

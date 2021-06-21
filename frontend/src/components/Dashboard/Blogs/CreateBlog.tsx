@@ -1,4 +1,4 @@
-import { Card, Row, Col, Button, Form } from 'antd';
+import { Card, Row, Col, Button, Form, Space, message } from 'antd';
 import React, { useContext } from 'react'
 import TextArea from 'antd/lib/input/TextArea';
 import axios from 'axios';
@@ -26,11 +26,11 @@ export const CreateBlog: React.FC = () => {
                     authorization: "Bearer " + localStorage.getItem("token"),
                 },
             }).then((response) => {
-                console.log(response)
-            }).catch((error) =>
-             {
-                 console.log(error);
-             })
+                message.success("Posted your blog successfully!")
+            }).catch((error) => {
+                message.error("Something went wrong while uploading the blog.")
+                console.log(error);
+            })
     }
     return (
         <div style={{ textAlign: 'left' }}>
@@ -61,11 +61,14 @@ export const CreateBlog: React.FC = () => {
                             <TextArea autoSize={{ minRows: 3, maxRows: 10 }} />
                         </Form.Item>
                     </Row>
-                    <Button type='primary'>Upload Image</Button>
-                    <Button type='primary' danger style={{ float: 'right', marginTop: '3%' }}>Clear</Button>
-                    <Form.Item>
-                        <Button htmlType='submit' type='primary' style={{ float: 'right', marginRight: "1%", marginTop: '3%' }}>Save</Button>
-                    </Form.Item>
+                    <Space>
+                        <Button type='primary'>Upload Image</Button>
+                        <Form.Item style={{ padding: '0', margin: '0'}}>
+                            <Button htmlType='submit' type='primary' style={{  marginRight: "1%", marginTop: '0%' }}>Save</Button>
+                        </Form.Item>
+                        <Button type='primary' danger style={{ float: 'right', marginTop: '3%' }}>Clear</Button>
+                    </Space>
+
                 </Form>
             </Card>
         </div>

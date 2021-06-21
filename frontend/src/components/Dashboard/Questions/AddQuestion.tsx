@@ -1,4 +1,4 @@
-import { Card, Table, Button, Space, message } from "antd";
+import { Card, Table, Space, message } from "antd";
 import React, { useState } from "react";
 import { QuestionModal } from "./QuestionModal";
 import axios from "axios";
@@ -16,6 +16,8 @@ interface QuestionInterface {
   is_reported: boolean | undefined;
   answers: Array<string>;
   options: Array<string>;
+  range1?:string;
+  range2?:string;
 }
 export const AddQuestion: React.FC = () => {
   const [questions, setQuestions] = useState<
@@ -40,6 +42,8 @@ export const AddQuestion: React.FC = () => {
           level: values.level,
           archive: values.archive,
           is_reported: values.is_reported,
+          answers:values.answers,
+          options:values.options,
         },
         {
           headers: {

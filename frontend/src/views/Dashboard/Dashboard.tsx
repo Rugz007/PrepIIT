@@ -11,7 +11,6 @@ import {
 } from "@ant-design/icons";
 import { EForms } from "../../components/Dashboard/EForms/EForms";
 import { EFormSettings } from "../../components/Dashboard/EForms/EFormSettings";
-import { EFormsAnalysis } from "../../components/Dashboard/EForms/EFormsAnalysis";
 import { Profile } from "../../components/Dashboard/Profile/Profile";
 import { BlogsTable } from "../../components/Dashboard/Blogs/BlogsTable";
 import { CreateBlog } from "../../components/Dashboard/Blogs/CreateBlog";
@@ -98,9 +97,6 @@ export const Dashboard: React.FC = () => {
           <Layout>
             <Content style={{ backgroundColor: "#1c2229", padding: "3%" }}>
               {tab === "1" && userContext.user.admin != null && <EForms />}
-              {tab === "2" && userContext.user.admin != null && (
-                <EFormsAnalysis />
-              )}
               {tab === "3" && userContext.user.admin != null && (
                 <EFormSettings />
               )}

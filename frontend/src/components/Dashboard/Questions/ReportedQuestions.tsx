@@ -38,6 +38,8 @@ export const ReportedQuestions: React.FC = () => {
           level: Question.level,
           archive: Question.archive,
           is_reported: Question.is_reported,
+          answers:Question.answers,
+          options:Question.options
         },
         {
           headers: {
