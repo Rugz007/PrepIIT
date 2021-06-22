@@ -25,16 +25,16 @@ export const EFormSettings: React.FC = () => {
     const updateTemplate = () => {
         axios.post(`http://${REACT_APP_NODEJS_URL}/admin/template`,
             {
+                template: template
+            },
+            {
                 headers: {
                     authorization: "Bearer " + localStorage.getItem("token"),
                 },
-                body:
-                {
-                    template: template
-                }
+                
             }).then(
-                () => message.success("Edited Templated Successfully!")
-            ).catch(() => message.error("Something went wrong!"))
+                    () => message.success("Edited Templated Successfully!")
+                ).catch(() => message.error("Something went wrong!"))
     }
     const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTemplate(e.target.value);
