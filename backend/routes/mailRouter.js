@@ -29,7 +29,7 @@ router
             to: req.body.email,
             subject: "Thank you for reaching out to PrepIIT",
             text: `Hello ${req.body.name}!
-            ${respo.rows[0]}
+            ${respo.rows[0].content}
          Yours,
          PrepiiT Team`,
           };
