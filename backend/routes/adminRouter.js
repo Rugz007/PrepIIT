@@ -462,6 +462,7 @@ router
       });
   })
   .post("/template", (req, res, next) => {
+    console.log('asdasd')
     const template = req.body.template;
     db.query("UPDATE template SET content=$1", [template])
       .then((resp) => {
