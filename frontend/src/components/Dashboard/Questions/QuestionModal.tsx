@@ -6,6 +6,7 @@ import {
   Select,
   message,
   Space,
+  Row,
   Upload,
   Tabs,
 } from "antd";
@@ -13,10 +14,29 @@ import TextArea from "antd/lib/input/TextArea";
 import Modal from "antd/lib/modal/Modal";
 import React, { useState, useEffect } from "react";
 import Levels from "./DifficultyLevel";
+import { MathComponent } from 'mathjax-react';
 import { UploadOutlined, MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
 import "./QuestionModal.css";
 const { Option } = Select;
+
+interface initialValuesInterface {
+  qid: number | undefined;
+  statement: string | undefined;
+  latex?: any | undefined;
+  img_path?: string | undefined;
+  type: string | undefined;
+  subject: string | undefined;
+  topic: string | undefined;
+  subtopic?: string | undefined;
+  level: string | undefined;
+  archive?: string | undefined;
+  is_reported: boolean | undefined;
+  answers: Array<string>;
+  options: Array<string>;
+  range1?: string;
+  range2?: string;
+}
 
 interface QuestionInterface {
   Question?: {
@@ -60,16 +80,20 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
   const [form] = Form.useForm();
   const levels: Array<Level> | undefined = Levels;
   const [visible, setVisible] = useState(false);
+  const [latex, setLatex] = useState(Question?.latex);
+  const [latexError, setLatexError] = useState<string>("")
   const [answerType, setAnswerType] = useState(Question?.type)
   useEffect(() => {
-    if (Question?.type) {
-      console.log(Question)
+    if (Question) {
       setAnswerType(Question.type)
+      if (Question.latex) {
+        setLatex(Question.latex)
+      }
     }
-    else{
-      setAnswerType("mcq")
+    else {
+      setLatex("")
     }
-  }, [])
+  }, [Question?.qid])
   const props = {
     name: "file",
     action: "",
@@ -87,28 +111,66 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
       }
     },
   };
+  const processQuestionProp = (Question : initialValuesInterface) => {
+      let temp: Array<string> = []
+      let temp1: any = { ...Question };
+      switch (Question.type) {
+      case 'mcq':
+        temp.push((Question.options.indexOf(Question.answers[0]) + 1).toString())
+        temp1.answers = temp;
+        return temp1;
+      case 'anr':
+        temp.push((Question.options.indexOf(Question.answers[0]) + 1).toString())
+        temp1.answers = temp;
+        return temp1;
+      case 'tof':
+        return Question;
+      case 'fib':
+        return Question;
+      case 'num':
+        temp1.range1 = temp1.options[0]
+        temp1.range2 = temp1.options[1]
+        return temp1;
+      case 'mac':
+        temp = []
+        Question.answers.forEach((answer) => {
+          temp.push((Question.options.indexOf(answer) + 1).toString())
+        })
+        temp1 = {...Question}
+        temp1.answers = temp;
+        return temp1;
+      default:
+        return Question;
+    }
+  }
   const handleSelect = (e: any) => {
     setAnswerType(e)
   }
   const onOk = (e: any) => {
     var values = form.getFieldsValue();
-    console.log(values)
-    form.resetFields();
     var proccessed = values;
     if (Question !== undefined) {
       values.qid = Question.qid;
+      proccessed = processAnswers(values)
     }
     else {
       proccessed = processAnswers(values)
     }
-    console.log(proccessed)
-    if (submitEdit) {
-      submitEdit(proccessed)
+    try {
+      if (submitEdit) {
+        submitEdit(proccessed)
 
-    } else if (submitNew) { submitNew(proccessed) }
+      } else if (submitNew) {
+        submitNew(proccessed)
+        form.resetFields()
+      }
+    }
+    catch {
+
+    }
     setVisible(false);
   }
-  
+
   const processAnswers = (values: any) => {
     switch (answerType) {
       case 'mcq':
@@ -127,9 +189,20 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
       case 'num':
         values.options = [values.range1, values.range2];
         break;
+      case 'mac':
+        let temp: any = []
+        values.answers.split(',').forEach((element: any) => {
+          temp.push(values.options[element - 1])
+        });
+        values.answers = temp
+        break;
     }
     return values;
   }
+  const onLatexChange = (e: any) =>
+    [
+      setLatex(e.target.value)
+    ]
   return (
     <>
       <Button
@@ -147,16 +220,30 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
       >
         <br />
         {Question !== undefined && <h1>Question ID: {Question.qid}</h1>}
-        <Form form={form} initialValues={Question} layout="vertical">
+        <Form form={form} initialValues={Question ? processQuestionProp(Question) : undefined} layout="vertical">
           <Tabs>
             <Tabs.TabPane tab="Question Information" key="1">
-              {/* TODO: Implement React-Latex */}
               <Form.Item name="statement" label="Question Statement">
                 <TextArea
                   autoSize={{ minRows: 2, maxRows: 5 }}
                   placeholder="Enter Question Here"
                 />
               </Form.Item>
+              <Row style={{ width: '100%' }}>
+                <Form.Item name="latex" label="Latex for the question" style={{ width: '50%' }}>
+                  <TextArea
+                    autoSize={{ minRows: 2, maxRows: 5 }}
+                    placeholder="Enter Latex Here"
+                    onChange={onLatexChange}
+                    value={latex}
+                    style={{ width: '100%' }}
+                  />
+                </Form.Item>
+                <div style={{ marginLeft: '10%', marginTop: "2%" }}>
+                  <p>{latexError}</p>
+                  <MathComponent tex={latex} onError={(error: string) => setLatexError(error)} />
+                </div>
+              </Row>
               <Space align="baseline" style={{ display: "flex" }}>
                 <Form.Item name="img_path" label="Question Image">
                   <Upload {...props}>
@@ -168,7 +255,20 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
               </Space>
               <Space align="baseline">
                 <Form.Item name="subject" label="Subject">
-                  <Input placeholder="Enter Subject Here" />
+                  <Select placeholder="Select Subject">
+                    <Option value="physics" label="Physics">
+                      Physics
+                    </Option>
+                    <Option value="chemistry" label="Chemistry">
+                      Chemistry
+                    </Option>
+                    <Option value="maths" label="Maths">
+                      Maths
+                    </Option>
+                    <Option value="biology" label="Biology">
+                      Biology
+                    </Option>
+                  </Select>
                 </Form.Item>
                 <Form.Item name="topic" label="Topic">
                   <Input placeholder="Enter Topic Here" />
@@ -177,7 +277,7 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
                   <Input placeholder="Enter Subtopic Here" />
                 </Form.Item>
                 <Form.Item name="level" label="Difficulty Level">
-                  <Select>
+                  <Select placeholder="Select Difficulty Level">
                     {levels.map((level) => (
                       <Select.Option value={level.name}>
                         {" "}
@@ -196,12 +296,13 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
             </Tabs.TabPane>
             <Tabs.TabPane tab="Answer" key="2">
               <Form.Item name='type'>
-                <Select style={{ width: '30%', marginBottom: '2%' }} onSelect={handleSelect} defaultValue="MCQ">
+                <Select style={{ width: '30%', marginBottom: '2%' }} onSelect={handleSelect} disabled={!submitNew} placeholder="Please Select Answer Type">
                   <Option value="mcq">Multiple Choice</Option>
                   <Option value="fib">Fill in the blank</Option>
                   <Option value="num">Numerical Question</Option>
                   <Option value="tof">True or False</Option>
                   <Option value="anr">Assertion and Reason</Option>
+                  <Option value="mac">Multiple Answer Correct</Option>
                 </Select>
               </Form.Item>
 
@@ -219,7 +320,7 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
                 <Form.Item name="answers">
                   <Input placeholder="Enter the correct answer" />
                 </Form.Item>}
-              {(answerType === "mcq" || answerType === "anr") &&
+              {(answerType === "mcq" || answerType === "anr" || answerType === 'mac') &&
                 <>
                   <Form.List name="options">
                     {(fields, { add, remove }) => (

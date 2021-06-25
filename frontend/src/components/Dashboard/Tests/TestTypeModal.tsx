@@ -1,5 +1,5 @@
-import { Button, Modal, Form, Select, Space, Input, TimePicker, Divider } from "antd";
-import React, { useState } from "react";
+import { Button, Modal, Form, Select, Space, Input, TimePicker, Divider, message } from "antd";
+import React, { useState, useEffect } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 
@@ -21,10 +21,12 @@ interface TestTypeInterface {
     }>;
   };
   buttonText: string;
+  getFunction?: Function;
 }
 export const TestTypeModal: React.FC<TestTypeInterface> = ({
   Test,
   buttonText,
+  getFunction
 }) => {
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
@@ -32,7 +34,9 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
   const toSubmit = (e: any) => {
     console.log(e);
   };
-
+  useEffect(() => {
+    console.log(Test)
+  }, [Test])
   const SubmitTest = async (values: TestTypeInterface) => {
     console.log(values);
     try {
@@ -48,9 +52,13 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
           },
         }
       );
-      console.log(response);
+      message.success("Created a test sucessfully!")
+      if (getFunction) {
+        getFunction();
+      }
     } catch (e) {
-      console.log(e);
+      console.log(e)
+      message.error("Something went wrong")
     }
   };
   const onChangeTime = (value: any, timeString: string) => {
@@ -122,7 +130,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
                           name={[field.name, "type"]}
                           label="Question Type"
                         >
-                          <Select>
+                          <Select placeholder='Select Question Type'>
                             <Option value="mcq">MCQ</Option>
                             <Option value="fib">Fill in the blanks</Option>
                             <Option value="anr">Assertion and Reason</Option>
@@ -182,7 +190,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
               </>
             )}
           </Form.List>
-          <Form.Item name='startDate' label="Select time of test">
+          <Form.Item name='startDate' label="Select time of test [HH:mm]">
             <Space direction="horizontal" size={12}>
               <TimePicker onChange={onChangeTime} format={"HH:mm"} />
             </Space>

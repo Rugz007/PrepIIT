@@ -2,6 +2,7 @@ import { Card, Table, Button, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { LiveTestModal } from "./LiveTestModal";
+import AdvTable from "../../Util/AdvTable";
 
 interface TestTypeInterface {
   Test?: {
@@ -82,7 +83,7 @@ export const LiveTests: React.FC = () => {
           </Space>
         }
       >
-        <Table
+        <AdvTable
           columns={columns}
           dataSource={testDetails}
           style={{ width: "100%" }}

@@ -2,6 +2,7 @@ import { Button, Card, message, Table } from 'antd';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
+import AdvTable from '../../Util/AdvTable';
 const { REACT_APP_NODEJS_URL } = process.env;
 
 interface BlogsElementInterface {
@@ -60,7 +61,7 @@ export const BlogsTable: React.FC = () => {
             <h1 style={{ fontSize: '40px' }}>Blogs</h1>
             <Card style={{ textAlign: 'left', borderRadius: '10px' }}>
                 <h1 style={{ fontSize: '30px' }}>View all Blogs</h1>
-                {blogs && <Table columns={columns} dataSource={blogs} style={{ width: "100%" }} />}
+                {blogs && <AdvTable columns={columns} dataSource={blogs} style={{ width: "100%" }} />}
             </Card>
         </div>
     );

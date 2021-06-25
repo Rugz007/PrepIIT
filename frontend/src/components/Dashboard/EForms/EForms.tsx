@@ -1,6 +1,7 @@
 import { Card, Table, Button, Popconfirm } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import AdvTable from "../../Util/AdvTable";
 import { EFormModal } from "./EFormModal";
 const { REACT_APP_NODEJS_URL } = process.env;
 
@@ -105,7 +106,7 @@ export const EForms: React.FC = () => {
       <h1 style={{ fontSize: "40px" }}>Enquiry Forms</h1>
       <Card style={{ textAlign: "left", borderRadius: "10px" }}>
         <h1 style={{ fontSize: "30px" }}>View Latest Enquiry Forms</h1>
-        <Table columns={columns} dataSource={forms} style={{ width: "100%" }} />
+        <AdvTable columns={columns} dataSource={forms} style={{ width: "100%" }} />
       </Card>
     </div>
   );

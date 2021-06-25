@@ -1,8 +1,9 @@
-import { Row, Col, List, Tabs, Button } from 'antd';
+import { Row, Col, List, Tabs, Button, Table } from 'antd';
 import axios from 'axios';
 import React, { useState, useEffect, useContext } from 'react'
 import { TestCard } from '../../Test/TestCard';
 import UserContext from '../../../context/User/UserContext';
+import AdvTable from '../../Util/AdvTable';
 const { REACT_APP_NODEJS_URL } = process.env;
 
 interface Test {
@@ -10,13 +11,28 @@ interface Test {
   testname: string,
   subjectsallowed: string[],
 }
+interface GivenTest 
+{
+  testid:number,
+  testname:string,
+  donetestid:string,
+  dateofsubmission:string,
+  phymarks:number,
+  phymax:number,
+  chemmarks:number,
+  chemmax:number,
+  mathmarks:number,
+  mathmax:number,
+  biomarks:number,
+  biomax:number,
+}
 interface TestCardProps {
   availableStaticTest: Array<Test>,
   availableLiveTest: Array<Test>,
 }
 interface GivenTestCardProps {
-  statictest: Array<Test>,
-  giventest: Array<Test>,
+  statictest: Array<GivenTest>,
+  livetest: Array<GivenTest>,
 
 }
 export const TestsPage: React.FC = () => {
@@ -24,11 +40,12 @@ export const TestsPage: React.FC = () => {
   useEffect(() => {
     getAvailableTests();
     getGivenTests();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userContext.user])
   const columns = [
     {
       title: 'Test Name',
-      dataIndex: 'name',
+      dataIndex: 'donetestid',
       key: 'donetestid',
     },
     {
@@ -58,7 +75,6 @@ export const TestsPage: React.FC = () => {
             userid: userContext.user.userid
           },
         });
-        console.log(res.data);
         setAvailableTests(res.data);
       } catch (e) {
         console.log("Tests not Loaded");
@@ -74,15 +90,15 @@ export const TestsPage: React.FC = () => {
             userid: userContext.user.userid
           },
         });
-        console.log(res.data);
+        console.log(res.data)
         setGivenTests(res.data);
       } catch (e) {
         console.log("Tests not Loaded");
       }
     }
   }
-  const [availableTests, setAvailableTests] = useState<TestCardProps | undefined | null>(null)
-  const [givenTests, setGivenTests] = useState<GivenTestCardProps | undefined | null>(null)
+  const [availableTests, setAvailableTests] = useState<TestCardProps | undefined>(undefined)
+  const [givenTests, setGivenTests] = useState<GivenTestCardProps | undefined>(undefined)
   return (
     <Row >
       <Col span={24}><h1 style={{ fontSize: "40px", textAlign: "left", width: '100%' }}>Tests</h1></Col>
@@ -111,7 +127,7 @@ export const TestsPage: React.FC = () => {
           </Tabs.TabPane>
           <Tabs.TabPane tab="Given Tests" key="2">
             {givenTests?.statictest ? <Row>
-              Got some
+              <AdvTable style={{width:'100%'}} columns={columns} dataSource={givenTests.statictest}/>
             </Row> : <h3>No Tests Available.</h3>}
           </Tabs.TabPane>
         </Tabs>
