@@ -32,6 +32,8 @@ const updateLog = (questions, donetestid, testid, userid, testObject, res) => {
   var phyMacMarks = 0;
   var chemMacMarks = 0;
   var mathMacMarks = 0;
+  var maxMarks = testObject.maxmarks;
+  var totalMaxMarks = testObject.totalmaxmarks;
   const query = `INSERT INTO testquestions VALUES ('${donetestid}',$1,$2,'wrong',$3,$4)`;
   var questionQueries = [];
   questions.forEach((question) => {
@@ -338,7 +340,7 @@ const updateLog = (questions, donetestid, testid, userid, testObject, res) => {
             date = date.toString();
             console.log(date);
             db.query(
-              "INSERT INTO usertest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)",
+              "INSERT INTO usertest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22)",
               [
                 donetestid,
                 testid,
@@ -360,6 +362,8 @@ const updateLog = (questions, donetestid, testid, userid, testObject, res) => {
                 mathMarks,
                 totalMarks,
                 date,
+                maxMarks,
+                totalMaxMarks,
               ]
             )
               .then((resp) => {
