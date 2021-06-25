@@ -157,6 +157,80 @@ router
   .get("/statictest", (req, res, next) => {
     db.query("SELECT * FROM testtype")
       .then((resp) => {
+        for (var i = 0; i < resp.rows.length; i++) {
+          resp.rows[i].questions = [];
+          if (resp.rows[i].mcqdata) {
+            const obj = {
+              type: "mcq",
+              correct: resp.rows[i].mcqdata[1].toString(),
+              wrong: resp.rows[i].mcqdata[2].toString(),
+              nullanswer: resp.rows[i].mcqdata[3].toString(),
+              number: resp.rows[i].mcqdata[0].toString(),
+            };
+            resp.rows[i].questions.push(obj);
+          } else if (resp.rows[i].assertiondata) {
+            const obj = {
+              type: "mcq",
+              correct: resp.rows[i].assertiondata[1].toString(),
+              wrong: resp.rows[i].assertiondata[2].toString(),
+              nullanswer: resp.rows[i].assertiondata[3].toString(),
+              number: resp.rows[i].assertiondata[0].toString(),
+            };
+            resp.rows[i].questions.push(obj);
+          } else if (resp.rows[i].fibdata) {
+            const obj = {
+              type: "mcq",
+              correct: resp.rows[i].fibdata[1].toString(),
+              wrong: resp.rows[i].fibdata[2].toString(),
+              nullanswer: resp.rows[i].fibdata[3].toString(),
+              number: resp.rows[i].fibdata[0].toString(),
+            };
+            resp.rows[i].questions.push(obj);
+          } else if (resp.rows[i].truefalse) {
+            const obj = {
+              type: "mcq",
+              correct: resp.rows[i].truefalse[1].toString(),
+              wrong: resp.rows[i].truefalse[2].toString(),
+              nullanswer: resp.rows[i].truefalse[3].toString(),
+              number: resp.rows[i].truefalse[0].toString(),
+            };
+            resp.rows[i].questions.push(obj);
+          } else if (resp.rows[i].numerical) {
+            const obj = {
+              type: "mcq",
+              correct: resp.rows[i].numerical[1].toString(),
+              wrong: resp.rows[i].numerical[2].toString(),
+              nullanswer: resp.rows[i].numerical[3].toString(),
+              number: resp.rows[i].numerical[0].toString(),
+            };
+            resp.rows[i].questions.push(obj);
+          } else if (resp.rows[i].matchcolumn) {
+            const obj = {
+              type: "mcq",
+              correct: resp.rows[i].matchcolumn[1].toString(),
+              wrong: resp.rows[i].matchcolumn[2].toString(),
+              nullanswer: resp.rows[i].matchcolumn[3].toString(),
+              number: resp.rows[i].matchcolumn[0].toString(),
+            };
+            resp.rows[i].questions.push(obj);
+          } else if (resp.rows[i].mac) {
+            const obj = {
+              type: "mcq",
+              correct: resp.rows[i].mac[1].toString(),
+              wrong: resp.rows[i].mac[2].toString(),
+              nullanswer: resp.rows[i].mac[3].toString(),
+              number: resp.rows[i].mac[0].toString(),
+            };
+            resp.rows[i].questions.push(obj);
+          }
+        }
+        delete resp.rows.mcqdata;
+        delete resp.rows.assertiondata;
+        delete resp.rows.fibdata;
+        delete resp.rows.truefalse;
+        delete resp.rows.numerical;
+        delete resp.rows.matchcolumn;
+        delete resp.rows.mac;
         res.json(resp.rows);
       })
       .catch((err) => {
@@ -462,7 +536,7 @@ router
       });
   })
   .post("/template", (req, res, next) => {
-    console.log('asdasd')
+    console.log("asdasd");
     const template = req.body.template;
     db.query("UPDATE template SET content=$1", [template])
       .then((resp) => {
