@@ -168,7 +168,8 @@ router
               number: resp.rows[i].mcqdata[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } if (resp.rows[i].assertiondata) {
+          }
+          if (resp.rows[i].assertiondata) {
             const obj = {
               type: "anr",
               correct: resp.rows[i].assertiondata[1].toString(),
@@ -177,7 +178,8 @@ router
               number: resp.rows[i].assertiondata[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } if (resp.rows[i].fibdata) {
+          }
+          if (resp.rows[i].fibdata) {
             const obj = {
               type: "fib",
               correct: resp.rows[i].fibdata[1].toString(),
@@ -186,7 +188,8 @@ router
               number: resp.rows[i].fibdata[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } if (resp.rows[i].truefalse) {
+          }
+          if (resp.rows[i].truefalse) {
             const obj = {
               type: "tof",
               correct: resp.rows[i].truefalse[1].toString(),
@@ -195,7 +198,8 @@ router
               number: resp.rows[i].truefalse[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } if (resp.rows[i].numerical) {
+          }
+          if (resp.rows[i].numerical) {
             const obj = {
               type: "num",
               correct: resp.rows[i].numerical[1].toString(),
@@ -204,7 +208,8 @@ router
               number: resp.rows[i].numerical[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } if (resp.rows[i].matchcolumn) {
+          }
+          if (resp.rows[i].matchcolumn) {
             const obj = {
               type: "mtf",
               correct: resp.rows[i].matchcolumn[1].toString(),
@@ -213,7 +218,8 @@ router
               number: resp.rows[i].matchcolumn[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } if (resp.rows[i].mac) {
+          }
+          if (resp.rows[i].mac) {
             const obj = {
               type: "mac",
               correct: resp.rows[i].mac[1].toString(),
@@ -223,14 +229,14 @@ router
             };
             resp.rows[i].questions.push(obj);
           }
+          delete resp.rows[i].mcqdata;
+          delete resp.rows[i].assertiondata;
+          delete resp.rows[i].fibdata;
+          delete resp.rows[i].truefalse;
+          delete resp.rows[i].numerical;
+          delete resp.rows[i].matchcolumn;
+          delete resp.rows[i].mac;
         }
-        delete resp.rows.mcqdata;
-        delete resp.rows.assertiondata;
-        delete resp.rows.fibdata;
-        delete resp.rows.truefalse;
-        delete resp.rows.numerical;
-        delete resp.rows.matchcolumn;
-        delete resp.rows.mac;
         res.json(resp.rows);
       })
       .catch((err) => {
