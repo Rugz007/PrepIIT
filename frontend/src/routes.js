@@ -62,7 +62,7 @@ class Routes extends React.Component {
                 <ProtectedRoute path='/faq' component={FAQ} />
                 <Route path='/test/:id' exact component={Test}/>
                 <Route path='/testintruction' component={TestIntruction}/>
-                <ProtectedRoute path='/testanalysis' component={TestAnalysis} />
+                <ProtectedRoute path='/testanalysis/:testtype/:donetestid' component={TestAnalysis} />
                 <Route path='/submitted' component={TestSubmitted} />
                 <ProtectedRoute path='/blogs' exact component={BlogList} />
                 <ProtectedRoute path='/blogs/:id' component={BlogPage} />

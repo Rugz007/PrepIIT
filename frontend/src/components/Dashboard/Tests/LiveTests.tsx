@@ -30,16 +30,6 @@ export const LiveTests: React.FC = () => {
       key: "livename",
     },
     {
-      title: "Class",
-      dataIndex: "standard",
-      key: "standard",
-    },
-    {
-      title: "Type",
-      dataIndex: "type",
-      key: "type",
-    },
-    {
       title: "Action",
       dataIndex: "",
       key: "action",
@@ -49,6 +39,7 @@ export const LiveTests: React.FC = () => {
           <Button
             type="primary"
             danger
+            style={{marginLeft:'1%'}}
           >
             Delete
           </Button>

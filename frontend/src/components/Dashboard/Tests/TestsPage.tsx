@@ -1,30 +1,29 @@
-import { Row, Col, List, Tabs, Button, Table } from 'antd';
+import { Row, Col, List, Tabs, Button } from 'antd';
 import axios from 'axios';
 import React, { useState, useEffect, useContext } from 'react'
 import { TestCard } from '../../Test/TestCard';
 import UserContext from '../../../context/User/UserContext';
 import AdvTable from '../../Util/AdvTable';
+import { Link } from 'react-router-dom';
 const { REACT_APP_NODEJS_URL } = process.env;
-
 interface Test {
   testid: number,
   testname: string,
   subjectsallowed: string[],
 }
-interface GivenTest 
-{
-  testid:number,
-  testname:string,
-  donetestid:string,
-  dateofsubmission:string,
-  phymarks:number,
-  phymax:number,
-  chemmarks:number,
-  chemmax:number,
-  mathmarks:number,
-  mathmax:number,
-  biomarks:number,
-  biomax:number,
+interface GivenTest {
+  testid: number,
+  testname: string,
+  donetestid: string,
+  dateofsubmission: string,
+  phymarks: number,
+  phymax: number,
+  chemmarks: number,
+  chemmax: number,
+  mathmarks: number,
+  mathmax: number,
+  biomarks: number,
+  biomax: number,
 }
 interface TestCardProps {
   availableStaticTest: Array<Test>,
@@ -37,32 +36,57 @@ interface GivenTestCardProps {
 }
 export const TestsPage: React.FC = () => {
   const userContext = useContext(UserContext)
+  const [testType, setTestType] = useState('statictest')
   useEffect(() => {
     getAvailableTests();
     getGivenTests();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userContext.user])
   const columns = [
     {
       title: 'Test Name',
-      dataIndex: 'donetestid',
+      dataIndex: 'testname',
       key: 'donetestid',
     },
     {
+      title: 'Attempted On',
+      dataIndex: 'dateofsubmission',
+      key: 'dateofsubmission',
+    },
+    {
       title: 'Test Subjects',
-      dataIndex: 'subjects',
+      dataIndex: 'subjectsallowed',
       key: 'subjects',
+      render: (item: any) =>
+      (
+        item.map((sub_item: any) =>
+        (<>
+          {sub_item[0].toUpperCase().concat(sub_item.substring(1))} <span> </span>
+        </>
+        ))
+      )
     },
     {
       title: 'Marks',
       dataIndex: 'marks',
       key: 'marks',
+      render: (item: any, record: any) =>
+      (
+        <>
+          {record.totalmarks} / {record.totalmaxmarks}
+        </>
+      )
     },
     {
       title: 'Actions',
       dataIndex: 'actions',
       key: 'actions',
-      render: () => (<Button type="primary">View</Button>),
+      render: (item: any, record: any) => (<Link to={{
+        pathname: `/testanalysis/${testType}/${record.donetestid}`,
+        state: {
+          test:record,
+        },
+      }} ><Button type="primary">View</Button></Link>),
 
     },
   ];
@@ -126,9 +150,19 @@ export const TestsPage: React.FC = () => {
             </Row> : <h3>No Tests Available.</h3>}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Given Tests" key="2">
-            {givenTests?.statictest ? <Row>
-              <AdvTable style={{width:'100%'}} columns={columns} dataSource={givenTests.statictest}/>
-            </Row> : <h3>No Tests Available.</h3>}
+            <Tabs onChange={(e: any) => setTestType(e)} activeKey={testType}>
+              <Tabs.TabPane tab='Static Tests' key='statictest'>
+                {givenTests?.statictest ? <Row>
+                  <AdvTable style={{ width: '100%' }} columns={columns} dataSource={givenTests.statictest} />
+                </Row> : <h3>No Tests Available.</h3>}
+              </Tabs.TabPane>
+              <Tabs.TabPane tab='Live Tests' key='livetest'>
+                {givenTests?.statictest ? <Row>
+                  <AdvTable style={{ width: '100%' }} columns={columns} dataSource={givenTests.livetest} />
+                </Row> : <h3>No Tests Available.</h3>}
+              </Tabs.TabPane>
+            </Tabs>
+
           </Tabs.TabPane>
         </Tabs>
       </Col>

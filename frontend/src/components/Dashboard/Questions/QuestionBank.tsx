@@ -115,6 +115,25 @@ export const QuestionBank: React.FC = () => {
       title: "Subject",
       dataIndex: "subject",
       key: "subject",
+      filters: [
+        {
+          text: 'Chemistry',
+          value: 'chemistry',
+        },
+        {
+          text: 'Physics',
+          value: 'physics',
+        },
+        {
+          text: 'Biology',
+          value: 'biology',
+        },
+        {
+          text: 'Mathematics',
+          value: 'maths',
+        },
+      ],
+      onFilter: (value:any, record:any) => record.subject.indexOf(value) === 0,
       render: (text:string) => 
       {
         switch(text)
@@ -141,6 +160,33 @@ export const QuestionBank: React.FC = () => {
       title: "Type",
       dataIndex: "type",
       key: "type",
+      filters: [
+        {
+          text: 'Multiple Choice Question',
+          value: 'mcq',
+        },
+        {
+          text: 'Assertion and Reason',
+          value: 'anr',
+        },
+        {
+          text: 'True or False',
+          value: 'tof',
+        },
+        {
+          text: 'Fill in the Blanks',
+          value: 'fib',
+        },
+        {
+          text: 'Numerical Type Question',
+          value: 'num',
+        },
+        {
+          text: 'Multiple Answer Correct',
+          value: 'mac',
+        },
+      ],
+      onFilter: (value:any, record:any) => record.type.indexOf(value) === 0,
       render:(text:string) =>
       {
         switch(text)

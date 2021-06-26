@@ -22,21 +22,12 @@ export const TestTypes: React.FC = () => {
   const [testDetails, setTestDetails] = useState<
     TestTypeInterface[] | undefined
   >([]);
+  //TODO : Write delete code after Rajat writes Request
   const columns = [
     {
       title: "Name",
       dataIndex: "testname",
       key: "testname",
-    },
-    {
-      title: "Class",
-      dataIndex: "standard",
-      key: "standard",
-    },
-    {
-      title: "Type",
-      dataIndex: "type",
-      key: "type",
     },
     {
       title: "Action",
@@ -48,6 +39,7 @@ export const TestTypes: React.FC = () => {
           <Button
             type="primary"
             danger
+            style={{marginLeft:'1%'}}
           >
             Delete
           </Button>

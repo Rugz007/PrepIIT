@@ -168,54 +168,54 @@ router
               number: resp.rows[i].mcqdata[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } else if (resp.rows[i].assertiondata) {
+          } if (resp.rows[i].assertiondata) {
             const obj = {
-              type: "mcq",
+              type: "anr",
               correct: resp.rows[i].assertiondata[1].toString(),
               wrong: resp.rows[i].assertiondata[2].toString(),
               nullanswer: resp.rows[i].assertiondata[3].toString(),
               number: resp.rows[i].assertiondata[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } else if (resp.rows[i].fibdata) {
+          } if (resp.rows[i].fibdata) {
             const obj = {
-              type: "mcq",
+              type: "fib",
               correct: resp.rows[i].fibdata[1].toString(),
               wrong: resp.rows[i].fibdata[2].toString(),
               nullanswer: resp.rows[i].fibdata[3].toString(),
               number: resp.rows[i].fibdata[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } else if (resp.rows[i].truefalse) {
+          } if (resp.rows[i].truefalse) {
             const obj = {
-              type: "mcq",
+              type: "tof",
               correct: resp.rows[i].truefalse[1].toString(),
               wrong: resp.rows[i].truefalse[2].toString(),
               nullanswer: resp.rows[i].truefalse[3].toString(),
               number: resp.rows[i].truefalse[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } else if (resp.rows[i].numerical) {
+          } if (resp.rows[i].numerical) {
             const obj = {
-              type: "mcq",
+              type: "num",
               correct: resp.rows[i].numerical[1].toString(),
               wrong: resp.rows[i].numerical[2].toString(),
               nullanswer: resp.rows[i].numerical[3].toString(),
               number: resp.rows[i].numerical[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } else if (resp.rows[i].matchcolumn) {
+          } if (resp.rows[i].matchcolumn) {
             const obj = {
-              type: "mcq",
+              type: "mtf",
               correct: resp.rows[i].matchcolumn[1].toString(),
               wrong: resp.rows[i].matchcolumn[2].toString(),
               nullanswer: resp.rows[i].matchcolumn[3].toString(),
               number: resp.rows[i].matchcolumn[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } else if (resp.rows[i].mac) {
+          } if (resp.rows[i].mac) {
             const obj = {
-              type: "mcq",
+              type: "mac",
               correct: resp.rows[i].mac[1].toString(),
               wrong: resp.rows[i].mac[2].toString(),
               nullanswer: resp.rows[i].mac[3].toString(),

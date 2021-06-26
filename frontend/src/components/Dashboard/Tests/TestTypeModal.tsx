@@ -77,6 +77,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
           form.resetFields();
           if (Test !== undefined) {
             values.qid = Test.testTypeID;
+            //TODO : Write editing code after rajat writes query
           } else {
             SubmitTest(values);
           }

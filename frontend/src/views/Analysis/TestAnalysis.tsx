@@ -1,12 +1,51 @@
 import { Col, Row, Statistic, Tabs, Card, Progress, Divider } from 'antd';
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect } from 'react'
 import { SubjectAnalysis } from '../../components/Analysis/SubjectAnalysis';
+import { useLocation } from 'react-router-dom';
+const { REACT_APP_NODEJS_URL } = process.env;
 
 interface TestAnalysisProps {
 
 }
 
 export const TestAnalysis: React.FC<TestAnalysisProps> = () => {
+  const location = useLocation();
+  const { test }: any = location.state
+  useEffect(() => {
+    let donetestid = location.pathname.split("/")[3]
+    let isStatic = (location.pathname.split("/")[2] === 'statictest')
+    axios.post(`http://${REACT_APP_NODEJS_URL}/secure/specifictestdetails`, {
+      donetestid: donetestid,
+      statictest: isStatic,
+    }, {
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    }).then((response) => {
+      console.log(response.data)
+
+    }).catch((error) => console.log(error))
+
+  }, [])
+  const getTotalPercentage = (value: string) => {
+    if (value === 'correct') {
+      return Math.round((test.phycorrect + test.mathcorrect + test.chemcorrect) * 1000 / (test.phycorrect + test.mathcorrect + test.chemcorrect + test.phyna + test.mathna + test.chemna + test.chemwrong + test.phywrong + test.mathwrong)) / 10
+    }
+    else if (value==='wrong') {
+      return Math.round((test.phywrong + test.mathwrong + test.chemwrong) * 1000 / (test.phycorrect + test.mathcorrect + test.chemcorrect + test.phyna + test.mathna + test.chemna + test.chemwrong + test.phywrong + test.mathwrong))/10
+    }
+    else if (value==='na') {
+      return Math.round((test.phyna + test.mathna + test.chemna) * 1000 / (test.phycorrect + test.mathcorrect + test.chemcorrect + test.phyna + test.mathna + test.chemna + test.chemwrong + test.phywrong + test.mathwrong))/10
+    }
+  }
+  const getPercentage = (subject : string, value : string) =>
+  {
+    if(subject === 'physics')
+    {
+
+    }
+  }
   return (
     <Row style={{ minHeight: '96vh', marginTop: '3%', marginBottom: '5rem' }}>
       <Col span={4} />
@@ -22,13 +61,13 @@ export const TestAnalysis: React.FC<TestAnalysisProps> = () => {
                   <Card style={{ width: '100%' }}>
                     <Row>
                       <Col span={6}>
-                      <img alt='smile' src="https://img.icons8.com/cotton/100/000000/grinning-face-with-smiling-eyes-icon--v2.png"/>
+                        <img alt='smile' src="https://img.icons8.com/cotton/100/000000/grinning-face-with-smiling-eyes-icon--v2.png" />
                       </Col>
                       <Col span={6}>
-                        <Statistic title="Score" value={83} valueStyle={{ color: '#01922b', fontSize: '3rem' }} suffix="/ 100" />
+                        <Statistic title="Score" value={test.totalmarks} valueStyle={{ color: '#01922b', fontSize: '3rem' }} suffix={`/ ${test.totalmaxmarks}`} />
                       </Col>
                       <Col span={6}>
-                        <Statistic title="Percentage" value={83} valueStyle={{ color: '#01922b', fontSize: '3rem' }} suffix="%" />
+                        <Statistic title="Percentage" value={(test.totalmarks / test.totalmaxmarks) * 100} valueStyle={{ color: '#01922b', fontSize: '3rem' }} suffix="%" />
                       </Col>
                       <Col span={6}>
                         <Statistic title="Time Taken" value={"2hrs 45 mins"} valueStyle={{ fontSize: '2.8rem' }} />
@@ -49,10 +88,15 @@ export const TestAnalysis: React.FC<TestAnalysisProps> = () => {
                     <Card>
                       <Row style={{ textAlign: 'center' }}>
                         <Col span={8}>
-                          <Progress type='dashboard' percent={30} strokeColor="#01922b" />
+                          <Progress type='dashboard' percent={getTotalPercentage("correct")} strokeColor="#01922b" />
                           <h1>Correct</h1>
                           <Divider />
-                          <h2>Each correct answer gives you a +4.</h2>
+                          {test.subjectsallowed.map((subject : string) => (
+                            <div style={{ margin: '0 8% 5% 8%' }}>
+                            <h4>Correct Answer % for {subject[0].toUpperCase().concat(subject.substring(1))} </h4>
+                            <Progress percent={42} strokeColor="#01922b" />
+                          </div>
+                          ))}
                           <div style={{ margin: '0 8% 5% 8%' }}>
                             <h4>Correct Answer % for Physics </h4>
                             <Progress percent={42} strokeColor="#01922b" />
@@ -67,10 +111,9 @@ export const TestAnalysis: React.FC<TestAnalysisProps> = () => {
                           </div>
                         </Col>
                         <Col span={8}>
-                          <Progress type='dashboard' percent={48} strokeColor="#ed5f5f" />
+                          <Progress type='dashboard'  percent={getTotalPercentage("wrong")} strokeColor="#ed5f5f" />
                           <h1>Wrong</h1>
                           <Divider />
-                          <h2>Each wrong answer gives you a -1.</h2>
                           <div style={{ margin: '0 8% 5% 8%' }}>
                             <h4>Wrong Answer % for Physics </h4>
                             <Progress percent={32} strokeColor="#ed5f5f" />
@@ -85,10 +128,9 @@ export const TestAnalysis: React.FC<TestAnalysisProps> = () => {
                           </div>
                         </Col>
                         <Col span={8}>
-                          <Progress type='dashboard' percent={12} strokeColor="#ddcb34" />
+                          <Progress type='dashboard' percent={getTotalPercentage("na")} strokeColor="#ddcb34" />
                           <h1>Not Attempted</h1>
                           <Divider />
-                          <h2>Each unattempted answer gives you a 0.</h2>
                           <div style={{ margin: '0 8% 5% 8%' }}>
                             <h4>Not Attempted % for Physics </h4>
                             <Progress percent={12} strokeColor="#ddcb34" />

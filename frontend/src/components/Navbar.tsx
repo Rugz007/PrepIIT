@@ -223,6 +223,8 @@ export const Navbar: React.FC = () => {
     switch (location.pathname.split("/")[1]) {
       case 'dashboard':
         return <DashboardHeader />
+      case 'testanalysis':
+        return <DashboardHeader />
       case 'test':
         return <TestHeader />
       case 'submitted':
