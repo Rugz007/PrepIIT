@@ -1,5 +1,6 @@
-import { Radio, Row, Col, RadioChangeEvent, Input } from "antd";
+import { Row, Input } from "antd";
 import React from "react";
+import { MathComponent } from 'mathjax-react';
 
 interface QuestionInterface {
     question:
@@ -22,18 +23,6 @@ export const InputComponent: React.FC<QuestionInterface> = ({
     onSelect,
     answers
 }) => {
-    var Latex = require("react-latex");
-    const radioStyle = {
-        borderRadius: "0px",
-        width: "100%",
-        fontSize: "20px",
-        verticalAlign: "text-bottom",
-    };
-    const radioContainerStyle = {
-        marginTop: "15px",
-        fontSize: "20px",
-    };
-    var temp = `Solve the following equation:  $$\\big (3\\times 4) \\div (5-3)$$`;
     return (
         <div style={{ padding: "1%" }}>
             <Row style={{ fontSize: "30px" }}>
@@ -44,9 +33,7 @@ export const InputComponent: React.FC<QuestionInterface> = ({
 
                     </h3>
                 )}
-                {/* <Latex displayMode={true}>
-                    {temp}
-                </Latex> */}
+                <MathComponent tex={question?.latex} />
             </Row>
             <Row>
                 {question && answers && answers[question.qid] !== undefined &&

@@ -1,6 +1,7 @@
 import { Card, Table } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import AdvTable from "../../Util/AdvTable";
 import { QuestionModal } from "./QuestionModal";
 const { REACT_APP_NODEJS_URL } = process.env;
 
@@ -110,7 +111,7 @@ export const ReportedQuestions: React.FC = () => {
       <h1 style={{ fontSize: "40px" }}>Reported Questions</h1>
       <Card style={{ textAlign: "left", borderRadius: "10px" }}>
         <h1 style={{ fontSize: "30px" }}>View Reported Questions</h1>
-        <Table
+        <AdvTable
           columns={columns}
           dataSource={reported}
           style={{ width: "100%" }}

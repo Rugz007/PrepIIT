@@ -1,6 +1,7 @@
-import { Card, Table, Button, Popconfirm } from "antd";
+import { Card, Button, Popconfirm, message } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import AdvTable from "../../Util/AdvTable";
 import { QuestionModal } from "./QuestionModal";
 const { REACT_APP_NODEJS_URL } = process.env;
 
@@ -15,6 +16,7 @@ interface QuestionInterface {
   level: string;
   archive?: string;
   is_reported: boolean;
+  latex?:string;
   answers: Array<string>;
   options: Array<string>;
   range1?:string;
@@ -44,7 +46,8 @@ export const QuestionBank: React.FC = () => {
           archive: Question.archive,
           is_reported: Question.is_reported,
           answers:Question.answers,
-          options:Question.options
+          options:Question.options,
+          latex:Question.latex,
         },
         {
           headers: {
@@ -53,8 +56,10 @@ export const QuestionBank: React.FC = () => {
         }
       );
       console.log(response);
+      message.success('Question Edited Successfully!')
     } catch (e) {
       console.log("Couldn't Update");
+      message.error('Error while uploading question!')
     }
   };
   const fetchBankDetails = async () => {
@@ -64,10 +69,9 @@ export const QuestionBank: React.FC = () => {
           authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
-      console.log(res.data);
       setQuestions(res.data);
     } catch (e) {
-      console.log("Questions not Loaded");
+      message.error("Error loading questions!");
     }
   };
   const deleteQuestion = async (
@@ -111,6 +115,41 @@ export const QuestionBank: React.FC = () => {
       title: "Subject",
       dataIndex: "subject",
       key: "subject",
+      filters: [
+        {
+          text: 'Chemistry',
+          value: 'chemistry',
+        },
+        {
+          text: 'Physics',
+          value: 'physics',
+        },
+        {
+          text: 'Biology',
+          value: 'biology',
+        },
+        {
+          text: 'Mathematics',
+          value: 'maths',
+        },
+      ],
+      onFilter: (value:any, record:any) => record.subject.indexOf(value) === 0,
+      render: (text:string) => 
+      {
+        switch(text)
+        {
+          case 'chemistry':
+            return 'Chemistry';
+          case 'physics':
+            return 'Physics';
+          case 'biology':
+            return 'Biology';
+          case 'maths':
+            return 'Mathematics';
+          default:
+            return text;
+        }
+      }
     },
     {
       title: "Topic",
@@ -121,6 +160,53 @@ export const QuestionBank: React.FC = () => {
       title: "Type",
       dataIndex: "type",
       key: "type",
+      filters: [
+        {
+          text: 'Multiple Choice Question',
+          value: 'mcq',
+        },
+        {
+          text: 'Assertion and Reason',
+          value: 'anr',
+        },
+        {
+          text: 'True or False',
+          value: 'tof',
+        },
+        {
+          text: 'Fill in the Blanks',
+          value: 'fib',
+        },
+        {
+          text: 'Numerical Type Question',
+          value: 'num',
+        },
+        {
+          text: 'Multiple Answer Correct',
+          value: 'mac',
+        },
+      ],
+      onFilter: (value:any, record:any) => record.type.indexOf(value) === 0,
+      render:(text:string) =>
+      {
+        switch(text)
+        {
+          case 'mcq':
+            return 'Multiple Choice Question';
+          case 'anr':
+            return 'Assertion and Reason';
+          case 'tof':
+            return 'True or False';
+          case 'fib':
+            return 'Fill in the Blanks';
+          case 'num':
+            return 'Numerical Type Question';
+          case 'mac':
+            return 'Multiple Answer Correct';
+          default:
+            return text;
+        }
+      }
     },
     {
       title: "Action",
@@ -153,7 +239,7 @@ export const QuestionBank: React.FC = () => {
       <h1 style={{ fontSize: "40px" }}>Question Bank</h1>
       <Card style={{ textAlign: "left", borderRadius: "10px" }}>
         <h1 style={{ fontSize: "30px" }}>View Latest Added Questions</h1>
-        <Table
+        <AdvTable
           columns={columns}
           dataSource={questions}
           style={{ width: "100%" }}

@@ -2,6 +2,7 @@ import { Card, Table, Button, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { LiveTestModal } from "./LiveTestModal";
+import AdvTable from "../../Util/AdvTable";
 
 interface TestTypeInterface {
   Test?: {
@@ -29,16 +30,6 @@ export const LiveTests: React.FC = () => {
       key: "livename",
     },
     {
-      title: "Class",
-      dataIndex: "standard",
-      key: "standard",
-    },
-    {
-      title: "Type",
-      dataIndex: "type",
-      key: "type",
-    },
-    {
       title: "Action",
       dataIndex: "",
       key: "action",
@@ -48,6 +39,7 @@ export const LiveTests: React.FC = () => {
           <Button
             type="primary"
             danger
+            style={{marginLeft:'1%'}}
           >
             Delete
           </Button>
@@ -82,7 +74,7 @@ export const LiveTests: React.FC = () => {
           </Space>
         }
       >
-        <Table
+        <AdvTable
           columns={columns}
           dataSource={testDetails}
           style={{ width: "100%" }}

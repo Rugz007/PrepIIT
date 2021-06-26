@@ -219,7 +219,7 @@ router
       });
   })
   .get("/giventests", (req, res, next) => {
-    db.query("SELECT * FROM usertest WHERE userid=$1", [req.headers.userid])
+    db.query("SELECT * from usertest inner join testtype on testtype.testid=usertest.testid and userid=$1", [req.headers.userid])
       .then((resp) => {
         db.query("SELECT * FROM liveusertest WHERE userid=$1", [
           req.body.userid,

@@ -6,6 +6,8 @@ import 'react-calendar-heatmap/dist/styles.css';
 import './Profile.css'
 import ReactTooltip from 'react-tooltip';
 import axios from 'axios';
+import { MathComponent } from 'mathjax-react';
+
 const { REACT_APP_NODEJS_URL } = process.env;
 
 interface ProfileProps {

@@ -1,8 +1,8 @@
-import { Card, Table, Button, Space, message } from "antd";
+import { Card, Button, Space} from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { TestTypeModal } from "./TestTypeModal";
-
+import AdvTable from '../../Util/AdvTable'
 interface TestTypeInterface {
   Test?: {
       testTypeID: number,
@@ -22,21 +22,12 @@ export const TestTypes: React.FC = () => {
   const [testDetails, setTestDetails] = useState<
     TestTypeInterface[] | undefined
   >([]);
+  //TODO : Write delete code after Rajat writes Request
   const columns = [
     {
       title: "Name",
       dataIndex: "testname",
       key: "testname",
-    },
-    {
-      title: "Class",
-      dataIndex: "standard",
-      key: "standard",
-    },
-    {
-      title: "Type",
-      dataIndex: "type",
-      key: "type",
     },
     {
       title: "Action",
@@ -48,6 +39,7 @@ export const TestTypes: React.FC = () => {
           <Button
             type="primary"
             danger
+            style={{marginLeft:'1%'}}
           >
             Delete
           </Button>
@@ -78,11 +70,11 @@ export const TestTypes: React.FC = () => {
         title={<h1 style={{ fontSize: "30px" }}>Test Types</h1>}
         extra={
           <Space>
-            <TestTypeModal buttonText="Add Test Type"/>
+            <TestTypeModal getFunction={fetchTestDetails} buttonText="Add Test Type"/>
           </Space>
         }
       >
-        <Table
+        <AdvTable
           columns={columns}
           dataSource={testDetails}
           style={{ width: "100%" }}

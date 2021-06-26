@@ -7,7 +7,7 @@ export const Footer: React.FC = () => {
     const location = useLocation();
     return (
         <>
-            {(location.pathname.split("/")[1] === 'test' || location.pathname.split("/")[1] === 'login' || location.pathname.split("/")[1] === 'register' || location.pathname.split("/")[1] === 'dashboard' || location.pathname.split("/")[1] === 'submitted') ? <></> : <Row style={{ backgroundColor: '#FFFFFF', color: 'black', paddingTop: '1%', textAlign: 'left' }}>
+            {(location.pathname.split("/")[1] === 'test' || location.pathname.split("/")[1] === 'login' || location.pathname.split("/")[1] === 'testanalysis' || location.pathname.split("/")[1] === 'register' || location.pathname.split("/")[1] === 'dashboard' || location.pathname.split("/")[1] === 'submitted') ? <></> : <Row style={{ backgroundColor: '#FFFFFF', color: 'black', paddingTop: '1%', textAlign: 'left' }}>
                 <Col lg={3} />
                 <Col lg={6} md={24}  sm={24}style={{ padding: '0 3%' }}>
                     <h1 style={{ color: 'black', marginBottom: '0' }}>Details</h1>

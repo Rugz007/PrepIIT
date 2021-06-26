@@ -75,8 +75,8 @@ export const Dashboard: React.FC = () => {
                     icon={<QuestionCircleOutlined />}
                     title="Test Settings"
                   >
-                    <Menu.Item key="13">Create Static Test</Menu.Item>
-                    <Menu.Item key="14">Create Live Test</Menu.Item>
+                    <Menu.Item key="13">Static Tests</Menu.Item>
+                    <Menu.Item key="14">Live Tests</Menu.Item>
                   </SubMenu>
                   <SubMenu
                     key="blogs"

@@ -2,6 +2,7 @@ import { Card, Table, Space, message } from "antd";
 import React, { useState } from "react";
 import { QuestionModal } from "./QuestionModal";
 import axios from "axios";
+import AdvTable from "../../Util/AdvTable";
 const { REACT_APP_NODEJS_URL } = process.env;
 interface QuestionInterface {
   qid: number;
@@ -13,6 +14,7 @@ interface QuestionInterface {
   subtopic?: string;
   level: string;
   archive?: string;
+  latex?:string;
   is_reported: boolean | undefined;
   answers: Array<string>;
   options: Array<string>;
@@ -44,6 +46,7 @@ export const AddQuestion: React.FC = () => {
           is_reported: values.is_reported,
           answers:values.answers,
           options:values.options,
+          latex:values.latex,
         },
         {
           headers: {
@@ -51,11 +54,11 @@ export const AddQuestion: React.FC = () => {
           },
         }
       );
-      console.log(response);
+      message.success("Uploaded Questions");
     } catch (e) {
       console.log("Couldn't Update");
+      message.error("Something went wrong!")
     }
-    message.success("Uploaded Questions");
   };
   const columns = [
     {
@@ -110,7 +113,7 @@ export const AddQuestion: React.FC = () => {
           </Space>
         }
       >
-        <Table
+        <AdvTable
           columns={columns}
           dataSource={questions}
           style={{ width: "100%" }}
