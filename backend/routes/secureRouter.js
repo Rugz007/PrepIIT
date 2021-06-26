@@ -225,6 +225,48 @@ router
           req.body.userid,
         ])
           .then((respo) => {
+            for (var i = 0; i < respo.rows.length; i++) {
+              respo.rows[i].physics = {
+                marks: respo.rows[i].phymarks,
+                correct: respo.rows[i].phycorrect,
+                wrong: respo.rows[i].phywrong,
+                notattempted: respo.rows[i].phyna,
+              };
+              respo.rows[i].chemistry = {
+                marks: respo.rows[i].chemmarks,
+                correct: respo.rows[i].chemcorrect,
+                wrong: respo.rows[i].chemwrong,
+                notattempted: respo.rows[i].chemna,
+              };
+              respo.rows[i].maths = {
+                marks: respo.rows[i].mathmarks,
+                correct: respo.rows[i].mathcorrect,
+                wrong: respo.rows[i].mathwrong,
+                notattempted: respo.rows[i].mathna,
+              };
+              respo.rows[i].biology = {
+                marks: respo.rows[i].biomarks,
+                correct: respo.rows[i].biocorrect,
+                wrong: respo.rows[i].biowrong,
+                notattempted: respo.rows[i].biona,
+              };
+              delete respo.rows[i].phymarks;
+              delete respo.rows[i].chemmarks;
+              delete respo.rows[i].mathmarks;
+              delete respo.rows[i].biomarks;
+              delete respo.rows[i].phycorrect;
+              delete respo.rows[i].chemcorrect;
+              delete respo.rows[i].mathcorrect;
+              delete respo.rows[i].biocorrect;
+              delete respo.rows[i].phywrong;
+              delete respo.rows[i].chemwrong;
+              delete respo.rows[i].mathwrong;
+              delete respo.rows[i].biowrong;
+              delete respo.rows[i].phyna;
+              delete respo.rows[i].chemna;
+              delete respo.rows[i].mathna;
+              delete respo.rows[i].biona;
+            }
             res
               .status(200)
               .json({ statictest: resp.rows, livetest: respo.rows });
