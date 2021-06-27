@@ -354,6 +354,129 @@ router
         res.status(500).json({ success: false });
       });
   })
+  .patch("/statictest", (req, res, next) => {
+    var body = req.body.values;
+    const testid = body.testid;
+    const testname = body.testname;
+    const subjectsallowed = body.subjectsallowed;
+    var mcq = [],
+      fib = [],
+      anr = [],
+      tof = [],
+      nq = [],
+      mtf = [],
+      mac = [];
+    var maxMarks = 0,
+      totalMaxMarks = 0;
+    if (body.questions != null) {
+      body.questions.map((question) => {
+        if (question) {
+          if (question.type == "mcq") {
+            maxMarks += question.number * question.correct;
+            mcq.push(question.number);
+            mcq.push(question.correct);
+            mcq.push(question.wrong);
+            mcq.push(question.nullanswer);
+          } else if (question.type == "fib") {
+            maxMarks += question.number * question.correct;
+            fib.push(question.number);
+            fib.push(question.correct);
+            fib.push(question.wrong);
+            fib.push(question.nullanswer);
+          } else if (question.type == "anr") {
+            maxMarks += question.number * question.correct;
+            anr.push(question.number);
+            anr.push(question.correct);
+            anr.push(question.wrong);
+            anr.push(question.nullanswer);
+          } else if (question.type == "tof") {
+            maxMarks += question.number * question.correct;
+            tof.push(question.number);
+            tof.push(question.correct);
+            tof.push(question.wrong);
+            tof.push(question.nullanswer);
+          } else if (question.type == "num") {
+            maxMarks += question.number * question.correct;
+            nq.push(question.number);
+            nq.push(question.correct);
+            nq.push(question.wrong);
+            nq.push(question.nullanswer);
+          } else if (question.type == "mtf") {
+            maxMarks += question.number * question.correct;
+            mtf.push(question.number);
+            mtf.push(question.correct);
+            mtf.push(question.wrong);
+            mtf.push(question.nullanswer);
+          } else if (question.type == "mac") {
+            maxMarks += question.number * question.correct;
+            mac.push(question.number);
+            mac.push(question.correct);
+            mac.push(question.wrong);
+            mac.push(question.nullanswer);
+          }
+        }
+      });
+    }
+    if (mcq.length == 0) {
+      mcq = null;
+    }
+    if (fib.length == 0) {
+      fib = null;
+    }
+    if (anr.length == 0) {
+      anr = null;
+    }
+    if (tof.length == 0) {
+      tof = null;
+    }
+    if (nq.length == 0) {
+      nq = null;
+    }
+    if (mtf.length == 0) {
+      mtf = null;
+    }
+    if (mac.length == 0) {
+      mac = null;
+    }
+    totalMaxMarks = maxMarks * subjectsallowed.length;
+    db.query(
+      "INSERT INTO testtype VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)",
+      [
+        testid,
+        testname,
+        subjectsallowed,
+        mcq,
+        anr,
+        fib,
+        tof,
+        nq,
+        mtf,
+        mac,
+        maxMarks,
+        totalMaxMarks,
+      ]
+    )
+      .then((resp) => {
+        console.log("Updated Successfully");
+        res.json({ success: true });
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("DB Error");
+        res.status(500).json({ success: false });
+      });
+  })
+  .delete("/statictest", (req, res, next) => {
+    const testid = req.body.testid;
+    db.query("DELETE FROM testtype WHERE testid=$1", [testid])
+      .then((resp) => {
+        res.json({ success: "true" });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json({ success: "false" });
+      });
+  })
   .get("/livetest", (req, res, next) => {
     db.query("SELECT * FROM livetest")
       .then((resp) => {
@@ -368,7 +491,8 @@ router
               number: resp.rows[i].mcqdata[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } else if (resp.rows[i].assertiondata) {
+          }
+          if (resp.rows[i].assertiondata) {
             const obj = {
               type: "mcq",
               correct: resp.rows[i].assertiondata[1].toString(),
@@ -377,7 +501,8 @@ router
               number: resp.rows[i].assertiondata[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } else if (resp.rows[i].fibdata) {
+          }
+          if (resp.rows[i].fibdata) {
             const obj = {
               type: "mcq",
               correct: resp.rows[i].fibdata[1].toString(),
@@ -386,7 +511,8 @@ router
               number: resp.rows[i].fibdata[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } else if (resp.rows[i].truefalse) {
+          }
+          if (resp.rows[i].truefalse) {
             const obj = {
               type: "mcq",
               correct: resp.rows[i].truefalse[1].toString(),
@@ -395,7 +521,8 @@ router
               number: resp.rows[i].truefalse[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } else if (resp.rows[i].numerical) {
+          }
+          if (resp.rows[i].numerical) {
             const obj = {
               type: "mcq",
               correct: resp.rows[i].numerical[1].toString(),
@@ -404,7 +531,8 @@ router
               number: resp.rows[i].numerical[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } else if (resp.rows[i].matchcolumn) {
+          }
+          if (resp.rows[i].matchcolumn) {
             const obj = {
               type: "mcq",
               correct: resp.rows[i].matchcolumn[1].toString(),
@@ -413,7 +541,8 @@ router
               number: resp.rows[i].matchcolumn[0].toString(),
             };
             resp.rows[i].questions.push(obj);
-          } else if (resp.rows[i].mac) {
+          }
+          if (resp.rows[i].mac) {
             const obj = {
               type: "mcq",
               correct: resp.rows[i].mac[1].toString(),
@@ -423,14 +552,14 @@ router
             };
             resp.rows[i].questions.push(obj);
           }
+          delete resp.rows[i].mcqdata;
+          delete resp.rows[i].assertiondata;
+          delete resp.rows[i].fibdata;
+          delete resp.rows[i].truefalse;
+          delete resp.rows[i].numerical;
+          delete resp.rows[i].matchcolumn;
+          delete resp.rows[i].mac;
         }
-        delete resp.rows.mcqdata;
-        delete resp.rows.assertiondata;
-        delete resp.rows.fibdata;
-        delete resp.rows.truefalse;
-        delete resp.rows.numerical;
-        delete resp.rows.matchcolumn;
-        delete resp.rows.mac;
         res.json(resp.rows);
       })
       .catch((err) => {
