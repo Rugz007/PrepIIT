@@ -468,6 +468,7 @@ router
   })
   .delete("/statictest", (req, res, next) => {
     const testid = req.body.testid;
+    console.log(testid)
     db.query("DELETE FROM testtype WHERE testid=$1", [testid])
       .then((resp) => {
         res.json({ success: "true" });

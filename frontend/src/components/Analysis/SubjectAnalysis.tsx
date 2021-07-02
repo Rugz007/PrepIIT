@@ -1,4 +1,4 @@
-import { Card, Divider, Progress, Row,Col ,List} from 'antd'
+import { Card, Progress, Row} from 'antd'
 import React from 'react'
 
 interface SubjectAnalysisProps {
@@ -15,51 +15,6 @@ export const SubjectAnalysis: React.FC<SubjectAnalysisProps> = ({title}) => {
                 <Progress percent={32} strokeColor="#ed5f5f" />
                 <h4>Not Attempted %</h4>
                 <Progress percent={12} strokeColor="#ddcb34" />
-                <Divider />
-                <Row style={{width:'100%'}}>
-                    <Col span={8} style={{padding:'1%'}}>
-                        <h1>Strong Topics</h1>
-                       <List>
-                           <List.Item>
-                               Kinematics
-                           </List.Item>
-                           <List.Item>
-                               Kinematics
-                           </List.Item>
-                           <List.Item>
-                               Kinematics
-                           </List.Item>
-                       </List>
-                    </Col>
-                    <Col span={8} style={{padding:'1%'}}>
-                        <h1>Need Revision</h1>
-                        <List>
-                           <List.Item>
-                               Kinematics
-                           </List.Item>
-                           <List.Item>
-                               Kinematics
-                           </List.Item>
-                           <List.Item>
-                               Kinematics
-                           </List.Item>
-                       </List>
-                    </Col>
-                    <Col span={8} style={{padding:'1%'}}>
-                        <h1>Weak Topics</h1>
-                        <List>
-                           <List.Item>
-                               Kinematics
-                           </List.Item>
-                           <List.Item>
-                               Kinematics
-                           </List.Item>
-                           <List.Item>
-                               Kinematics
-                           </List.Item>
-                       </List>
-                    </Col>
-                </Row>
             </Row>
         </Card>
     );

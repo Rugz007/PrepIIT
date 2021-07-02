@@ -54,7 +54,7 @@ export const Test: React.FC = () => {
       localStorage.setItem("answers", JSON.stringify(answers));
       console.log(localStorage.getItem("answers"));
     }
-  }, [answers]);
+  }, [answers, response]);
   const getQuestions = () => {
     let testID = localStorage.getItem("testid");
     if (localStorage.getItem("usertestid")) {

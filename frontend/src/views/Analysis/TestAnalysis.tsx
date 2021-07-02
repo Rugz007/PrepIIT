@@ -1,18 +1,40 @@
 import { Col, Row, Statistic, Tabs, Card, Progress, Divider } from 'antd';
 import axios from 'axios';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SubjectAnalysis } from '../../components/Analysis/SubjectAnalysis';
 import { useLocation } from 'react-router-dom';
+import { QuestionAnalysis } from '../../components/Analysis/QuestionAnalysis';
 const { REACT_APP_NODEJS_URL } = process.env;
 
-interface TestAnalysisProps {
-
+interface QuestionsInterface {
+  answers: Array<string>;
+  donetestid: string;
+  img_path?: string;
+  is_reported: boolean;
+  latex?: string;
+  level: string;
+  options: Array<string>;
+  qid: number;
+  statement: string;
+  subject: string;
+  subtopic: string;
+  topic: string;
+  timetaken: string;
+  type: string;
+  useranswer: Array<string>;
+  visited: string;
+}
+interface TestAnalysisResponse {
+  donetestid: string,
+  questions: Array<QuestionsInterface>;
 }
 
-export const TestAnalysis: React.FC<TestAnalysisProps> = () => {
+export const TestAnalysis: React.FC = () => {
   const location = useLocation();
   const { test }: any = location.state
+  const [state, setState] = useState<TestAnalysisResponse | undefined>()
   useEffect(() => {
+    console.log(test)
     let donetestid = location.pathname.split("/")[3]
     let isStatic = (location.pathname.split("/")[2] === 'statictest')
     axios.post(`http://${REACT_APP_NODEJS_URL}/secure/specifictestdetails`, {
@@ -24,7 +46,7 @@ export const TestAnalysis: React.FC<TestAnalysisProps> = () => {
       },
     }).then((response) => {
       console.log(response.data)
-
+      setState(response.data)
     }).catch((error) => console.log(error))
 
   }, [])
@@ -32,24 +54,22 @@ export const TestAnalysis: React.FC<TestAnalysisProps> = () => {
     if (value === 'correct') {
       return Math.round((test.phycorrect + test.mathcorrect + test.chemcorrect) * 1000 / (test.phycorrect + test.mathcorrect + test.chemcorrect + test.phyna + test.mathna + test.chemna + test.chemwrong + test.phywrong + test.mathwrong)) / 10
     }
-    else if (value==='wrong') {
-      return Math.round((test.phywrong + test.mathwrong + test.chemwrong) * 1000 / (test.phycorrect + test.mathcorrect + test.chemcorrect + test.phyna + test.mathna + test.chemna + test.chemwrong + test.phywrong + test.mathwrong))/10
+    else if (value === 'wrong') {
+      return Math.round((test.phywrong + test.mathwrong + test.chemwrong) * 1000 / (test.phycorrect + test.mathcorrect + test.chemcorrect + test.phyna + test.mathna + test.chemna + test.chemwrong + test.phywrong + test.mathwrong)) / 10
     }
-    else if (value==='na') {
-      return Math.round((test.phyna + test.mathna + test.chemna) * 1000 / (test.phycorrect + test.mathcorrect + test.chemcorrect + test.phyna + test.mathna + test.chemna + test.chemwrong + test.phywrong + test.mathwrong))/10
+    else if (value === 'na') {
+      return Math.round((test.phyna + test.mathna + test.chemna) * 1000 / (test.phycorrect + test.mathcorrect + test.chemcorrect + test.phyna + test.mathna + test.chemna + test.chemwrong + test.phywrong + test.mathwrong)) / 10
     }
   }
-  const getPercentage = (subject : string, value : string) =>
-  {
-    if(subject === 'physics')
-    {
+  const getPercentage = (subject: string, value: string) => {
+    if (subject === 'physics') {
 
     }
   }
   return (
     <Row style={{ minHeight: '96vh', marginTop: '3%', marginBottom: '5rem' }}>
-      <Col span={4} />
-      <Col span={16} style={{ textAlign: 'left' }}>
+      <Col span={2} />
+      <Col span={20} style={{ textAlign: 'left' }}>
         <Row>
           <Col span={24}>
             <h1 style={{ fontSize: '35px', marginBottom: '0' }}>Test Feeback</h1>
@@ -91,11 +111,11 @@ export const TestAnalysis: React.FC<TestAnalysisProps> = () => {
                           <Progress type='dashboard' percent={getTotalPercentage("correct")} strokeColor="#01922b" />
                           <h1>Correct</h1>
                           <Divider />
-                          {test.subjectsallowed.map((subject : string) => (
+                          {test.subjectsallowed.map((subject: string) => (
                             <div style={{ margin: '0 8% 5% 8%' }}>
-                            <h4>Correct Answer % for {subject[0].toUpperCase().concat(subject.substring(1))} </h4>
-                            <Progress percent={42} strokeColor="#01922b" />
-                          </div>
+                              <h4>Correct Answer % for {subject[0].toUpperCase().concat(subject.substring(1))} </h4>
+                              <Progress percent={42} strokeColor="#01922b" />
+                            </div>
                           ))}
                           <div style={{ margin: '0 8% 5% 8%' }}>
                             <h4>Correct Answer % for Physics </h4>
@@ -111,7 +131,7 @@ export const TestAnalysis: React.FC<TestAnalysisProps> = () => {
                           </div>
                         </Col>
                         <Col span={8}>
-                          <Progress type='dashboard'  percent={getTotalPercentage("wrong")} strokeColor="#ed5f5f" />
+                          <Progress type='dashboard' percent={getTotalPercentage("wrong")} strokeColor="#ed5f5f" />
                           <h1>Wrong</h1>
                           <Divider />
                           <div style={{ margin: '0 8% 5% 8%' }}>
@@ -156,13 +176,14 @@ export const TestAnalysis: React.FC<TestAnalysisProps> = () => {
               </Tabs.TabPane>
               <Tabs.TabPane tab="Question Wise  Analysis" key="3">
                 <Card>
+                  <QuestionAnalysis questions={state?.questions} subjectsallowed={test.subjectsallowed} />
                 </Card>
               </Tabs.TabPane>
             </Tabs>
           </Col>
         </Row>
       </Col>
-      <Col span={4} />
+      <Col span={2} />
     </Row>
   );
 }

@@ -1,20 +1,21 @@
-import { Card, Button, Space} from "antd";
+import { Card, Button, Space, Popconfirm } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { TestTypeModal } from "./TestTypeModal";
 import AdvTable from '../../Util/AdvTable'
+const { REACT_APP_NODEJS_URL } = process.env;
 interface TestTypeInterface {
   Test?: {
-      testTypeID: number,
-      testname: string,
-      subjectsallowed: string[],
-      types: Array<{
-          type:string,
-          correct:number,
-          wrong:number,
-          nullanswer:number,
-          number:number,
-      }>,
+    testTypeID: number,
+    testname: string,
+    subjectsallowed: string[],
+    types: Array<{
+      type: string,
+      correct: number,
+      wrong: number,
+      nullanswer: number,
+      number: number,
+    }>,
   }
 }
 
@@ -22,7 +23,17 @@ export const TestTypes: React.FC = () => {
   const [testDetails, setTestDetails] = useState<
     TestTypeInterface[] | undefined
   >([]);
-  //TODO : Write delete code after Rajat writes Request
+  const onDelete = async (record: any) => {
+    axios.delete(`http://${REACT_APP_NODEJS_URL}/admin/statictest`, {
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("token"),
+      },
+      data: {
+        testid:record.testid
+      },
+    })
+    fetchTestDetails()
+  }
   const columns = [
     {
       title: "Name",
@@ -33,16 +44,25 @@ export const TestTypes: React.FC = () => {
       title: "Action",
       dataIndex: "",
       key: "action",
-      render: (text: any, record :any) => (
+      render: (text: any, record: any) => (
         <>
-          <TestTypeModal Test={record} buttonText="View Test Type"/>
-          <Button
-            type="primary"
-            danger
-            style={{marginLeft:'1%'}}
+          <TestTypeModal Test={record} buttonText="View Test Type" />
+          <Popconfirm
+            title="Are you sure you want to delete this test?"
+            onConfirm={() =>
+              onDelete(record)
+            }
           >
-            Delete
-          </Button>
+            <Button
+              type="primary"
+              danger
+              style={{ marginLeft: '1%' }}
+
+            >
+              Delete
+            </Button>
+          </Popconfirm>
+
         </>
       ),
     },
@@ -53,10 +73,9 @@ export const TestTypes: React.FC = () => {
   const fetchTestDetails = async () => {
     try {
       const response = await axios.get("http://localhost:3000/admin/statictest", {
-        headers: {'Authorization':"Bearer " + localStorage.getItem("token")},
+        headers: { 'Authorization': "Bearer " + localStorage.getItem("token") },
       });
       setTestDetails(response.data);
-      console.log(testDetails);
     } catch (e) {
       console.log(e);
     }
@@ -70,7 +89,7 @@ export const TestTypes: React.FC = () => {
         title={<h1 style={{ fontSize: "30px" }}>Test Types</h1>}
         extra={
           <Space>
-            <TestTypeModal getFunction={fetchTestDetails} buttonText="Add Test Type"/>
+            <TestTypeModal getFunction={fetchTestDetails} buttonText="Add Test Type" />
           </Space>
         }
       >
