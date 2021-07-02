@@ -681,12 +681,26 @@ router
     )
       .then((resp) => {
         // uploadLiveTest(req.file.originalname, res, liveid);
-        res.end();
+        res.json({ testid: liveid });
       })
       .catch((err) => {
         console.log(err);
         res.status(500).json({ success: false });
       });
+  })
+  .get("/getlivequestions", (req, res, next) => {
+    const testid = req.body.testid;
+    db.query("SELECT * FROM livetestquestions where liveid=$1", [testid])
+      .then((resp) => {
+        res.json(resp.rows);
+      })
+      .catch((err) => {
+        res.status(500).json({ err: "Some Error Occured" });
+      });
+  })
+  .post("/uploadlivequestions", (req, res, next) => {
+    const testid = req.body.testid;
+    uploadLiveTest(req.file.originalname, res, testid);
   })
   .get("/allblogs", (req, res, next) => {
     db.query("SELECT * FROM blogs")
