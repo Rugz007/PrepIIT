@@ -51,14 +51,16 @@ export const TestAnalysis: React.FC = () => {
 
   }, [])
   const getTotalPercentage = (value: string) => {
-    if (value === 'correct') {
-      return Math.round((test.phycorrect + test.mathcorrect + test.chemcorrect) * 1000 / (test.phycorrect + test.mathcorrect + test.chemcorrect + test.phyna + test.mathna + test.chemna + test.chemwrong + test.phywrong + test.mathwrong)) / 10
-    }
-    else if (value === 'wrong') {
-      return Math.round((test.phywrong + test.mathwrong + test.chemwrong) * 1000 / (test.phycorrect + test.mathcorrect + test.chemcorrect + test.phyna + test.mathna + test.chemna + test.chemwrong + test.phywrong + test.mathwrong)) / 10
-    }
-    else if (value === 'na') {
-      return Math.round((test.phyna + test.mathna + test.chemna) * 1000 / (test.phycorrect + test.mathcorrect + test.chemcorrect + test.phyna + test.mathna + test.chemna + test.chemwrong + test.phywrong + test.mathwrong)) / 10
+    if (test.physics && test.chemistry && test.maths) {
+      if (value === 'correct') {
+        return Math.round((test.physics.correct + test.math.correct + test.chemistry.correct) * 1000 / (test.physics.correct + test.math.correct + test.chemistry.correct + test.physics.na + test.math.na + test.chemistry.na + test.chemistry.wrong + test.physics.wrong + test.math.wrong)) / 10
+      }
+      else if (value === 'wrong') {
+        return Math.round((test.physics.wrong + test.math.wrong + test.chemistry.wrong) * 1000 / (test.physics.correct + test.math.correct + test.chemistry.correct + test.physics.na + test.math.na + test.chemistry.na + test.chemistry.wrong + test.physics.wrong + test.math.wrong)) / 10
+      }
+      else if (value === 'na') {
+        return Math.round((test.physics.na + test.math.na + test.chemistry.na) * 1000 / (test.physics.correct + test.math.correct + test.chemistry.correct + test.physics.na + test.math.na + test.chemistry.na + test.chemistry.wrong + test.physics.wrong + test.math.wrong)) / 10
+      }
     }
   }
   const getPercentage = (subject: string, value: string) => {
