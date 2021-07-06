@@ -1,7 +1,15 @@
 const db = require("../db/index");
 const { notNumerical, numerical, mac } = require("../verifyAnswerType/index");
 
-const updateLog = (questions, donetestid, testid, userid, testObject, res) => {
+const updateLog = (
+  questions,
+  donetestid,
+  testid,
+  userid,
+  testObject,
+  res,
+  timeTaken
+) => {
   const mcqCorrectMarks = testObject.mcqdata ? testObject.mcqdata[1] : 0;
   const mcqWrongMarks = testObject.mcqdata ? testObject.mcqdata[2] : 0;
   const mcqNaMarks = testObject.mcqdata ? testObject.mcqdata[3] : 0;
@@ -340,7 +348,7 @@ const updateLog = (questions, donetestid, testid, userid, testObject, res) => {
             date = date.toString();
             console.log(date);
             db.query(
-              "INSERT INTO usertest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22)",
+              "INSERT INTO usertest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23)",
               [
                 donetestid,
                 testid,
@@ -364,6 +372,7 @@ const updateLog = (questions, donetestid, testid, userid, testObject, res) => {
                 date,
                 maxMarks,
                 totalMaxMarks,
+                timeTaken,
               ]
             )
               .then((resp) => {

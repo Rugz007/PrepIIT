@@ -89,8 +89,42 @@ router
       .then((resp) => {
         console.log(resp.rows);
         if (resp.rows.length > 0) {
-          var testObject = resp.rows[0];
-          updateLog(questions, donetestid, testid, userid, testObject, res);
+          db.query(
+            "SELECT hoursubmit,minsubmit,secsubmit,datesubmit,monthsubmit,yearsubmit,examtime FROM tempquestioncache WHERE currenttestid=$1",
+            [donetestid]
+          ).then((respon) => {
+            const yearSubmit = respon.rows[0].yearsubmit;
+            const monthSubmit = respon.rows[0].monthsubmit - 1;
+            const dateSubmit = respon.rows[0].datesubmit;
+            const hourSubmit = respon.rows[0].hoursubmit;
+            const minSubmit = respon.rows[0].minsubmit;
+            const secSubmit = respon.rows[0].secsubmit;
+            var testEndDate = new Date(
+              yearSubmit,
+              monthSubmit,
+              dateSubmit,
+              hourSubmit,
+              minSubmit,
+              secSubmit
+            );
+            var duration = moment(respon.rows[0].examtime);
+            var dateSubmitMoment = moment(testEndDate);
+            dateSubmitMoment.subtract(duration);
+            var currentTime = new Date();
+            var currentTimeMoment = moment(currentTime);
+            var timeTaken = dateSubmitMoment.diff(currentTimeMoment, "seconds");
+            dateSubmitMoment.get;
+            var testObject = resp.rows[0];
+            updateLog(
+              questions,
+              donetestid,
+              testid,
+              userid,
+              testObject,
+              res,
+              timeTaken
+            );
+          });
         } else {
           res.status(404).json({ err: "No such testid" });
         }
@@ -219,7 +253,10 @@ router
       });
   })
   .get("/giventests", (req, res, next) => {
-    db.query("SELECT * from usertest inner join testtype on testtype.testid=usertest.testid and userid=$1", [req.headers.userid])
+    db.query(
+      "SELECT * from usertest inner join testtype on testtype.testid=usertest.testid and userid=$1",
+      [req.headers.userid]
+    )
       .then((resp) => {
         db.query("SELECT * FROM liveusertest WHERE userid=$1", [
           req.body.userid,
