@@ -50,24 +50,26 @@ export const TestAnalysis: React.FC = () => {
     }).catch((error) => console.log(error))
 
   }, [])
-  const getTotalPercentage = (value: string) => {
-    if (test.physics && test.chemistry && test.maths) {
-      if (value === 'correct') {
-        return Math.round((test.physics.correct + test.math.correct + test.chemistry.correct) * 1000 / (test.physics.correct + test.math.correct + test.chemistry.correct + test.physics.na + test.math.na + test.chemistry.na + test.chemistry.wrong + test.physics.wrong + test.math.wrong)) / 10
-      }
-      else if (value === 'wrong') {
-        return Math.round((test.physics.wrong + test.math.wrong + test.chemistry.wrong) * 1000 / (test.physics.correct + test.math.correct + test.chemistry.correct + test.physics.na + test.math.na + test.chemistry.na + test.chemistry.wrong + test.physics.wrong + test.math.wrong)) / 10
-      }
-      else if (value === 'na') {
-        return Math.round((test.physics.na + test.math.na + test.chemistry.na) * 1000 / (test.physics.correct + test.math.correct + test.chemistry.correct + test.physics.na + test.math.na + test.chemistry.na + test.chemistry.wrong + test.physics.wrong + test.math.wrong)) / 10
-      }
-    }
-  }
   const getPercentage = (subject: string, value: string) => {
-    if (subject === 'physics') {
-
-    }
+    let totalP = 0;
+    test.subjectsallowed.forEach((subject: string) => {
+      totalP += test[subject].correct + test[subject].wrong + test[subject].notattempted;
+    });
+    let tempP = test[subject][value]
+    return Math.round(tempP * 1000 / totalP) / 10
   }
+  const getTotalPercentage = (value: string) => {
+    let total = 0;
+    test.subjectsallowed.forEach((subject: string) => {
+      total += test[subject].correct + test[subject].wrong + test[subject].notattempted;
+    });
+    let temp = 0;
+    test.subjectsallowed.forEach((subject: string) => {
+      temp += test[subject][value]
+    });
+    return Math.round(temp * 1000 / total) / 10
+  }
+
   return (
     <Row style={{ minHeight: '96vh', marginTop: '3%', marginBottom: '5rem' }}>
       <Col span={2} />
@@ -115,56 +117,33 @@ export const TestAnalysis: React.FC = () => {
                           <Divider />
                           {test.subjectsallowed.map((subject: string) => (
                             <div style={{ margin: '0 8% 5% 8%' }}>
-                              <h4>Correct Answer % for {subject[0].toUpperCase().concat(subject.substring(1))} </h4>
-                              <Progress percent={42} strokeColor="#01922b" />
+                              <h4>Correct Answer % from {subject[0].toUpperCase().concat(subject.substring(1))} </h4>
+                              <Progress percent={getPercentage(subject, "correct")} strokeColor="#01922b" />
                             </div>
                           ))}
-                          <div style={{ margin: '0 8% 5% 8%' }}>
-                            <h4>Correct Answer % for Physics </h4>
-                            <Progress percent={42} strokeColor="#01922b" />
-                          </div>
-                          <div style={{ margin: '0 8% 5% 8%' }}>
-                            <h4>Correct Answer % for Chemistry </h4>
-                            <Progress percent={70} strokeColor="#01922b" />
-                          </div>
-                          <div style={{ margin: '0 8% 5% 8%' }}>
-                            <h4>Correct Answer % for Maths </h4>
-                            <Progress percent={23} strokeColor="#01922b" />
-                          </div>
                         </Col>
                         <Col span={8}>
                           <Progress type='dashboard' percent={getTotalPercentage("wrong")} strokeColor="#ed5f5f" />
                           <h1>Wrong</h1>
                           <Divider />
-                          <div style={{ margin: '0 8% 5% 8%' }}>
-                            <h4>Wrong Answer % for Physics </h4>
-                            <Progress percent={32} strokeColor="#ed5f5f" />
-                          </div>
-                          <div style={{ margin: '0 8% 5% 8%' }}>
-                            <h4>Wrong Answer % for Chemistry </h4>
-                            <Progress percent={43} strokeColor="#ed5f5f" />
-                          </div>
-                          <div style={{ margin: '0 8% 5% 8%' }}>
-                            <h4>Wrong Answer % for Maths </h4>
-                            <Progress percent={64} strokeColor="#ed5f5f" />
-                          </div>
+                          {test.subjectsallowed.map((subject: string) => (
+                            <div style={{ margin: '0 8% 5% 8%' }}>
+                              <h4>Wrong Answer % from {subject[0].toUpperCase().concat(subject.substring(1))} </h4>
+                              <Progress percent={getPercentage(subject, "wrong")} strokeColor="#ed5f5f" />
+                            </div>
+                          ))}
                         </Col>
                         <Col span={8}>
-                          <Progress type='dashboard' percent={getTotalPercentage("na")} strokeColor="#ddcb34" />
+                          <Progress type='dashboard' percent={getTotalPercentage("notattempted")} strokeColor="#ddcb34" />
                           <h1>Not Attempted</h1>
                           <Divider />
-                          <div style={{ margin: '0 8% 5% 8%' }}>
-                            <h4>Not Attempted % for Physics </h4>
-                            <Progress percent={12} strokeColor="#ddcb34" />
-                          </div>
-                          <div style={{ margin: '0 8% 5% 8%' }}>
-                            <h4>Not Attempted % for Chemistry </h4>
-                            <Progress percent={32} strokeColor="#ddcb34" />
-                          </div>
-                          <div style={{ margin: '0 8% 5% 8%' }}>
-                            <h4>Not Attempted % for Maths </h4>
-                            <Progress percent={8} strokeColor="#ddcb34" />
-                          </div>
+                          {test.subjectsallowed.map((subject: string) => (
+                            <div style={{ margin: '0 8% 5% 8%' }}>
+                              <h4>Not Attempted Answer % from {subject[0].toUpperCase().concat(subject.substring(1))} </h4>
+                              <Progress percent={getPercentage(subject, "notattempted")} strokeColor="#ddcb34" />
+                            </div>
+                          ))}
+
                         </Col>
                       </Row>
                     </Card>
@@ -172,9 +151,10 @@ export const TestAnalysis: React.FC = () => {
                 </Row>
               </Tabs.TabPane>
               <Tabs.TabPane tab="Subject Wise  Analysis" key="2">
-                <SubjectAnalysis title={<Row style={{ width: '50%' }}><img alt='physics' src="https://img.icons8.com/dusk/50/000000/physics.png" /><h2 style={{ marginBottom: '0', marginTop: '2%' }}> &nbsp; Physics</h2></Row>} />
-                <SubjectAnalysis title={<Row style={{ width: '50%' }}><img alt='chemistry' src="https://img.icons8.com/dusk/64/000000/benzene-ring.png" /><h2 style={{ marginBottom: '0', marginTop: '2%' }}> &nbsp; Chemistry</h2></Row>} />
-                <SubjectAnalysis title={<Row style={{ width: '50%' }}><img alt='maths' src="https://img.icons8.com/dusk/64/000000/plus.png" /><h2 style={{ marginBottom: '0', marginTop: '2%' }}> &nbsp; Maths</h2></Row>} />
+                {test.subjectsallowed.map((subject: string) => (
+                  <SubjectAnalysis name={subject} subject={test[subject]} maxMarks={test['maxmarks']} />
+                ))}
+                {/* <SubjectAnalysis title={<Row style={{ width: '50%' }}><h2 style={{ marginBottom: '0', marginTop: '2%' }}> &nbsp; Physics</h2></Row>} /> */}
               </Tabs.TabPane>
               <Tabs.TabPane tab="Question Wise  Analysis" key="3">
                 <Card>

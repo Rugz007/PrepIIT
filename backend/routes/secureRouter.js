@@ -267,6 +267,48 @@ router
               delete respo.rows[i].mathna;
               delete respo.rows[i].biona;
             }
+            for (var i = 0; i < resp.rows.length; i++) {
+              resp.rows[i].physics = {
+                marks: resp.rows[i].phymarks,
+                correct: resp.rows[i].phycorrect,
+                wrong: resp.rows[i].phywrong,
+                notattempted: resp.rows[i].phyna,
+              };
+              resp.rows[i].chemistry = {
+                marks: resp.rows[i].chemmarks,
+                correct: resp.rows[i].chemcorrect,
+                wrong: resp.rows[i].chemwrong,
+                notattempted: resp.rows[i].chemna,
+              };
+              resp.rows[i].maths = {
+                marks: resp.rows[i].mathmarks,
+                correct: resp.rows[i].mathcorrect,
+                wrong: resp.rows[i].mathwrong,
+                notattempted: resp.rows[i].mathna,
+              };
+              resp.rows[i].biology = {
+                marks: resp.rows[i].biomarks,
+                correct: resp.rows[i].biocorrect,
+                wrong: resp.rows[i].biowrong,
+                notattempted: resp.rows[i].biona,
+              };
+              delete resp.rows[i].phymarks;
+              delete resp.rows[i].chemmarks;
+              delete resp.rows[i].mathmarks;
+              delete resp.rows[i].biomarks;
+              delete resp.rows[i].phycorrect;
+              delete resp.rows[i].chemcorrect;
+              delete resp.rows[i].mathcorrect;
+              delete resp.rows[i].biocorrect;
+              delete resp.rows[i].phywrong;
+              delete resp.rows[i].chemwrong;
+              delete resp.rows[i].mathwrong;
+              delete resp.rows[i].biowrong;
+              delete resp.rows[i].phyna;
+              delete resp.rows[i].chemna;
+              delete resp.rows[i].mathna;
+              delete resp.rows[i].biona;
+            }
             res
               .status(200)
               .json({ statictest: resp.rows, livetest: respo.rows });
