@@ -1,4 +1,4 @@
-import { Card, Table, Space, message } from "antd";
+import { Card, Space, message } from "antd";
 import React, { useState } from "react";
 import { QuestionModal } from "./QuestionModal";
 import axios from "axios";

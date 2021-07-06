@@ -1,5 +1,5 @@
 import { Button, Modal, Form, Select, Space, Input, TimePicker, Divider, message } from "antd";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 
@@ -34,9 +34,6 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
   const toSubmit = (e: any) => {
     console.log(e);
   };
-  useEffect(() => {
-    console.log(Test)
-  }, [Test])
   const SubmitTest = async (values: TestTypeInterface) => {
     console.log(values);
     try {
@@ -44,7 +41,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
         `http://${REACT_APP_NODEJS_URL}/admin/statictest`,
         {
           values,
-          //time,
+          time,
         },
         {
           headers: {

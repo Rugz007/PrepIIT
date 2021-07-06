@@ -1,21 +1,22 @@
-import { Card, Table, Button, Space } from "antd";
+import { Card, Button, Space, Popconfirm } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { LiveTestModal } from "./LiveTestModal";
 import AdvTable from "../../Util/AdvTable";
+const { REACT_APP_NODEJS_URL } = process.env;
 
 interface TestTypeInterface {
   Test?: {
-      testTypeID: number,
-      testname: string,
-      subjectsallowed: string[],
-      types: Array<{
-          type:string,
-          correct:number,
-          wrong:number,
-          nullanswer:number,
-          number:number,
-      }>,
+    liveid: number,
+    testname: string,
+    subjectsallowed: string[],
+    types: Array<{
+      type: string,
+      correct: number,
+      wrong: number,
+      nullanswer: number,
+      number: number,
+    }>,
   }
 }
 
@@ -23,6 +24,19 @@ export const LiveTests: React.FC = () => {
   const [testDetails, setTestDetails] = useState<
     TestTypeInterface[] | undefined
   >([]);
+
+  const onDelete = async (record: any) => {
+    axios.delete(`http://${REACT_APP_NODEJS_URL}/admin/statictest`, {
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("token"),
+      },
+      data: {
+        liveid: record.liveid
+      },
+    })
+    fetchTestDetails()
+  }
+
   const columns = [
     {
       title: "Name",
@@ -33,16 +47,23 @@ export const LiveTests: React.FC = () => {
       title: "Action",
       dataIndex: "",
       key: "action",
-      render: (text: any, record :any) => (
+      render: (text: any, record: any) => (
         <>
-          <LiveTestModal Test={record} buttonText="View Test Type"/>
-          <Button
-            type="primary"
-            danger
-            style={{marginLeft:'1%'}}
+          <LiveTestModal fetchTestDetails={fetchTestDetails} Test={record} buttonText="View Test Type" />
+          <Popconfirm
+            title="Are you sure you want to delete this test?"
+            onConfirm={() =>
+              onDelete(record)
+            }
           >
-            Delete
-          </Button>
+            <Button
+              type="primary"
+              danger
+              style={{ marginLeft: '1%' }}
+            >
+              Delete
+            </Button>
+          </Popconfirm>
         </>
       ),
     },
@@ -53,7 +74,7 @@ export const LiveTests: React.FC = () => {
   const fetchTestDetails = async () => {
     try {
       const response = await axios.get("http://localhost:3000/admin/livetest", {
-        headers: {'Authorization':"Bearer " + localStorage.getItem("token")},
+        headers: { 'Authorization': "Bearer " + localStorage.getItem("token") },
       });
       setTestDetails(response.data);
       console.log(testDetails);
@@ -70,7 +91,7 @@ export const LiveTests: React.FC = () => {
         title={<h1 style={{ fontSize: "30px" }}>Test Types</h1>}
         extra={
           <Space>
-            <LiveTestModal buttonText="Add Test Type"/>
+            <LiveTestModal fetchTestDetails={fetchTestDetails} buttonText="Add Test Type" />
           </Space>
         }
       >

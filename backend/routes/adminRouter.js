@@ -583,7 +583,7 @@ router
     const endTime = req.body.time[1].split(":");
     const endHour = parseInt(endTime[0]);
     const endMinute = parseInt(endTime[1]);
-    const livename = req.body.values.testname;
+    const livename = req.body.values.livename;
     const subjectsallowed = req.body.values.subjectsallowed;
     var mcq = [],
       fib = [],
