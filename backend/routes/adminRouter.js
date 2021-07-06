@@ -440,9 +440,8 @@ router
     }
     totalMaxMarks = maxMarks * subjectsallowed.length;
     db.query(
-      "INSERT INTO testtype VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)",
+      "UPDATE testtype SET testname=$1, subjectsallowed=$2, mcqdata=$3, assertiondata=$4, fibdata=$5, truefalse=$6, numerical=$7, matchcolumn=$8, mac=$9, maxmarks=$10, totalmaxmarks=$11 WHERE testid=$12",
       [
-        testid,
         testname,
         subjectsallowed,
         mcq,
@@ -454,6 +453,7 @@ router
         mac,
         maxMarks,
         totalMaxMarks,
+        testid,
       ]
     )
       .then((resp) => {
@@ -656,7 +656,129 @@ router
       mac = null;
     }
     db.query(
-      "INSERT INTO livetest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)",
+      "INSERT INTO livetest VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)",
+      [
+        liveid,
+        livename,
+        startDay,
+        startMonth,
+        startYear,
+        startHour,
+        startMinute,
+        endDay,
+        endMonth,
+        endYear,
+        endHour,
+        endMinute,
+        mcq,
+        fib,
+        anr,
+        tof,
+        nq,
+        mtf,
+        subjectsallowed,
+        mac,
+        false,
+      ]
+    )
+      .then((resp) => {
+        // uploadLiveTest(req.file.originalname, res, liveid);
+        res.json({ testid: liveid });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ success: false });
+      });
+  })
+  .patch("/livetest", (req, res, next) => {
+    var startDate = new Date(req.body.date);
+    const liveid = req.body.liveid;
+    const startMonth = parseInt(startDate.getUTCMonth() + 1);
+    const startDay = parseInt(startDate.getUTCDate());
+    const startYear = parseInt(startDate.getUTCFullYear());
+    const startTime = req.body.time[0].split(":");
+    const startHour = parseInt(startTime[0]);
+    const startMinute = parseInt(startTime[1]);
+    const endMonth = startMonth;
+    const endDay = startDay;
+    const endYear = startYear;
+    const endTime = req.body.time[1].split(":");
+    const endHour = parseInt(endTime[0]);
+    const endMinute = parseInt(endTime[1]);
+    const livename = req.body.values.testname;
+    const subjectsallowed = req.body.values.subjectsallowed;
+    var mcq = [],
+      fib = [],
+      anr = [],
+      tof = [],
+      nq = [],
+      mtf = [],
+      mac = [];
+    if (req.body.values.questions != null) {
+      req.body.values.questions.map((question) => {
+        if (question) {
+          if (question.type == "mcq") {
+            mcq.push(question.number);
+            mcq.push(question.correct);
+            mcq.push(question.wrong);
+            mcq.push(question.nullanswer);
+          } else if (question.type == "fib") {
+            fib.push(question.number);
+            fib.push(question.correct);
+            fib.push(question.wrong);
+            fib.push(question.nullanswer);
+          } else if (question.type == "anr") {
+            anr.push(question.number);
+            anr.push(question.correct);
+            anr.push(question.wrong);
+            anr.push(question.nullanswer);
+          } else if (question.type == "tof") {
+            tof.push(question.number);
+            tof.push(question.correct);
+            tof.push(question.wrong);
+            tof.push(question.nullanswer);
+          } else if (question.type == "num") {
+            nq.push(question.number);
+            nq.push(question.correct);
+            nq.push(question.wrong);
+            nq.push(question.nullanswer);
+          } else if (question.type == "mtf") {
+            mtf.push(question.number);
+            mtf.push(question.correct);
+            mtf.push(question.wrong);
+            mtf.push(question.nullanswer);
+          } else if (question.type == "mac") {
+            mac.push(question.number);
+            mac.push(question.correct);
+            mac.push(question.wrong);
+            mac.push(question.nullanswer);
+          }
+        }
+      });
+    }
+    if (mcq.length == 0) {
+      mcq = null;
+    }
+    if (fib.length == 0) {
+      fib = null;
+    }
+    if (anr.length == 0) {
+      anr = null;
+    }
+    if (tof.length == 0) {
+      tof = null;
+    }
+    if (nq.length == 0) {
+      nq = null;
+    }
+    if (mtf.length == 0) {
+      mtf = null;
+    }
+    if (mac.length == 0) {
+      mac = null;
+    }
+    db.query(
+      "UPDATE livetest SET livename=$1, startday=$2, startmonth=$3, startyear=$4, starthour=$5, startminute=$6, endday=$7, endmonth=$8, endyear=$9, endhour=$10, endminute=$11, mcqdata=$12, fibdata=$13, assertiondata=$14, truefalse=$15, numerical=$16, matchcolumn=$17, subjectsallowed=$18, mac=$19 WHERE liveid=$20",
       [
         liveid,
         livename,
@@ -687,6 +809,17 @@ router
       .catch((err) => {
         console.log(err);
         res.status(500).json({ success: false });
+      });
+  })
+  .delete("/livetest", (req, res, next) => {
+    const testid = req.body.liveid;
+    db.query("DELETE FROM livetest WHERE liveid=$1", [testid])
+      .then((resp) => {
+        res.json({ success: "true" });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json({ success: "false" });
       });
   })
   .get("/getlivequestions", (req, res, next) => {

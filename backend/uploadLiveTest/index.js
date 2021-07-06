@@ -28,7 +28,12 @@ const uploadLiveTest = (fileName, res, liveid) => {
       });
       Promise.all(questions)
         .then((resp) => {
-          res.status(200).json({ success: true });
+          db.query("UPDATE livetest SET isuploaded=$1 WHERE liveid=$2", [
+            true,
+            liveid,
+          ]).then((respo) => {
+            res.status(200).json({ success: true });
+          });
         })
         .catch((err) => {
           res.status(500).json({ success: false });
