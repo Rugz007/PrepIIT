@@ -4,7 +4,7 @@ var router = express.Router();
 
 const userAuth = require("../userAuth/userAuth");
 
-const allThree = require("../testGeneration/allThree");
+const phyChemMath = require("../testGeneration/phyChemMath");
 const phyChem = require("../testGeneration/phyChem");
 const phyMath = require("../testGeneration/phyMath");
 const chemMath = require("../testGeneration/chemMath");
@@ -63,7 +63,7 @@ router
         var chemistryAllowed = subjects.includes("chemistry");
         var mathAllowed = subjects.includes("maths");
         if (physicsAllowed && chemistryAllowed && mathAllowed) {
-          allThree(testObject, userid, res);
+          phyChemMath(testObject, userid, res);
         } else if (physicsAllowed && chemistryAllowed && !mathAllowed) {
           phyChem(testObject, userid, res);
         } else if (physicsAllowed && !chemistryAllowed && mathAllowed) {
@@ -90,7 +90,7 @@ router
         console.log(resp.rows);
         if (resp.rows.length > 0) {
           db.query(
-            "SELECT hoursubmit,minsubmit,secsubmit,datesubmit,monthsubmit,yearsubmit,examtime FROM tempquestioncache WHERE currenttestid=$1",
+            "SELECT hoursubmit,minsubmit,secsubmit,datesubmit,monthsubmit,yearsubmit FROM tempquestioncache WHERE currenttestid=$1",
             [donetestid]
           ).then((respon) => {
             const yearSubmit = respon.rows[0].yearsubmit;
@@ -107,13 +107,12 @@ router
               minSubmit,
               secSubmit
             );
-            var duration = moment(respon.rows[0].examtime);
+            var duration = moment.duration(resp.rows[0].time, "minutes");
             var dateSubmitMoment = moment(testEndDate);
             dateSubmitMoment.subtract(duration);
             var currentTime = new Date();
             var currentTimeMoment = moment(currentTime);
             var timeTaken = dateSubmitMoment.diff(currentTimeMoment, "seconds");
-            dateSubmitMoment.get;
             var testObject = resp.rows[0];
             updateLog(
               questions,
