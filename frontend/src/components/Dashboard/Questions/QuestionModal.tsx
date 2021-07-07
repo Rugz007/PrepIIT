@@ -208,7 +208,7 @@ export const QuestionModal: React.FC<QuestionInterface> = ({
       <Button
         style={{ marginRight: "2%" }}
         type="primary"
-        onClick={() => setVisible(true)}
+        onClick={() => { if(Question) {form.setFieldsValue(processQuestionProp(Question));} setVisible(true)}}
       >
         {buttonText}
       </Button>

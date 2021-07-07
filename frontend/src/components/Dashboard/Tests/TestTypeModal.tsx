@@ -1,7 +1,8 @@
 import { Button, Modal, Form, Select, Space, Input, TimePicker, Divider, message } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
+import moment from "moment";
 
 
 const { REACT_APP_NODEJS_URL } = process.env;
@@ -32,7 +33,6 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
   const [form] = Form.useForm();
   const [time, setTime] = useState('')
   const SubmitTest = async (values: TestTypeInterface) => {
-    console.log(values);
     try {
       await axios.post(
         `http://${REACT_APP_NODEJS_URL}/admin/statictest`,
@@ -48,17 +48,15 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
       );
       message.success("Created a test sucessfully!")
       if (getFunction) {
-        getFunction();
+        getFunction()
       }
-      form.resetFields();
       setVisible(false);
 
     } catch (e) {
       message.error("Something went wrong")
     }
   };
-  const UpdateTest = async (values:TestTypeInterface) =>
-  {
+  const UpdateTest = async (values: TestTypeInterface) => {
     try {
       await axios.patch(
         `http://${REACT_APP_NODEJS_URL}/admin/statictest`,
@@ -74,9 +72,9 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
       );
       message.success("Updated a test sucessfully!")
       if (getFunction) {
-        getFunction();
+        getFunction()
+        
       }
-      form.resetFields();
       setVisible(false);
 
     } catch (e) {
@@ -85,8 +83,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
   }
   const processTestProp = (response: any) => {
     let temp = { ...response };
-    console.log(temp)
-    // temp['time'] = [moment(temp['starthour'] + ":" + temp['startminute'], "hh:mm"), moment(temp['endhour'] + ":" + temp['endminute'], "hh:mm")];
+    temp['time'] = moment(moment.utc(moment.duration(temp['time'], 'minutes').asMilliseconds()).format("HH:mm"), "hh:mm")
     return temp
   }
   const onChangeTime = (value: any, timeString: string) => {
@@ -94,7 +91,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
   }
   return (
     <>
-      <Button onClick={() => setVisible(true)}>{buttonText}</Button>
+      <Button onClick={() => { if(Test) {form.setFieldsValue(processTestProp(Test));} setVisible(true) }}>{buttonText}</Button>
       <Modal
         width="60%"
         visible={visible}
@@ -219,10 +216,8 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
               </>
             )}
           </Form.List>
-          <Form.Item name='startDate' label="Select time of test [HH:mm]">
-            <Space direction="horizontal" size={12}>
-              <TimePicker onChange={onChangeTime} format={"HH:mm"} />
-            </Space>
+          <Form.Item name='time' label="Select time of test [HH:mm]">
+            <TimePicker onChange={onChangeTime} format={"HH:mm"} />
           </Form.Item>
         </Form>
       </Modal>

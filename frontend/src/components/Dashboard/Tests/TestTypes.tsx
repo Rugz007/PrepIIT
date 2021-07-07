@@ -22,28 +22,27 @@ interface TestTypeInterface {
 export const TestTypes: React.FC = () => {
   const [testDetails, setTestDetails] = useState<
     TestTypeInterface[] | undefined
-  >([]);
+  >(undefined);
   const onDelete = async (record: any) => {
     axios.delete(`http://${REACT_APP_NODEJS_URL}/admin/statictest`, {
       headers: {
         authorization: "Bearer " + localStorage.getItem("token"),
       },
       data: {
-        testid:record.testid
+        testid: record.testid
       },
     })
     fetchTestDetails()
   }
-  const columns = [
+  var columns = [
     {
       title: "Name",
       dataIndex: "testname",
       key: "testname",
+      sortOrder: 'descend'
     },
     {
       title: "Action",
-      dataIndex: "",
-      key: "action",
       render: (text: any, record: any) => (
         <>
           <TestTypeModal getFunction={fetchTestDetails} Test={record} buttonText="View Test Type" />
@@ -62,14 +61,15 @@ export const TestTypes: React.FC = () => {
               Delete
             </Button>
           </Popconfirm>
-
         </>
       ),
     },
   ];
   useEffect(() => {
-    fetchTestDetails();
-  }, [])
+    if (!testDetails) {
+      fetchTestDetails();
+    }
+  }, [testDetails])
   const fetchTestDetails = async () => {
     try {
       const response = await axios.get("http://localhost:3000/admin/statictest", {

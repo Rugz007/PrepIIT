@@ -33,10 +33,6 @@ export const LiveTestModal: React.FC<TestTypeInterface> = ({
   const [date, setDate] = useState("")
   const [time, setTime] = useState(['', ''])
   const SubmitTest = async (values: any) => {
-    // console.log(values);
-    // delete values.time;
-    // delete values.date;
-    // console.log(values)
     try {
       const response = await axios.post(
         `http://${REACT_APP_NODEJS_URL}/admin/livetest`,
@@ -60,23 +56,53 @@ export const LiveTestModal: React.FC<TestTypeInterface> = ({
       message.error("Error while making a live test!")
     }
   };
+  const UpdateTest = async (values: any) => {
+    try {
+      const response = await axios.patch(
+        `http://${REACT_APP_NODEJS_URL}/admin/livetest`,
+        {
+          values,
+          date,
+          time,
+        },
+        {
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      message.success("Live Test Updated!");
+      fetchTestDetails();
+      form.resetFields();
+      setVisible(false);
+
+    } catch (e) {
+      message.error("Error while updating a live test!")
+    }
+  };
   const processTestProp = (response: any) => {
     let temp = { ...response };
     temp['date'] = moment(temp['startyear'] + "-" + temp['startmonth'] + '-' + temp['startday'], "YYYY-MM-DD");
     temp['time'] = [moment(temp['starthour'] + ":" + temp['startminute'], "hh:mm"), moment(temp['endhour'] + ":" + temp['endminute'], "hh:mm")];
+    //setTime([temp['starthour'] + ":" + temp['startminute'],temp['endhour'] + ":" + temp['endminute'], "hh:mm"])
     return temp
   }
   const onChangeDate = (value: any, dateString: string) => {
-    if (date !== dateString) {
+    if(dateString !== date)
+    {
       setDate(dateString)
+
     }
   }
   const onChangeTime = (value: any, timeString: [string, string]) => {
-    setTime(timeString)
+    if(timeString !== time)
+    {
+      setTime(timeString)
+    }
   }
   return (
     <>
-      <Button onClick={() => setVisible(true)}>{buttonText}</Button>
+      <Button onClick={() => { if (Test) { form.setFieldsValue(processTestProp(Test)); } setVisible(true) }}>{buttonText}</Button>
       <Modal
         width="60%"
         visible={visible}
@@ -85,7 +111,7 @@ export const LiveTestModal: React.FC<TestTypeInterface> = ({
           var values = form.getFieldsValue();
           if (Test !== undefined) {
             values.liveid = Test.liveid;
-            SubmitTest(values);
+            UpdateTest(values);
           } else {
             SubmitTest(values);
           }
@@ -201,10 +227,10 @@ export const LiveTestModal: React.FC<TestTypeInterface> = ({
           </Form.List>
           <Space direction="horizontal" size={12}>
             <Form.Item name='date' label="Select Date of test">
-              <DatePicker onChange={onChangeDate} />
+              <DatePicker onChange={(value,dateString) => onChangeDate(value,dateString)} />
             </Form.Item>
             <Form.Item name='time' label="Select Time of test">
-              <TimePicker.RangePicker onChange={onChangeTime} format={"HH:mm"} />
+              <TimePicker.RangePicker onChange={(value,timeString) => onChangeTime(value,timeString)} format={"HH:mm"} />
             </Form.Item>
           </Space>
         </Form>

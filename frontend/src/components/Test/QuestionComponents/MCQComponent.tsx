@@ -4,18 +4,18 @@ import { MathComponent } from 'mathjax-react';
 
 interface QuestionInterface {
   question:
-    | {
-        qid: number;
-        statement: string;
-        img_path: string;
-        type: string;
-        archive: string;
-        latex: string;
-        options: string[];
-      }
-    | undefined;
+  | {
+    qid: number;
+    statement: string;
+    img_path: string;
+    type: string;
+    archive: string;
+    latex: string;
+    options: string[];
+  }
+  | undefined;
   onSelect: (e: RadioChangeEvent) => void;
-  answers:any,
+  answers: any,
 }
 
 export const MCQComponent: React.FC<QuestionInterface> = ({
@@ -40,7 +40,7 @@ export const MCQComponent: React.FC<QuestionInterface> = ({
           <h3>
             {question.statement}
             {question.qid}
-            
+
           </h3>
         )}
         <MathComponent tex={question?.latex} />
@@ -53,7 +53,7 @@ export const MCQComponent: React.FC<QuestionInterface> = ({
         >
           {question?.options.map((option, index) => (
             <Row style={radioContainerStyle}>
-              <Col span={1}>
+              <Col lg={1} md={4} xs={4} sm={4}>
                 <Radio.Button
                   style={{ padding: "0 0.7rem", fontSize: "20px" }}
                   name={option}
@@ -62,13 +62,13 @@ export const MCQComponent: React.FC<QuestionInterface> = ({
                   {(index + 10).toString(36).toUpperCase()}
                 </Radio.Button>
               </Col>
-              <Col span={23} style={radioStyle}>
+              <Col lg={23} md={20} xs={20} sm={20} style={radioStyle}>
                 {option}
               </Col>
             </Row>
           ))}
         </Radio.Group>}
-        
+
       </Row>
     </div>
   );

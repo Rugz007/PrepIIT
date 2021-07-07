@@ -9,8 +9,7 @@ var router = express.Router();
 const db = require("../db");
 
 const adminAuth = require("../adminAuth/adminAuth");
-const { max } = require("moment");
-
+const moment = require("moment")
 router.use(adminAuth);
 router
   .get("/enquiry", (req, res, next) => {
@@ -249,6 +248,7 @@ router
     const testname = body.testname;
     const subjectsallowed = body.subjectsallowed;
     const time = moment.duration(req.body.time).asMinutes();
+    console.log(time)
     var mcq = [],
       fib = [],
       anr = [],
@@ -696,7 +696,7 @@ router
   })
   .patch("/livetest", (req, res, next) => {
     var startDate = new Date(req.body.date);
-    const liveid = req.body.liveid;
+    const liveid = req.body.values.liveid;
     const startMonth = parseInt(startDate.getUTCMonth() + 1);
     const startDay = parseInt(startDate.getUTCDate());
     const startYear = parseInt(startDate.getUTCFullYear());

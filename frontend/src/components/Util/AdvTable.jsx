@@ -1,7 +1,10 @@
 import { Input, Table } from 'antd'
-import { useState } from 'react'
+import { useState ,useEffect} from 'react'
 
 function AdvTable({ columns, dataSource,style }) {
+    useEffect(() => {
+        //NO
+    }, [dataSource])
     const [state, setState] = useState({
         filteredDataSource: null,
         searchText: "",
@@ -22,7 +25,7 @@ function AdvTable({ columns, dataSource,style }) {
             <Input.Search
                 placeholder="Search"
                 onChange={onChange} />
-            <Table columns={columns} style={style} dataSource={!state.filteredDataSource ? dataSource : state.filteredDataSource} pagination={false} />
+            <Table columns={columns} style={style} dataSource={!state.filteredDataSource ? dataSource : state.filteredDataSource} />
         </>
     )
 }

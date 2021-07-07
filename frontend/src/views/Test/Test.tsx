@@ -264,7 +264,7 @@ export const Test: React.FC = () => {
         <div style={{ height: "100%" }}>
           {readInstructions ? (
             <Row style={{ height: "93.2vh" }}>
-              <Col span={18}>
+              <Col lg={18} sm={24} xs={24}>
                 <Row>
                   <Card style={{ width: "100%", height: "85vh" }}>
                     <Tabs onChange={onChangeTab}>
@@ -295,7 +295,8 @@ export const Test: React.FC = () => {
                 </Row>
                 <Row style={{ height: "7vh" }}>
                   <Col
-                    span={20}
+                    lg={20}
+                    sm={24}
                     style={{ display: "flex", alignItems: "center" }}
                   >
                     <Button
@@ -322,7 +323,7 @@ export const Test: React.FC = () => {
                     </Button>
                   </Col>
                   <Col
-                    span={4}
+                    lg={4}
                     style={{ display: "flex", alignItems: "center" }}
                   >
                     <Button onClick={onPrevious}>{"<"} Previous</Button>
@@ -336,7 +337,7 @@ export const Test: React.FC = () => {
                   </Col>
                 </Row>
               </Col>
-              <Col span={6}>
+              <Col lg={6} sm={24} xs={24}>
                 <Card style={{ width: "100%", height: "100%" }}>
                   {response !== undefined && answers && (
                     <TestDetails

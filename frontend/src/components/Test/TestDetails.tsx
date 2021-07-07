@@ -48,8 +48,8 @@ export const TestDetails: React.FC<TestDetailsProps> = ({ current, questions, se
                 <List
                     grid={{
                         gutter: 16,
-                        xs: 1,
-                        sm: 2,
+                        xs: 4,
+                        sm: 4,
                         md: 4,
                         lg: 4,
                         xl: 6,
