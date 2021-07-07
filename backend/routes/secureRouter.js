@@ -90,7 +90,7 @@ router
         console.log(resp.rows);
         if (resp.rows.length > 0) {
           db.query(
-            "SELECT hoursubmit,minsubmit,secsubmit,datesubmit,monthsubmit,yearsubmit,examtime FROM tempquestioncache WHERE currenttestid=$1",
+            "SELECT hoursubmit,minsubmit,secsubmit,datesubmit,monthsubmit,yearsubmit FROM tempquestioncache WHERE currenttestid=$1",
             [donetestid]
           ).then((respon) => {
             const yearSubmit = respon.rows[0].yearsubmit;
@@ -107,13 +107,12 @@ router
               minSubmit,
               secSubmit
             );
-            var duration = moment(respon.rows[0].examtime);
+            var duration = moment(resp.rows[0].time);
             var dateSubmitMoment = moment(testEndDate);
             dateSubmitMoment.subtract(duration);
             var currentTime = new Date();
             var currentTimeMoment = moment(currentTime);
             var timeTaken = dateSubmitMoment.diff(currentTimeMoment, "seconds");
-            dateSubmitMoment.get;
             var testObject = resp.rows[0];
             updateLog(
               questions,
