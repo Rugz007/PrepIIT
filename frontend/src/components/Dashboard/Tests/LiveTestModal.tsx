@@ -1,5 +1,5 @@
 import { Button, Modal, Form, Select, Space, Input, TimePicker, DatePicker, Divider, message } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
 import moment from "moment";
@@ -28,15 +28,15 @@ export const LiveTestModal: React.FC<TestTypeInterface> = ({
   buttonText,
   fetchTestDetails
 }) => {
-  useEffect(() => {
-    console.log(Test)
-  }, [])
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
   const [date, setDate] = useState("")
   const [time, setTime] = useState(['', ''])
   const SubmitTest = async (values: any) => {
-    console.log(values);
+    // console.log(values);
+    // delete values.time;
+    // delete values.date;
+    // console.log(values)
     try {
       const response = await axios.post(
         `http://${REACT_APP_NODEJS_URL}/admin/livetest`,
@@ -53,6 +53,9 @@ export const LiveTestModal: React.FC<TestTypeInterface> = ({
       );
       message.success("Live Test Created!");
       fetchTestDetails();
+      form.resetFields();
+      setVisible(false);
+
     } catch (e) {
       message.error("Error while making a live test!")
     }
@@ -60,12 +63,11 @@ export const LiveTestModal: React.FC<TestTypeInterface> = ({
   const processTestProp = (response: any) => {
     let temp = { ...response };
     temp['date'] = moment(temp['startyear'] + "-" + temp['startmonth'] + '-' + temp['startday'], "YYYY-MM-DD");
-    temp['time'] = [moment(temp['starthour'] + ":" + temp['startminute'], "hh:mm"),moment(temp['endhour'] + ":" + temp['endminute'], "hh:mm")];
+    temp['time'] = [moment(temp['starthour'] + ":" + temp['startminute'], "hh:mm"), moment(temp['endhour'] + ":" + temp['endminute'], "hh:mm")];
     return temp
   }
   const onChangeDate = (value: any, dateString: string) => {
-    if (date !== dateString)
-    {
+    if (date !== dateString) {
       setDate(dateString)
     }
   }
@@ -81,13 +83,12 @@ export const LiveTestModal: React.FC<TestTypeInterface> = ({
         onCancel={() => setVisible(false)}
         onOk={() => {
           var values = form.getFieldsValue();
-          form.resetFields();
           if (Test !== undefined) {
             values.liveid = Test.liveid;
+            SubmitTest(values);
           } else {
             SubmitTest(values);
           }
-          setVisible(false);
         }}
       >
         <h1>Create Live Test</h1>
@@ -111,6 +112,9 @@ export const LiveTestModal: React.FC<TestTypeInterface> = ({
               </Option>
               <Option value="maths" label="Maths">
                 Maths
+              </Option>
+              <Option value="biology" label="Biology">
+                Biology
               </Option>
             </Select>
           </Form.Item>

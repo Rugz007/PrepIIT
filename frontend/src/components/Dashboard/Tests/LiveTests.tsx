@@ -26,7 +26,7 @@ export const LiveTests: React.FC = () => {
   >([]);
 
   const onDelete = async (record: any) => {
-    axios.delete(`http://${REACT_APP_NODEJS_URL}/admin/statictest`, {
+    axios.delete(`http://${REACT_APP_NODEJS_URL}/admin/livetest`, {
       headers: {
         authorization: "Bearer " + localStorage.getItem("token"),
       },

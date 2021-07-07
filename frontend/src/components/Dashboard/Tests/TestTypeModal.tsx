@@ -31,13 +31,10 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
   const [time, setTime] = useState('')
-  const toSubmit = (e: any) => {
-    console.log(e);
-  };
   const SubmitTest = async (values: TestTypeInterface) => {
     console.log(values);
     try {
-      const response = await axios.post(
+      await axios.post(
         `http://${REACT_APP_NODEJS_URL}/admin/statictest`,
         {
           values,
@@ -53,11 +50,19 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
       if (getFunction) {
         getFunction();
       }
+      form.resetFields();
+      setVisible(false);
+
     } catch (e) {
-      console.log(e)
       message.error("Something went wrong")
     }
   };
+  const processTestProp = (response: any) => {
+    let temp = { ...response };
+    console.log(temp)
+    // temp['time'] = [moment(temp['starthour'] + ":" + temp['startminute'], "hh:mm"), moment(temp['endhour'] + ":" + temp['endminute'], "hh:mm")];
+    return temp
+  }
   const onChangeTime = (value: any, timeString: string) => {
     setTime(timeString)
   }
@@ -71,14 +76,12 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
         onOk={() => {
           var values = form.getFieldsValue();
           console.log(values);
-          form.resetFields();
           if (Test !== undefined) {
             values.qid = Test.testTypeID;
-            //TODO : Write editing code after rajat writes query
+            SubmitTest(values);
           } else {
             SubmitTest(values);
           }
-          setVisible(false);
         }}
       >
         <h1>Create Static Test</h1>
@@ -88,8 +91,7 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
           name="TestType"
           layout="vertical"
           form={form}
-          onFinish={toSubmit}
-          initialValues={Test}
+          initialValues={Test ? processTestProp(Test) : undefined}
         >
           <Form.Item label="Test Name" name="testname">
             <Input />
@@ -104,6 +106,9 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
               </Option>
               <Option value="maths" label="Maths">
                 Maths
+              </Option>
+              <Option value="biology" label="Biology">
+                Biology
               </Option>
             </Select>
           </Form.Item>
