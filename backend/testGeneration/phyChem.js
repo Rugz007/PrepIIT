@@ -114,7 +114,9 @@ const phyChem = (testObject, userid, res) => {
                             ).then((resp) => {
                               if (resp.rows)
                                 chemQues = chemQues.concat(resp.rows);
-                              var d = moment().add(3, "hours").toDate();
+                              var d = moment()
+                                .add(testObject.time, "hours")
+                                .toDate();
                               console.log(d);
                               var hour = d.getHours();
                               var min = d.getMinutes();

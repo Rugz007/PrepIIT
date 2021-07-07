@@ -248,6 +248,7 @@ router
     var body = req.body.values;
     const testname = body.testname;
     const subjectsallowed = body.subjectsallowed;
+    const time = moment.duration(req.body.time).asMinutes();
     var mcq = [],
       fib = [],
       anr = [],
@@ -329,7 +330,7 @@ router
     }
     totalMaxMarks = maxMarks * subjectsallowed.length;
     db.query(
-      "INSERT INTO testtype VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",
+      "INSERT INTO testtype VALUES (DEFAULT,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)",
       [
         testname,
         subjectsallowed,
@@ -342,6 +343,7 @@ router
         mac,
         maxMarks,
         totalMaxMarks,
+        time,
       ]
     )
       .then((resp) => {
@@ -359,6 +361,7 @@ router
     const testid = body.testid;
     const testname = body.testname;
     const subjectsallowed = body.subjectsallowed;
+    const time = moment.duration(req.body.time).asMinutes();
     var mcq = [],
       fib = [],
       anr = [],
@@ -440,7 +443,7 @@ router
     }
     totalMaxMarks = maxMarks * subjectsallowed.length;
     db.query(
-      "UPDATE testtype SET testname=$1, subjectsallowed=$2, mcqdata=$3, assertiondata=$4, fibdata=$5, truefalse=$6, numerical=$7, matchcolumn=$8, mac=$9, maxmarks=$10, totalmaxmarks=$11 WHERE testid=$12",
+      "UPDATE testtype SET testname=$1, subjectsallowed=$2, mcqdata=$3, assertiondata=$4, fibdata=$5, truefalse=$6, numerical=$7, matchcolumn=$8, mac=$9, maxmarks=$10, totalmaxmarks=$11, time=$12 WHERE testid=$13",
       [
         testname,
         subjectsallowed,
@@ -453,6 +456,7 @@ router
         mac,
         maxMarks,
         totalMaxMarks,
+        time,
         testid,
       ]
     )

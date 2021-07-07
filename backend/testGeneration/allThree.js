@@ -180,7 +180,7 @@ const allThree = (testObject, userid, res) => {
                                                 resp.rows
                                               );
                                             var d = moment()
-                                              .add(3, "hours")
+                                              .add(testObject.time, "minutes")
                                               .toDate();
                                             console.log(d);
                                             var hour = d.getHours();

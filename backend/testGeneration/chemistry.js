@@ -62,7 +62,7 @@ const chemistry = (testObject, userid, res) => {
                 `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='chemistry' AND type='mac' ORDER BY RANDOM() LIMIT ${macQuestions}`
               ).then((resp) => {
                 if (resp.rows) chemQues = chemQues.concat(resp.rows);
-                var d = moment().add(3, "hours").toDate();
+                var d = moment().add(testObject.time, "hours").toDate();
                 console.log(d);
                 var hour = d.getHours();
                 var min = d.getMinutes();
