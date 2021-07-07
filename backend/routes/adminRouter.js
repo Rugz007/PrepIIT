@@ -472,7 +472,7 @@ router
   })
   .delete("/statictest", (req, res, next) => {
     const testid = req.body.testid;
-    console.log(testid)
+    console.log(testid);
     db.query("DELETE FROM testtype WHERE testid=$1", [testid])
       .then((resp) => {
         res.json({ success: "true" });
@@ -919,7 +919,6 @@ router
       });
   })
   .post("/template", (req, res, next) => {
-    console.log("asdasd");
     const template = req.body.template;
     db.query("UPDATE template SET content=$1", [template])
       .then((resp) => {
@@ -928,6 +927,20 @@ router
       .catch((err) => {
         console.log(err);
         res.status(500).json({ success: "false" });
+      });
+  })
+  .post("/studentsperformance", (req, res, next) => {
+    const testid = req.body.testid;
+    db.query(
+      "SELECT * FROM usertest INNER JOIN users ON users.userid=usertest.userid WHERE testid=$1",
+      [testid]
+    )
+      .then((resp) => {
+        res.json(resp.rows);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ err: "Some Error Occured" });
       });
   });
 
