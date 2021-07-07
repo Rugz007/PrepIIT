@@ -9,7 +9,7 @@ const { REACT_APP_NODEJS_URL } = process.env;
 const { Option } = Select;
 interface TestTypeInterface {
   Test?: {
-    testTypeID: number;
+    testid: number;
     testname: string;
     subjectsallowed: string[];
     questions: Array<{
@@ -57,6 +57,32 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
       message.error("Something went wrong")
     }
   };
+  const UpdateTest = async (values:TestTypeInterface) =>
+  {
+    try {
+      await axios.patch(
+        `http://${REACT_APP_NODEJS_URL}/admin/statictest`,
+        {
+          values,
+          time,
+        },
+        {
+          headers: {
+            authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      message.success("Updated a test sucessfully!")
+      if (getFunction) {
+        getFunction();
+      }
+      form.resetFields();
+      setVisible(false);
+
+    } catch (e) {
+      message.error("Something went wrong")
+    }
+  }
   const processTestProp = (response: any) => {
     let temp = { ...response };
     console.log(temp)
@@ -77,8 +103,8 @@ export const TestTypeModal: React.FC<TestTypeInterface> = ({
           var values = form.getFieldsValue();
           console.log(values);
           if (Test !== undefined) {
-            values.qid = Test.testTypeID;
-            SubmitTest(values);
+            values.testid = Test.testid;
+            UpdateTest(values);
           } else {
             SubmitTest(values);
           }

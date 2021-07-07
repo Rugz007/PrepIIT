@@ -6,7 +6,7 @@ import AdvTable from '../../Util/AdvTable'
 const { REACT_APP_NODEJS_URL } = process.env;
 interface TestTypeInterface {
   Test?: {
-    testTypeID: number,
+    testid: number,
     testname: string,
     subjectsallowed: string[],
     types: Array<{
@@ -46,7 +46,7 @@ export const TestTypes: React.FC = () => {
       key: "action",
       render: (text: any, record: any) => (
         <>
-          <TestTypeModal Test={record} buttonText="View Test Type" />
+          <TestTypeModal getFunction={fetchTestDetails} Test={record} buttonText="View Test Type" />
           <Popconfirm
             title="Are you sure you want to delete this test?"
             onConfirm={() =>
