@@ -943,7 +943,7 @@ router
         res.status(500).json({ err: "Some Error Occured" });
       });
   })
-  .post("studentsperformacelive", (req, res, next) => {
+  .post("/studentsperformacelive", (req, res, next) => {
     const testid = req.body.testid;
     db.query(
       "SELECT * FROM livetest INNER JOIN users ON users.userid=livetest.userid WHERE testid=$1",
