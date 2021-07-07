@@ -2,10 +2,10 @@ const randomstring = require("randomstring");
 const moment = require("moment");
 const db = require("../db");
 
-const allThree = (testObject, userid, res) => {
+const phyChemBio = (testObject, userid, res) => {
   var phyQues = [];
   var chemQues = [];
-  var mathQues = [];
+  var bioQues = [];
   var questionPromise = [];
   const userTestId = randomstring.generate({
     length: 15,
@@ -119,64 +119,62 @@ const allThree = (testObject, userid, res) => {
                                 ? testObject.mcqdata[0]
                                 : 0;
                               db.query(
-                                `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='maths' AND type='mcq' ORDER BY RANDOM() LIMIT ${mcqQuestions}`
+                                `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='biology' AND type='mcq' ORDER BY RANDOM() LIMIT ${mcqQuestions}`
                               ).then((resp) => {
                                 if (resp.rows)
-                                  mathQues = mathQues.concat(resp.rows);
+                                  bioQues = bioQues.concat(resp.rows);
                                 const fibQuestions = testObject.fibdata
                                   ? testObject.fibdata[0]
                                   : 0;
                                 db.query(
-                                  `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='maths' AND type='fib' ORDER BY RANDOM() LIMIT ${fibQuestions}`
+                                  `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='biology' AND type='fib' ORDER BY RANDOM() LIMIT ${fibQuestions}`
                                 ).then((resp) => {
                                   if (resp.rows)
-                                    mathQues = mathQues.concat(resp.rows);
+                                    bioQues = bioQues.concat(resp.rows);
                                   const assertionQuestions =
                                     testObject.assertiondata
                                       ? testObject.assertiondata[0]
                                       : 0;
                                   db.query(
-                                    `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='maths' AND type='anr' ORDER BY RANDOM() LIMIT ${assertionQuestions}`
+                                    `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='biology' AND type='anr' ORDER BY RANDOM() LIMIT ${assertionQuestions}`
                                   ).then((resp) => {
                                     if (resp.rows)
-                                      mathQues = mathQues.concat(resp.rows);
+                                      bioQues = bioQues.concat(resp.rows);
                                     const trueFalseQuestions =
                                       testObject.truefalse
                                         ? testObject.truefalse[0]
                                         : 0;
                                     db.query(
-                                      `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='maths' AND type='tof' ORDER BY RANDOM() LIMIT ${trueFalseQuestions}`
+                                      `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='biology' AND type='tof' ORDER BY RANDOM() LIMIT ${trueFalseQuestions}`
                                     ).then((resp) => {
                                       if (resp.rows)
-                                        mathQues = mathQues.concat(resp.rows);
+                                        bioQues = bioQues.concat(resp.rows);
                                       const numericalQuestions =
                                         testObject.numerical
                                           ? testObject.numerical[0]
                                           : 0;
                                       db.query(
-                                        `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='maths' AND type='num' ORDER BY RANDOM() LIMIT ${numericalQuestions}`
+                                        `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='biology' AND type='num' ORDER BY RANDOM() LIMIT ${numericalQuestions}`
                                       ).then((resp) => {
                                         if (resp.rows)
-                                          mathQues = mathQues.concat(resp.rows);
+                                          bioQues = bioQues.concat(resp.rows);
                                         const matchColumnQuestions =
                                           testObject.matchcolumn
                                             ? testObject.matchcolumn[0]
                                             : 0;
                                         db.query(
-                                          `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='maths' AND type='mtf' ORDER BY RANDOM() LIMIT ${matchColumnQuestions}`
+                                          `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='biology' AND type='mtf' ORDER BY RANDOM() LIMIT ${matchColumnQuestions}`
                                         ).then((resp) => {
                                           if (resp.rows)
-                                            mathQues = mathQues.concat(
-                                              resp.rows
-                                            );
+                                            bioQues = bioQues.concat(resp.rows);
                                           const macQuestions = testObject.mac
                                             ? testObject.mac[0]
                                             : 0;
                                           db.query(
-                                            `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='maths' AND type='mac' ORDER BY RANDOM() LIMIT ${macQuestions}`
+                                            `SELECT qid,statement,img_path,type,archive,latex,options,subject FROM questions WHERE is_reported=FALSE AND subject='biology' AND type='mac' ORDER BY RANDOM() LIMIT ${macQuestions}`
                                           ).then((resp) => {
                                             if (resp.rows)
-                                              mathQues = mathQues.concat(
+                                              bioQues = bioQues.concat(
                                                 resp.rows
                                               );
                                             var d = moment()
@@ -199,11 +197,11 @@ const allThree = (testObject, userid, res) => {
                                               subjects: [
                                                 "Physics",
                                                 "Chemistry",
-                                                "Maths",
+                                                "Biology",
                                               ],
                                               Physics: phyQues,
                                               Chemistry: chemQues,
-                                              Maths: mathQues,
+                                              Biology: bioQues,
                                               timeLeft: timeLeft,
                                             });
                                             phyQues.forEach((question) => {
@@ -258,7 +256,7 @@ const allThree = (testObject, userid, res) => {
                                                   .catch((err) => err)
                                               );
                                             });
-                                            mathQues.forEach((question) => {
+                                            bioQues.forEach((question) => {
                                               questionPromise.push(
                                                 db
                                                   .query(
@@ -316,4 +314,4 @@ const allThree = (testObject, userid, res) => {
   });
 };
 
-module.exports = allThree;
+module.exports = phyChemBio;

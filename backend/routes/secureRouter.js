@@ -4,7 +4,7 @@ var router = express.Router();
 
 const userAuth = require("../userAuth/userAuth");
 
-const allThree = require("../testGeneration/allThree");
+const phyChemMath = require("../testGeneration/phyChemMath");
 const phyChem = require("../testGeneration/phyChem");
 const phyMath = require("../testGeneration/phyMath");
 const chemMath = require("../testGeneration/chemMath");
@@ -63,7 +63,7 @@ router
         var chemistryAllowed = subjects.includes("chemistry");
         var mathAllowed = subjects.includes("maths");
         if (physicsAllowed && chemistryAllowed && mathAllowed) {
-          allThree(testObject, userid, res);
+          phyChemMath(testObject, userid, res);
         } else if (physicsAllowed && chemistryAllowed && !mathAllowed) {
           phyChem(testObject, userid, res);
         } else if (physicsAllowed && !chemistryAllowed && mathAllowed) {
