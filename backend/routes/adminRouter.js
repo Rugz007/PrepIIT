@@ -929,10 +929,24 @@ router
         res.status(500).json({ success: "false" });
       });
   })
-  .post("/studentsperformance", (req, res, next) => {
+  .post("/studentsperformancestatic", (req, res, next) => {
     const testid = req.body.testid;
     db.query(
       "SELECT * FROM usertest INNER JOIN users ON users.userid=usertest.userid WHERE testid=$1",
+      [testid]
+    )
+      .then((resp) => {
+        res.json(resp.rows);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ err: "Some Error Occured" });
+      });
+  })
+  .post("studentsperformacelive", (req, res, next) => {
+    const testid = req.body.testid;
+    db.query(
+      "SELECT * FROM livetest INNER JOIN users ON users.userid=livetest.userid WHERE testid=$1",
       [testid]
     )
       .then((resp) => {
