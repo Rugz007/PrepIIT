@@ -37,6 +37,8 @@ const updateLog = (
   const macCorrectMarks = testObject.mac ? testObject.mac[1] : 0;
   const macWrongMarks = testObject.mac ? testObject.mac[2] : 0;
   const macNaMarks = testObject.mac ? testObject.mac[3] : 0;
+  var average = parseFloat(testObject.average);
+  var takers = testObject.takers;
   var phyMacMarks = 0;
   var chemMacMarks = 0;
   var mathMacMarks = 0;
@@ -343,6 +345,9 @@ const updateLog = (
                 (mathNa["mtf"] ? mathNa["mtf"] : 0) * mtfNaMarks +
                 mathMacMarks;
             var totalMarks = phyMarks + chemMarks + mathMarks;
+            var newAverage = (average * takers + totalMarks) / (takers + 1);
+            newAverage = Math.round(newAverage) / 100;
+            newAverage = newAverage.toString();
             var date = new Date();
             date = date.toISOString().split("T")[0];
             date = date.toString();
@@ -388,6 +393,17 @@ const updateLog = (
                 res.json({
                   errmess: "DB Error",
                 });
+              });
+            takers++;
+            db.query(
+              "UPDATE testtype SET average=$1,takers=$2 WHERE testid=$3",
+              [newAverage, takers, testid]
+            )
+              .then((done) => {
+                console.log("Updated averages");
+              })
+              .catch((err) => {
+                console.log(err);
               });
           });
         });
