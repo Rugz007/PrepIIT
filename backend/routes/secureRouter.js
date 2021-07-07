@@ -107,7 +107,7 @@ router
               minSubmit,
               secSubmit
             );
-            var duration = moment(resp.rows[0].time);
+            var duration = moment.duration(resp.rows[0].time, "minutes");
             var dateSubmitMoment = moment(testEndDate);
             dateSubmitMoment.subtract(duration);
             var currentTime = new Date();
