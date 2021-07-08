@@ -9,7 +9,7 @@ var router = express.Router();
 const db = require("../db");
 
 const adminAuth = require("../adminAuth/adminAuth");
-const moment = require("moment")
+const moment = require("moment");
 router.use(adminAuth);
 router
   .get("/enquiry", (req, res, next) => {
@@ -248,7 +248,7 @@ router
     const testname = body.testname;
     const subjectsallowed = body.subjectsallowed;
     const time = moment.duration(req.body.time).asMinutes();
-    console.log(time)
+    console.log(time);
     var mcq = [],
       fib = [],
       anr = [],
@@ -826,8 +826,8 @@ router
         res.json({ success: "false" });
       });
   })
-  .get("/getlivequestions", (req, res, next) => {
-    const testid = req.body.testid;
+  .get("/getlivequestions/:testid", (req, res, next) => {
+    const testid = req.params.testid;
     db.query("SELECT * FROM livetestquestions where liveid=$1", [testid])
       .then((resp) => {
         res.json(resp.rows);
@@ -836,10 +836,15 @@ router
         res.status(500).json({ err: "Some Error Occured" });
       });
   })
-  .post("/uploadlivequestions", (req, res, next) => {
-    const testid = req.body.testid;
-    uploadLiveTest(req.file.originalname, res, testid);
-  })
+  .post(
+    "/uploadlivequestions/:testid",
+    upload.single("QuestionBank"),
+    (req, res, next) => {
+      const testid = req.params.testid;
+      console.log(testid);
+      uploadLiveTest(req.file.originalname, res, testid);
+    }
+  )
   .get("/allblogs", (req, res, next) => {
     db.query("SELECT * FROM blogs")
       .then((resp) => {

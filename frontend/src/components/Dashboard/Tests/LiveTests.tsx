@@ -3,49 +3,48 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { LiveTestModal } from "./LiveTestModal";
 import AdvTable from "../../Util/AdvTable";
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined } from "@ant-design/icons";
 import { LiveTestPreviewModal } from "./LiveTestPreviewModal";
 
 const { REACT_APP_NODEJS_URL } = process.env;
 
 interface TestTypeInterface {
   Test?: {
-    liveid: number,
-    testname: string,
-    subjectsallowed: string[],
+    liveid: number;
+    testname: string;
+    subjectsallowed: string[];
     types: Array<{
-      type: string,
-      correct: number,
-      wrong: number,
-      nullanswer: number,
-      number: number,
-    }>,
-  }
+      type: string;
+      correct: number;
+      wrong: number;
+      nullanswer: number;
+      number: number;
+    }>;
+  };
 }
 
 export const LiveTests: React.FC = () => {
+  const [testDetails, setTestDetails] = useState<
+    TestTypeInterface[] | undefined
+  >([]);
+
   const props = {
-    name: 'file',
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    name: "QuestionBank",
     headers: {
-      authorization: 'authorization-text',
+      authorization: "Bearer " + localStorage.getItem("token"),
     },
     onChange(info: any) {
-      if (info.file.status !== 'uploading') {
+      if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
       }
-      if (info.file.status === 'done') {
+      if (info.file.status === "done") {
         message.success(`${info.file.name} file uploaded successfully`);
-        fetchTestDetails()
-      } else if (info.file.status === 'error') {
+        fetchTestDetails();
+      } else if (info.file.status === "error") {
         message.error(`${info.file.name} file upload failed.`);
       }
     },
   };
-
-  const [testDetails, setTestDetails] = useState<
-    TestTypeInterface[] | undefined
-  >([]);
 
   const onDelete = async (record: any) => {
     axios.delete(`http://${REACT_APP_NODEJS_URL}/admin/livetest`, {
@@ -53,11 +52,11 @@ export const LiveTests: React.FC = () => {
         authorization: "Bearer " + localStorage.getItem("token"),
       },
       data: {
-        liveid: record.liveid
+        liveid: record.liveid,
       },
-    })
-    fetchTestDetails()
-  }
+    });
+    fetchTestDetails();
+  };
 
   const columns = [
     {
@@ -69,22 +68,38 @@ export const LiveTests: React.FC = () => {
       title: "Action",
       dataIndex: "",
       key: "action",
-      width:700,
+      width: 700,
       render: (text: any, record: any) => (
         <Space>
-          <LiveTestModal fetchTestDetails={fetchTestDetails} Test={record} buttonText="View Test Type" />
-          {!record.isuploaded ? <Upload {...props}><Button style={{ marginLeft: '1%' }}  icon={<UploadOutlined />} type='primary'>Upload Questions</Button></Upload> : <LiveTestPreviewModal subjectsallowed={record.subjectsallowed}id={record.liveid}/>}
+          <LiveTestModal
+            fetchTestDetails={fetchTestDetails}
+            Test={record}
+            buttonText="View Test Type"
+          />
+          {!record.isuploaded ? (
+            <Upload
+              action={`http://${REACT_APP_NODEJS_URL}/admin/uploadlivequestions/${record.liveid}`}
+              {...props}
+            >
+              <Button
+                style={{ marginLeft: "1%" }}
+                icon={<UploadOutlined />}
+                type="primary"
+              >
+                Upload Questions
+              </Button>
+            </Upload>
+          ) : (
+            <LiveTestPreviewModal
+              subjectsallowed={record.subjectsallowed}
+              id={record.liveid}
+            />
+          )}
           <Popconfirm
             title="Are you sure you want to delete this test?"
-            onConfirm={() =>
-              onDelete(record)
-            }
+            onConfirm={() => onDelete(record)}
           >
-            <Button
-              type="primary"
-              danger
-              style={{ marginLeft: '1%' }}
-            >
+            <Button type="primary" danger style={{ marginLeft: "1%" }}>
               Delete
             </Button>
           </Popconfirm>
@@ -94,11 +109,11 @@ export const LiveTests: React.FC = () => {
   ];
   useEffect(() => {
     fetchTestDetails();
-  }, [])
+  }, []);
   const fetchTestDetails = async () => {
     try {
       const response = await axios.get("http://localhost:3000/admin/livetest", {
-        headers: { 'Authorization': "Bearer " + localStorage.getItem("token") },
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
       });
       setTestDetails(response.data);
     } catch (e) {
@@ -114,7 +129,10 @@ export const LiveTests: React.FC = () => {
         title={<h1 style={{ fontSize: "30px" }}>Test Types</h1>}
         extra={
           <Space>
-            <LiveTestModal fetchTestDetails={fetchTestDetails} buttonText="Add Test Type" />
+            <LiveTestModal
+              fetchTestDetails={fetchTestDetails}
+              buttonText="Add Test Type"
+            />
           </Space>
         }
       >
