@@ -1,8 +1,11 @@
-import { Card, Button, Space, Popconfirm } from "antd";
+import { Card, Button, Space, Popconfirm, message, Upload } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { LiveTestModal } from "./LiveTestModal";
 import AdvTable from "../../Util/AdvTable";
+import { UploadOutlined } from '@ant-design/icons';
+import { LiveTestPreviewModal } from "./LiveTestPreviewModal";
+
 const { REACT_APP_NODEJS_URL } = process.env;
 
 interface TestTypeInterface {
@@ -21,6 +24,25 @@ interface TestTypeInterface {
 }
 
 export const LiveTests: React.FC = () => {
+  const props = {
+    name: 'file',
+    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    headers: {
+      authorization: 'authorization-text',
+    },
+    onChange(info: any) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+        fetchTestDetails()
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
   const [testDetails, setTestDetails] = useState<
     TestTypeInterface[] | undefined
   >([]);
@@ -47,9 +69,11 @@ export const LiveTests: React.FC = () => {
       title: "Action",
       dataIndex: "",
       key: "action",
+      width:700,
       render: (text: any, record: any) => (
-        <>
+        <Space>
           <LiveTestModal fetchTestDetails={fetchTestDetails} Test={record} buttonText="View Test Type" />
+          {!record.isuploaded ? <Upload {...props}><Button style={{ marginLeft: '1%' }}  icon={<UploadOutlined />} type='primary'>Upload Questions</Button></Upload> : <LiveTestPreviewModal subjectsallowed={record.subjectsallowed}id={record.liveid}/>}
           <Popconfirm
             title="Are you sure you want to delete this test?"
             onConfirm={() =>
@@ -64,7 +88,7 @@ export const LiveTests: React.FC = () => {
               Delete
             </Button>
           </Popconfirm>
-        </>
+        </Space>
       ),
     },
   ];
@@ -77,7 +101,6 @@ export const LiveTests: React.FC = () => {
         headers: { 'Authorization': "Bearer " + localStorage.getItem("token") },
       });
       setTestDetails(response.data);
-      console.log(testDetails);
     } catch (e) {
       console.log(e);
     }

@@ -55,8 +55,8 @@ export const QuestionBank: React.FC = () => {
           },
         }
       );
-      console.log(response);
       message.success('Question Edited Successfully!')
+      fetchBankDetails()
     } catch (e) {
       console.log("Couldn't Update");
       message.error('Error while uploading question!')
@@ -110,6 +110,7 @@ export const QuestionBank: React.FC = () => {
       title: "Question ID",
       dataIndex: "qid",
       key: "qid",
+      sortOrder:'ascend',
     },
     {
       title: "Subject",
