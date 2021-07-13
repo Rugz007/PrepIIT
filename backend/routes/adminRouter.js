@@ -951,7 +951,7 @@ router
   .post("/studentsperformacelive", (req, res, next) => {
     const testid = req.body.liveid;
     db.query(
-      "SELECT livetest.*,users.userid,users.name FROM livetest INNER JOIN users ON users.userid=livetest.userid WHERE liveid=$1",
+      "SELECT liveusertest.*,users.userid,users.name FROM liveusertest INNER JOIN users ON users.userid=liveusertest.userid WHERE liveid=$1",
       [testid]
     )
       .then((resp) => {
