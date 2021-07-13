@@ -937,7 +937,7 @@ router
   .post("/studentsperformancestatic", (req, res, next) => {
     const testid = req.body.testid;
     db.query(
-      "SELECT * FROM usertest INNER JOIN users ON users.userid=usertest.userid WHERE testid=$1",
+      "SELECT usertest.*,users.userid,users.name FROM usertest INNER JOIN users ON users.userid=usertest.userid WHERE testid=$1",
       [testid]
     )
       .then((resp) => {
@@ -951,7 +951,7 @@ router
   .post("/studentsperformacelive", (req, res, next) => {
     const testid = req.body.liveid;
     db.query(
-      "SELECT * FROM livetest INNER JOIN users ON users.userid=livetest.userid WHERE liveid=$1",
+      "SELECT livetest.*,users.userid,users.name FROM livetest INNER JOIN users ON users.userid=livetest.userid WHERE liveid=$1",
       [testid]
     )
       .then((resp) => {
