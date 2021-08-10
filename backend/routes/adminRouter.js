@@ -262,43 +262,43 @@ router
       body.questions.map((question) => {
         if (question) {
           if (question.type == "mcq") {
-            maxMarks += question.number * question.correct;
+            maxMarks += question.number * Math.max(question.correct,question.wrong,question.nullanswer);
             mcq.push(question.number);
             mcq.push(question.correct);
             mcq.push(question.wrong);
             mcq.push(question.nullanswer);
           } else if (question.type == "fib") {
-            maxMarks += question.number * question.correct;
+            maxMarks += question.number * Math.max(question.correct,question.wrong,question.nullanswer);
             fib.push(question.number);
             fib.push(question.correct);
             fib.push(question.wrong);
             fib.push(question.nullanswer);
           } else if (question.type == "anr") {
-            maxMarks += question.number * question.correct;
+            maxMarks += question.number * Math.max(question.correct,question.wrong,question.nullanswer);
             anr.push(question.number);
             anr.push(question.correct);
             anr.push(question.wrong);
             anr.push(question.nullanswer);
           } else if (question.type == "tof") {
-            maxMarks += question.number * question.correct;
+            maxMarks += question.number * Math.max(question.correct,question.wrong,question.nullanswer);
             tof.push(question.number);
             tof.push(question.correct);
             tof.push(question.wrong);
             tof.push(question.nullanswer);
           } else if (question.type == "num") {
-            maxMarks += question.number * question.correct;
+            maxMarks += question.number * Math.max(question.correct,question.wrong,question.nullanswer);
             nq.push(question.number);
             nq.push(question.correct);
             nq.push(question.wrong);
             nq.push(question.nullanswer);
           } else if (question.type == "mtf") {
-            maxMarks += question.number * question.correct;
+            maxMarks += question.number * Math.max(question.correct,question.wrong,question.nullanswer);
             mtf.push(question.number);
             mtf.push(question.correct);
             mtf.push(question.wrong);
             mtf.push(question.nullanswer);
           } else if (question.type == "mac") {
-            maxMarks += question.number * question.correct;
+            maxMarks += question.number * Math.max(question.correct,question.wrong,question.nullanswer);
             mac.push(question.number);
             mac.push(question.correct);
             mac.push(question.wrong);

@@ -37,7 +37,7 @@ const updateLog = (
   const macCorrectMarks = testObject.mac ? testObject.mac[1] : 0;
   const macWrongMarks = testObject.mac ? testObject.mac[2] : 0;
   const macNaMarks = testObject.mac ? testObject.mac[3] : 0;
-  var average = parseFloat(testObject.average);
+  var average = testObject.average?parseFloat(testObject.average):0;
   var takers = testObject.takers;
   var phyMacMarks = 0;
   var chemMacMarks = 0;
@@ -346,7 +346,7 @@ const updateLog = (
                 mathMacMarks;
             var totalMarks = phyMarks + chemMarks + mathMarks;
             var newAverage = (average * takers + totalMarks) / (takers + 1);
-            newAverage = Math.round(newAverage) / 100;
+            newAverage = Math.round(newAverage);
             newAverage = newAverage.toString();
             var date = new Date();
             date = date.toISOString().split("T")[0];

@@ -2,7 +2,7 @@ const randomstring = require("randomstring");
 const moment = require("moment");
 const db = require("../db");
 
-const phyChemMath = (testObject, userid, res) => {
+const phyChemBioMath = (testObject, userid, res) => {
   var phyQues = [];
   var chemQues = [];
   var mathQues = [];
@@ -464,4 +464,4 @@ const phyChemMath = (testObject, userid, res) => {
   });
 };
 
-module.exports = phyChemMath;
+module.exports = phyChemBioMath;
